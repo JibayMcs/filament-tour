@@ -10,12 +10,12 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Icon;
 use Illuminate\Filesystem\Filesystem;
+use JibayMcs\FilamentTour\Commands\FilamentTourCommand;
+use JibayMcs\FilamentTour\Testing\TestsFilamentTour;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use JibayMcs\FilamentTour\Commands\FilamentTourCommand;
-use JibayMcs\FilamentTour\Testing\TestsFilamentTour;
 
 class FilamentTourServiceProvider extends PackageServiceProvider
 {
@@ -81,7 +81,7 @@ class FilamentTourServiceProvider extends PackageServiceProvider
 
         // Handle Stubs
         if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
+            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filament-tour/{$file->getFilename()}"),
                 ], 'filament-tour-stubs');
@@ -104,8 +104,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-tour', __DIR__ . '/../resources/dist/components/filament-tour.js'),
-            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
         ];
     }
 
