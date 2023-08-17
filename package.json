@@ -1,5 +1,6 @@
 {
     "private": true,
+    "type": "module",
     "scripts": {
         "dev:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/filament-tour.css --postcss --watch",
         "dev:scripts": "node bin/build.js --dev",
@@ -7,7 +8,7 @@
         "build:scripts": "node bin/build.js",
         "purge": "filament-purge -i resources/dist/filament-tour.css -o resources/dist/filament-tour.css -v 3.x",
         "dev": "npm-run-all --parallel dev:*",
-        "build": "npm-run-all build:scripts"
+        "build": "npm-run-all build:*"
     },
     "devDependencies": {
         "@awcodes/filament-plugin-purge": "^1.1.1",
