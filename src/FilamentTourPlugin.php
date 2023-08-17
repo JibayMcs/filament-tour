@@ -2,11 +2,15 @@
 
 namespace JibayMcs\FilamentTour;
 
+use App\Traits\HasTutorial;
 use Filament\Contracts\Plugin;
+use Filament\Facades\Filament;
 use Filament\Panel;
+use Filament\Resources\Resource;
 
 class FilamentTourPlugin implements Plugin
 {
+
     public function getId(): string
     {
         return 'filament-tour';

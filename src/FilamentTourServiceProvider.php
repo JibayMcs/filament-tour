@@ -25,11 +25,6 @@ class FilamentTourServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
@@ -90,6 +85,7 @@ class FilamentTourServiceProvider extends PackageServiceProvider
 
         // Testing
         Testable::mixin(new TestsFilamentTour());
+
     }
 
     protected function getAssetPackageName(): ?string
