@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tutorial;
+namespace JibayMcs\FilamentTour\Tour;
 
 class Tour
 {

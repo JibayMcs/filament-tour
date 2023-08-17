@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace JibayMcs\FilamentTour\Tour;
 
 use Livewire\Component;
 

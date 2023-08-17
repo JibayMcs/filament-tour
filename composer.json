@@ -38,7 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JibayMcs\\FilamentTour\\": "src",
+            "JibayMcs\\FilamentTour\\": "src/",
             "JibayMcs\\FilamentTour\\Database\\Factories\\": "database/factories/"
         }
     },

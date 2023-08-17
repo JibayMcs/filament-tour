@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tutorial;
+namespace JibayMcs\FilamentTour\Tour;
 
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
