@@ -28,12 +28,12 @@ class Step
 
     public bool $unclosable = false;
 
-    public function __construct(?string $element = null)
+    public function __construct(string $element = null)
     {
         $this->element = $element;
     }
 
-    public static function make(?string $element = null): static
+    public static function make(string $element = null): static
     {
         $static = app(static::class, ['element' => $element]);
 
