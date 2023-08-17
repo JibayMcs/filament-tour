@@ -2,7 +2,7 @@
 
 namespace App\Tutorial;
 
-class Tutorial
+class Tour
 {
     public string $id;
 
