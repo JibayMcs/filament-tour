@@ -4,6 +4,7 @@ namespace JibayMcs\FilamentTour;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Illuminate\Support\Facades\Blade;
 
 class FilamentTourPlugin implements Plugin
 {
@@ -14,7 +15,7 @@ class FilamentTourPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->renderHook('panels::body.start', fn() => Blade::render('<livewire:tutorial-widget/>'));
     }
 
     public function boot(Panel $panel): void

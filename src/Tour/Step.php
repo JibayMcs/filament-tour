@@ -2,11 +2,13 @@
 
 namespace JibayMcs\FilamentTour\Tour;
 
+use Filament\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
 
 class Step
 {
+
     public string|\Closure $title;
 
     public null|string|\Closure|HtmlString|View $description = null;
@@ -17,23 +19,38 @@ class Step
 
     public ?string $element = null;
 
-    public $onNext = null;
+    public ?string $onNextClickSelector = null;
+
+    public ?Notification $notification = null;
+
+    public ?array $dispatch = null;
 
     public ?array $redirect = null;
 
     public bool $unclosable = false;
 
-    public function __construct(string|\Closure $title, string|\Closure|HtmlString|View $description = null)
+    public function __construct(string $element, string|\Closure|HtmlString|View $description = null)
     {
-        $this->title = is_callable($title) ? $title() : $title;
-        $this->description = is_callable($description) ? $description() : ($description instanceof View ? $description->render() : $description);
+        $this->element = $element;
     }
 
-    public static function make(string|\Closure $title, string|\Closure|HtmlString|View $description = null): static
+    public static function make(string $element): static
     {
-        $static = app(static::class, ['title' => $title, 'description' => $description]);
+        $static = app(static::class, ['element' => $element]);
 
         return $static;
+    }
+
+    public function title(string|\Closure $title): self
+    {
+        $this->title = is_callable($title) ? $title() : $title;
+        return $this;
+    }
+
+    public function description(string|\Closure|HtmlString|View $description = null): self
+    {
+        $this->description = is_callable($description) ? $description() : ($description instanceof View ? $description->render() : $description);
+        return $this;
     }
 
     public function unclosable(bool $unclosable = true): self
@@ -64,17 +81,16 @@ class Step
         return $this;
     }
 
-    public function element($value): self
+    public function onNextClick(string $selector): self
     {
-        $this->element = $value;
+        $this->onNextClickSelector = $selector;
 
         return $this;
     }
 
-    public function onNext(\Closure $closure): self
+    public function notify(Notification $notification): self
     {
-        $this->onNext = $closure();
-
+        $this->notification = $notification;
         return $this;
     }
 
@@ -82,6 +98,12 @@ class Step
     {
         $this->redirect = ['url' => $url, 'newTab' => $newTab];
 
+        return $this;
+    }
+
+    public function onNextDispatch(string $name, ...$args): self
+    {
+        $this->dispatch = ['name' => $name, 'args' => json_encode($args)];
         return $this;
     }
 }

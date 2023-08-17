@@ -2,9 +2,9 @@
 
 namespace JibayMcs\FilamentTour\Livewire;
 
-use App\Traits\HasTutorial;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
+use JibayMcs\FilamentTour\Tour\HasTour;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -36,7 +36,7 @@ class TutorialWidget extends Component
         foreach ($filamentClasses as $class) {
             $traits = class_uses($class);
 
-            if (in_array(HasTutorial::class, $traits)) {
+            if (in_array(HasTour::class, $traits)) {
                 $classesUsingHasTutorial[] = $class;
             }
         }

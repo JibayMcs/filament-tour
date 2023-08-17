@@ -1,2 +1,41 @@
 @import '../../vendor/filament/filament/resources/css/theme.css';
 @import "driver.js/dist/driver.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+.highlighted {
+    outline: 2px solid red;
+}
+
+.driver-popover {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 15px;
+    border-radius: 5px;
+    min-width: 300px !important;
+    max-width: 600px !important;
+    box-shadow: 0 1px 10px #0006;
+    z-index: 1000000000;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+@layer utilities {
+
+    .dark .driver-popover {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 1px 10px #0006;
+        z-index: 1000000000;
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
+
+}
