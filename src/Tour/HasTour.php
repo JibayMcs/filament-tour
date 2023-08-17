@@ -8,26 +8,28 @@ trait HasTour
 {
     abstract public function tours(): array;
 
-    public function construct($class, Component $instance, array $request): array
+    public function construct($class, array $request): array
     {
-        $instance = new $class;
+        $instance  = new $class;
         $tutorials = [];
-        $route = null;
+        $route     = null;
 
         if (method_exists($instance, 'getResource')) {
             $resource = new ($instance->getResource());
             foreach ($resource->getPages() as $key => $page) {
-                $route = $resource->getUrl($key);
+                if ($page->getPage() === $class)
+                    $route = $resource->getUrl($key);
             }
         } else {
             $route = $instance->getUrl();
         }
 
         foreach ($this->tours() as $tour) {
-            $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
+            if ($tour->route)
+                $route = $tour->route;
 
+            $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
                 $data[$item] = [
-                    'element' => $key->element,
                     'redirect' => $key->redirect ?? null,
                     'popover' => [
                         'title' => view('tutorial.popover.title')
@@ -43,6 +45,9 @@ trait HasTour
                     ],
                 ];
 
+                if ($key->element)
+                    $data[$item]['element'] = $key->element;
+
                 return $data;
             })->toArray());
 
@@ -50,7 +55,7 @@ trait HasTour
 
                 $currentRoute = parse_url($route);
 
-                if (! array_key_exists('path', $currentRoute)) {
+                if (!array_key_exists('path', $currentRoute)) {
                     $currentRoute['path'] = '/';
                 }
 

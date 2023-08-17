@@ -42,7 +42,7 @@ class TutorialWidget extends Component
         }
 
         foreach ($classesUsingHasTutorial as $class) {
-            foreach ((new $class())->construct($class, $this, $request) as $tutorial) {
+            foreach ((new $class())->construct($class, $request) as $tutorial) {
                 $this->tutorials[] = $tutorial;
             }
         }

@@ -32,7 +32,7 @@ class Tour
         return $static;
     }
 
-    public function onlyOn(string $route): self
+    public function route(string $route): self
     {
         $this->route = $route;
 
