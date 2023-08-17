@@ -2,31 +2,17 @@
 
 namespace App\Traits;
 
-use App\Providers\Filament\AdminPanelProvider;
-use App\Tutorial\Tutorial;
-use Filament\Facades\Filament;
-use Filament\Pages\Dashboard;
-use Filament\Pages\Page;
-use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Resource;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\HtmlString;
 use Livewire\Component;
-use function PHPUnit\Framework\returnSelf;
-use function PHPUnit\Framework\throwException;
 
 trait HasTutorial
 {
-
-    public abstract function tutorials(): array;
+    abstract public function tutorials(): array;
 
     public function construct($class, Component $instance, array $request): array
     {
-        $instance  = new $class;
+        $instance = new $class;
         $tutorials = [];
-        $route     = null;
+        $route = null;
 
         if (method_exists($instance, 'getResource')) {
             $resource = new ($instance->getResource());
@@ -36,7 +22,6 @@ trait HasTutorial
         } else {
             $route = $instance->getUrl();
         }
-
 
         foreach ($this->tutorials() as $tutorial) {
             $steps = json_encode(collect($tutorial->steps)->mapWithKeys(function ($key, $item) {
@@ -54,7 +39,6 @@ trait HasTutorial
                     ],
                 ];
 
-
                 if ($key->redirect) {
                     $data[$item] = array_merge($data[$item], ['redirect' => $key->redirect]);
                 }
@@ -68,11 +52,11 @@ trait HasTutorial
 
             if ($route && $steps) {
 
-
                 $currentRoute = parse_url($route);
 
-                if (!array_key_exists('path', $currentRoute))
+                if (! array_key_exists('path', $currentRoute)) {
                     $currentRoute['path'] = '/';
+                }
 
                 /*if ($currentRoute['host'] === $request['host'] && $currentRoute['path'] === $request['pathname']) {
                     $openNow = true;
@@ -82,12 +66,12 @@ trait HasTutorial
 
                 $tutorials[] = [
                     'id' => "tutorial.{$tutorial->id}",
-//                    'open' => $openNow,
+                    //                    'open' => $openNow,
                     'colors' => [
                         'light' => $tutorial->colors['light'],
-                        'dark' => $tutorial->colors['dark']
+                        'dark' => $tutorial->colors['dark'],
                     ],
-                    'steps' => $steps
+                    'steps' => $steps,
                 ];
             }
         }

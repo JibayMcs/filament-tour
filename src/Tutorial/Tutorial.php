@@ -2,11 +2,6 @@
 
 namespace App\Tutorial;
 
-
-use Filament\Pages\Page;
-use Filament\Resources\Resource;
-use Livewire\Component;
-
 class Tutorial
 {
     public string $id;
@@ -19,7 +14,7 @@ class Tutorial
 
     public function __construct(string $id, array $colors)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
     }
 
@@ -31,9 +26,8 @@ class Tutorial
                 'colors' => [
                     'dark' => 'rgb(var(--gray-600))',
                     'light' => 'rgb(0,0,0)',
-                ]
+                ],
             ]);
-
 
         return $static;
     }
@@ -45,9 +39,10 @@ class Tutorial
         return $this;
     }
 
-    public function steps(Step...$steps): self
+    public function steps(Step ...$steps): self
     {
         $this->steps = $steps;
+
         return $this;
     }
 
@@ -57,8 +52,7 @@ class Tutorial
             'light' => $light,
             'dark' => $dark,
         ];
+
         return $this;
     }
-
-
 }
