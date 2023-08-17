@@ -44,7 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "JibayMcs\\FilamentTour\\Tests\\": "tests/"
+            "JibayMcs\\FilamentTour\\": "src/"
         }
     },
     "scripts": {

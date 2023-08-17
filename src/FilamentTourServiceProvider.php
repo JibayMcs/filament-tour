@@ -11,8 +11,10 @@ use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Icon;
 use Illuminate\Filesystem\Filesystem;
 use JibayMcs\FilamentTour\Commands\FilamentTourCommand;
+use JibayMcs\FilamentTour\Livewire\TutorialWidget;
 use JibayMcs\FilamentTour\Testing\TestsFilamentTour;
 use Livewire\Features\SupportTesting\Testable;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -60,7 +62,6 @@ class FilamentTourServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
             $this->getAssetPackageName()
@@ -71,20 +72,7 @@ class FilamentTourServiceProvider extends PackageServiceProvider
             $this->getAssetPackageName()
         );
 
-        // Icon Registration
-        FilamentIcon::register($this->getIcons());
-
-        // Handle Stubs
-        if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
-                $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filament-tour/{$file->getFilename()}"),
-                ], 'filament-tour-stubs');
-            }
-        }
-
-        // Testing
-        Testable::mixin(new TestsFilamentTour());
+        Livewire::component('tutorial-widget', TutorialWidget::class);
 
     }
 
