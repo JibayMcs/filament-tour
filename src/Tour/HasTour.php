@@ -10,9 +10,9 @@ trait HasTour
 
     public function construct($class, Component $instance, array $request): array
     {
-        $instance  = new $class;
+        $instance = new $class;
         $tutorials = [];
-        $route     = null;
+        $route = null;
 
         if (method_exists($instance, 'getResource')) {
             $resource = new ($instance->getResource());
@@ -37,12 +37,11 @@ trait HasTour
                             ->render(),
                         'description' => $key->description,
                         'onNextClickSelector' => $key->onNextClickSelector ?? null,
-                        'onNextNotifiy'=> $key->notification ? $key->notification->toArray() : null,
+                        'onNextNotifiy' => $key->notification ? $key->notification->toArray() : null,
                         'onNextDispatch' => $key->dispatch ?? null,
                         'unclosable' => $key->unclosable,
                     ],
                 ];
-
 
                 return $data;
             })->toArray());
@@ -51,7 +50,7 @@ trait HasTour
 
                 $currentRoute = parse_url($route);
 
-                if (!array_key_exists('path', $currentRoute)) {
+                if (! array_key_exists('path', $currentRoute)) {
                     $currentRoute['path'] = '/';
                 }
 

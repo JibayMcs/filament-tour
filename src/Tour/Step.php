@@ -8,7 +8,6 @@ use Illuminate\View\View;
 
 class Step
 {
-
     public string|\Closure $title;
 
     public null|string|\Closure|HtmlString|View $description = null;
@@ -44,12 +43,14 @@ class Step
     public function title(string|\Closure $title): self
     {
         $this->title = is_callable($title) ? $title() : $title;
+
         return $this;
     }
 
     public function description(string|\Closure|HtmlString|View $description = null): self
     {
         $this->description = is_callable($description) ? $description() : ($description instanceof View ? $description->render() : $description);
+
         return $this;
     }
 
@@ -91,6 +92,7 @@ class Step
     public function notify(Notification $notification): self
     {
         $this->notification = $notification;
+
         return $this;
     }
 
@@ -104,6 +106,7 @@ class Step
     public function onNextDispatch(string $name, ...$args): self
     {
         $this->dispatch = ['name' => $name, 'args' => json_encode($args)];
+
         return $this;
     }
 }
