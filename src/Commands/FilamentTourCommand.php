@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace JibayMcs\FilamentTour\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentTourCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-tour';
 
     public $description = 'My command';
 

@@ -1,13 +1,13 @@
 {
     "private": true,
     "scripts": {
-        "dev:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/skeleton.css --postcss --watch",
+        "dev:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/filament-tour.css --postcss --watch",
         "dev:scripts": "node bin/build.js --dev",
-        "build:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/skeleton.css --postcss --minify && npm run purge",
+        "build:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/filament-tour.css --postcss --minify && npm run purge",
         "build:scripts": "node bin/build.js",
-        "purge": "filament-purge -i resources/dist/skeleton.css -o resources/dist/skeleton.css -v 3.x",
+        "purge": "filament-purge -i resources/dist/filament-tour.css -o resources/dist/filament-tour.css -v 3.x",
         "dev": "npm-run-all --parallel dev:*",
-        "build": "npm-run-all build:*"
+        "build": "npm-run-all build:scripts"
     },
     "devDependencies": {
         "@awcodes/filament-plugin-purge": "^1.1.1",
@@ -21,5 +21,8 @@
         "prettier": "^2.7.1",
         "prettier-plugin-tailwindcss": "^0.1.13",
         "tailwindcss": "^3.3.3"
+    },
+    "dependencies": {
+        "driver.js": "^1.2.1"
     }
 }
