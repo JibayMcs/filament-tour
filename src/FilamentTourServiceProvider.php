@@ -8,10 +8,8 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Icons\Icon;
-use JibayMcs\FilamentTour\Commands\FilamentTourCommand;
 use JibayMcs\FilamentTour\Livewire\TutorialWidget;
 use Livewire\Livewire;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

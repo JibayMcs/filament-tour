@@ -7,7 +7,6 @@ use Illuminate\View\View;
 
 class Highlight
 {
-
     public string $parent;
 
     public string $id;
@@ -51,6 +50,7 @@ class Highlight
     public function element(string $element): self
     {
         $this->element = $element;
+
         return $this;
     }
 
@@ -94,7 +94,7 @@ class Highlight
 
     public function position(string $position): self
     {
-        match($position) {
+        match ($position) {
             'top-left' => $this->position = 'top-left',
             'top-right' => $this->position = 'top-right',
             'bottom-left' => $this->position = 'bottom-left',
@@ -102,6 +102,6 @@ class Highlight
             default => $this->position = 'top-left',
         };
 
-       return $this;
+        return $this;
     }
 }

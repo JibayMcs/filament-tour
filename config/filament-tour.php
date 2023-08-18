@@ -3,5 +3,5 @@
 // config for JibayMcs/FilamentTour
 return [
 
-    "only_visible_once" => true,
+    'only_visible_once' => true,
 ];

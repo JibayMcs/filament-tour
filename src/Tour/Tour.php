@@ -18,7 +18,7 @@ class Tour
 
     public function __construct(string $id, array $colors)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
     }
 
@@ -63,9 +63,9 @@ class Tour
     public function alwaysShow(bool $alwaysShow = true): self
     {
         $this->alwaysShow = $alwaysShow;
+
         return $this;
     }
-
 
     public function visible(bool|\Closure $visible = true): self
     {
@@ -80,6 +80,7 @@ class Tour
 
             $this->visible = $visible();
         }
+
         return $this;
     }
 }

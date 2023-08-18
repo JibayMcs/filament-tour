@@ -38,8 +38,9 @@ trait HasHighlight
                 ],
             ];
 
-            if ($key->element)
+            if ($key->element) {
                 $data[$item]['element'] = $key->element;
+            }
 
             return $data;
         })->toArray();
