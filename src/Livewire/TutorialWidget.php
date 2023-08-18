@@ -4,25 +4,29 @@ namespace JibayMcs\FilamentTour\Livewire;
 
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
+use JibayMcs\FilamentTour\FilamentTourPlugin;
+use JibayMcs\FilamentTour\Highlight\HasHighlight;
 use JibayMcs\FilamentTour\Tour\HasTour;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TutorialWidget extends Component
 {
-    public array $tutorials = [];
+    public array $tours      = [];
+    public array $highlights = [];
 
-    #[On('driverjs::load-tutorials')]
-    public function loadTutorials(array $request): void
+    #[On('driverjs::load-elements')]
+    public function load(array $request): void
     {
-        $classesUsingHasTutorial = [];
-        $filamentClasses = [];
+        $classesUsingHasTour      = [];
+        $classesUsingHasHighlight = [];
+        $filamentClasses          = [];
 
         foreach (array_merge(Filament::getResources(), Filament::getPages()) as $class) {
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn ($item) => $item->getPage())
+                collect($instance->getPages())->map(fn($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -37,17 +41,27 @@ class TutorialWidget extends Component
             $traits = class_uses($class);
 
             if (in_array(HasTour::class, $traits)) {
-                $classesUsingHasTutorial[] = $class;
+                $classesUsingHasTour[] = $class;
+            }
+
+            if (in_array(HasHighlight::class, $traits)) {
+                $classesUsingHasHighlight[] = $class;
             }
         }
 
-        foreach ($classesUsingHasTutorial as $class) {
-            foreach ((new $class())->construct($class, $request) as $tutorial) {
-                $this->tutorials[] = $tutorial;
-            }
+        foreach ($classesUsingHasTour as $class) {
+            $this->tours = (new $class())->constructTours($class, $request);
         }
 
-        $this->dispatch('driverjs::loaded-tutorials', ['tutorials' => $this->tutorials]);
+        foreach ($classesUsingHasHighlight as $class) {
+            $this->highlights = (new $class())->constructHighlights($class, $request);
+        }
+
+        $this->dispatch('driverjs::loaded-elements', [
+            'only_visible_once' => is_bool(FilamentTourPlugin::get()->isOnlyVisibleOnce()) ? FilamentTourPlugin::get()->isOnlyVisibleOnce() : config('filament-tour.only_visible_once'),
+            'tours' => $this->tours,
+            'highlights' => $this->highlights,
+        ]);
 
     }
 

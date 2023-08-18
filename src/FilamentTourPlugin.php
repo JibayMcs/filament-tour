@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Blade;
 
 class FilamentTourPlugin implements Plugin
 {
+    public null|bool $onlyVisibleOnce = null;
+
     public function getId(): string
     {
         return 'filament-tour';
@@ -34,5 +36,16 @@ class FilamentTourPlugin implements Plugin
         $plugin = filament(app(static::class)->getId());
 
         return $plugin;
+    }
+
+    public function onlyVisibleOnce(bool $onlyVisibleOnce = true): self
+    {
+        $this->onlyVisibleOnce = $onlyVisibleOnce;
+        return $this;
+    }
+
+    public function isOnlyVisibleOnce(): null|bool
+    {
+        return $this->onlyVisibleOnce;
     }
 }

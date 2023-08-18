@@ -12,9 +12,13 @@ class Tour
 
     public array $colors = [];
 
+    public bool $alwaysShow = false;
+
+    public bool $visible = true;
+
     public function __construct(string $id, array $colors)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
     }
 
@@ -53,6 +57,29 @@ class Tour
             'dark' => $dark,
         ];
 
+        return $this;
+    }
+
+    public function alwaysShow(bool $alwaysShow = true): self
+    {
+        $this->alwaysShow = $alwaysShow;
+        return $this;
+    }
+
+
+    public function visible(bool|\Closure $visible = true): self
+    {
+        if (is_bool($visible)) {
+            $this->visible = $visible;
+        } else {
+            if ($visible === null) {
+                $visible = function () {
+                    return true;
+                };
+            }
+
+            $this->visible = $visible();
+        }
         return $this;
     }
 }

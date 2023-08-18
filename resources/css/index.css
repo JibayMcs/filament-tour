@@ -24,7 +24,41 @@
     right: 0;
 }
 
+.driver-help-button {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.top-left {
+    top: -16px;
+    left: -16px;
+}
+
+.top-right {
+    top: -16px;
+    right: -16px;
+}
+
+.bottom-right {
+    bottom: -16px;
+    right: -16px;
+}
+
+.bottom-left {
+    bottom: -16px;
+    left: -16px;
+}
+
 @layer utilities {
+
+    .dark .driver-popover-arrow {
+        border: 5px solid rgb(var(--gray-900)) !important;
+        border-right-color: #0000 !important;
+        border-bottom-color: #0000 !important;
+        border-top-color: #0000 !important;
+    }
 
     .dark .driver-popover {
         box-sizing: border-box;

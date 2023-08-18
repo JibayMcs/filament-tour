@@ -6,7 +6,7 @@ trait HasTour
 {
     abstract public function tours(): array;
 
-    public function construct($class, array $request): array
+    public function constructTours($class, array $request): array
     {
         $instance = new $class;
         $tutorials = [];
@@ -32,14 +32,14 @@ trait HasTour
                 $data[$item] = [
                     'redirect' => $key->redirect ?? null,
                     'popover' => [
-                        'title' => view('tutorial.popover.title')
+                        'title' => view('filament-tour::tour.step.popover.title')
                             ->with('title', $key->title)
                             ->with('icon', $key->icon)
                             ->with('iconColor', $key->iconColor)
                             ->render(),
                         'description' => $key->description,
                         'onNextClickSelector' => $key->onNextClickSelector ?? null,
-                        'onNextNotifiy' => $key->notification ? $key->notification->toArray() : null,
+                        'onNextNotify' => $key->notification ? $key->notification->toArray() : null,
                         'onNextDispatch' => $key->dispatch ?? null,
                         'unclosable' => $key->unclosable,
                     ],
@@ -66,15 +66,18 @@ trait HasTour
                     $openNow = false;
                 }
 
-                $tutorials[] = [
-                    'id' => "tutorial.{$tour->id}",
-                    'open' => $openNow,
-                    'colors' => [
-                        'light' => $tour->colors['light'],
-                        'dark' => $tour->colors['dark'],
-                    ],
-                    'steps' => $steps,
-                ];
+                if ($tour->visible) {
+                    $tutorials[] = [
+                        'id' => "tour.{$tour->id}",
+                        'alwaysShow' => $tour->alwaysShow,
+                        'open' => $openNow,
+                        'colors' => [
+                            'light' => $tour->colors['light'],
+                            'dark' => $tour->colors['dark'],
+                        ],
+                        'steps' => $steps,
+                    ];
+                }
             }
         }
 

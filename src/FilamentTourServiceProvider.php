@@ -24,19 +24,12 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
-            ->hasInstallCommand(function (InstallCommand $command) {
-                $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('jibaymcs/filament-tour');
-            });
+            ->hasCommands($this->getCommands());
 
         $configFileName = $package->shortName();
 
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
+        if (file_exists($package->basePath("/../config/{$package->name}.php"))) {
+            $package->hasConfigFile(self::$name);
         }
 
         if (file_exists($package->basePath('/../database/migrations'))) {
@@ -94,9 +87,7 @@ class FilamentTourServiceProvider extends PackageServiceProvider
      */
     protected function getCommands(): array
     {
-        return [
-            FilamentTourCommand::class,
-        ];
+        return [];
     }
 
     /**
@@ -128,8 +119,6 @@ class FilamentTourServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return [
-            'create_filament-tour_table',
-        ];
+        return [];
     }
 }
