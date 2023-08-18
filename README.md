@@ -1,60 +1,99 @@
-# This is my package filament-tour
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/jibaymcs/filament-tour.svg?style=flat-square)](https://packagist.org/packages/jibaymcs/filament-tour)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jibaymcs/filament-tour/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/jibaymcs/filament-tour/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jibaymcs/filament-tour/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jibaymcs/filament-tour/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/jibaymcs/filament-tour.svg?style=flat-square)](https://packagist.org/packages/jibaymcs/filament-tour)
+# Bring the power of DriverJs to your Filament panels and start a tour !
 
 
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+
+With the power of [DriverJS](https://driverjs.io) bring to your users an elegant way to discover your panels !
 
 ## Installation
 
-You can install the package via composer:
+You can install this filament plugin via composer:
 
-```bash
-composer require jibaymcs/filament-tour
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="filament-tour-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-tour-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="filament-tour-views"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
+```bash  
+composer require jibaymcs/filament-tour```  
+  
+You can publish the config file with:  
+  
+```bash  
+php artisan vendor:publish --tag="filament-tour-config"```  
+  
+Optionally, you can publish the views using  
+  
+```bash  
+php artisan vendor:publish --tag="filament-tour-views"```  
+  
+This is the contents of the published config file:  
+  
+```php  
+return [  
+	"only_visible_once" => true,
+];  
+```  
 
 ## Usage
 
+```php  
+public function panel(Panel $panel) {
+	return $panel
+			->default()
+			->[...]
+			->plugins([
+				FilamentTourPlugin::make()
+			])
+}
+```
+
+You can also enable or disable the check on the local storage if the current user have already seen the tour.
+
 ```php
-$filamentTour = new JibayMcs\FilamentTour();
-echo $filamentTour->echoPhrase('Hello, JibayMcs!');
+// default  : true
+FilamentTourPlugin::make()->onlyVisibleOnce(false)
 ```
 
-## Testing
+## Start a tour !
 
-```bash
-composer test
+Let's follow this example to add a tour to your dashboard page.
+
+If you don't already have a customized dashboard, please refer to the following tutorial: [FIlamentPHP - Dashboard - Customizing the dashboard page](https://filamentphp.com/docs/3.x/panels/dashboard#customizing-the-dashboard-page)
+
+- Use the correct trait to registers your tours !
+```php
+<?php
+namespace App\Filament\Pages;
+
+use JibayMcs\FilamentTour\Tour\Tour;
+
+class Dashboard extends FilamentDashboard  
+{
+	use HasTour;
+	
+	// ...
+
+	public function tours(): array  
+	{  
+	    return [
+		    //
+		  ];
+	}
+}
 ```
+
+- Create a simple tour !
+
+```php
+public function tours(): array {
+
+	return [
+		Tour::make('dashboard')  
+		    ->steps(  
+		        Step::make()  
+		            ->title("Welcome to your Dashboard !")  
+		            ->description(view('tutorial.dashboard.introduction')),
+		    ),
+	];
+}
+```
+
 
 ## Changelog
 

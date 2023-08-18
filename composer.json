@@ -1,10 +1,13 @@
 {
     "name": "jibaymcs/filament-tour",
-    "description": "This is my package filament-tour",
+    "description": "Bring the power of DriverJs to your Filament panels and start a tour !",
     "keywords": [
         "JibayMcs",
         "laravel",
-        "filament-tour"
+        "filament-tour",
+        "filament",
+        "filamentphp",
+        "driverjs"
     ],
     "homepage": "https://github.com/jibaymcs/filament-tour",
     "support": {

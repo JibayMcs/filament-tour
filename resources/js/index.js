@@ -9,7 +9,6 @@ document.addEventListener('livewire:initialized', async function () {
 
     Livewire.on('driverjs::loaded-elements', function (data) {
 
-        console.log(data);
         data[0].tours.forEach((tour) => {
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
@@ -48,7 +47,6 @@ document.addEventListener('livewire:initialized', async function () {
         let highlightElement = highlights.find(element => element.id === highlight.highlight);
 
         if (highlightElement) {
-
 
             driver({
                 overlayColor: localStorage.theme === 'light' ? highlightElement.colors.light : highlightElement.colors.dark,
