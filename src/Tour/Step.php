@@ -38,9 +38,6 @@ class Step
      * Create the instance of your step.
      * <br>
      * If no **$element** defined, the step will be shown as a modal.
-     *
-     * @param string|null $element
-     * @return static
      */
     public static function make(string $element = null): static
     {
@@ -50,7 +47,6 @@ class Step
     /**
      * Set the title of your step.
      *
-     * @param string|Closure $title
      * @return $this
      */
     public function title(string|Closure $title): self
@@ -63,16 +59,15 @@ class Step
     /**
      * Set the description of your step.
      *
-     * @param string|Closure|HtmlString|View $description
      * @return $this
      */
     public function description(string|Closure|HtmlString|View $description): self
     {
         if (is_callable($description)) {
             $this->description = $description();
-        } else if ($description instanceof HtmlString) {
+        } elseif ($description instanceof HtmlString) {
             $this->description = $description->toHtml();
-        } else if ($description instanceof View) {
+        } elseif ($description instanceof View) {
             $this->description = $description->render();
         } else {
             $this->description = $description;
@@ -84,7 +79,6 @@ class Step
     /**
      * Set the step as uncloseable.
      *
-     * @param bool|Closure $uncloseable
      * @return $this
      */
     public function uncloseable(bool|Closure $uncloseable = true): self
@@ -101,7 +95,6 @@ class Step
     /**
      * Set the icon of your step, next to the title.
      *
-     * @param string $icon
      * @return $this
      */
     public function icon(string $icon): self
@@ -114,7 +107,6 @@ class Step
     /**
      * Set the color of your icon.
      *
-     * @param string $color
      * @return $this
      */
     public function iconColor(string $color): self
@@ -127,7 +119,6 @@ class Step
     /**
      * Set the CSS selector to be clicked when the user clicks on the next button of your step.
      *
-     * @param string|Closure $selector
      * @return $this
      */
     public function onNextClick(string|Closure $selector): self
@@ -144,7 +135,6 @@ class Step
     /**
      * Set the notification to be shown when the user clicks on the next button of your step.
      *
-     * @param Notification $notification
      * @return $this
      */
     public function onNextNotify(Notification $notification): self
@@ -159,8 +149,6 @@ class Step
      * <br>
      * You can choose to open the redirection in a new tab or not with **$newTab**, default false.
      *
-     * @param string $url
-     * @param bool $newTab
      * @return $this
      */
     public function onNextRedirect(string $url, bool $newTab = false): self
@@ -173,8 +161,7 @@ class Step
     /**
      * Set the liveire event to dispatch to, when the user clicks on the next button of your step.
      *
-     * @param string $name
-     * @param mixed ...$args
+     * @param  mixed  ...$args
      * @return $this
      */
     public function onNextDispatch(string $name, ...$args): self

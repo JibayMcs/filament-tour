@@ -6,9 +6,10 @@ trait CanConstructRoute
 {
     private array|false|int|null|string $route = null;
 
-    public function getRoute($instance, $class): array|false|int|null|string {
+    public function getRoute($instance, $class): array|false|int|null|string
+    {
 
-        if($this->route != null) {
+        if ($this->route != null) {
             return $this->route;
         }
 

@@ -20,7 +20,7 @@ class Tour
 
     public function __construct(string $id, array $colors)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
     }
 
@@ -28,9 +28,6 @@ class Tour
      * Create the instance of your tour.
      * <br>
      * Define an **$id** to be able to call it later in a livewire event.
-     *
-     * @param string $id
-     * @return static
      */
     public static function make(string $id): static
     {
@@ -47,7 +44,6 @@ class Tour
     /**
      * Set the route where the tour will be shown.
      *
-     * @param string $route
      * @return $this
      */
     public function route(string $route): self
@@ -60,7 +56,6 @@ class Tour
     /**
      * Set the steps of your tour.
      *
-     * @param Step ...$steps
      * @return $this
      */
     public function steps(Step ...$steps): self
@@ -77,8 +72,6 @@ class Tour
      * <br>
      * - **rgb(var(--gray-600))** by default for **$dark**
      *
-     * @param string $light
-     * @param string $dark
      * @return $this
      */
     public function colors(string $light, string $dark): self
@@ -94,7 +87,6 @@ class Tour
     /**
      * Set the tour as always visible, even is already viewed by the user.
      *
-     * @param bool|Closure $alwaysShow
      * @return $this
      */
     public function alwaysShow(bool|Closure $alwaysShow = true): self
@@ -111,7 +103,6 @@ class Tour
     /**
      * Set the tour as visible or not.
      *
-     * @param bool|Closure $visible
      * @return $this
      */
     public function visible(bool|Closure $visible = true): self

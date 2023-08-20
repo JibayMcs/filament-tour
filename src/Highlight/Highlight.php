@@ -28,7 +28,7 @@ class Highlight
 
     public function __construct(string $id, array $colors, string $parent)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
         $this->parent = $parent;
     }
@@ -37,9 +37,6 @@ class Highlight
      * Create the instance of your highlight.
      * <br>
      * Define a **$parent** to be able to view this highlight button next to it
-     *
-     * @param string $parent
-     * @return static
      */
     public static function make(string $parent): static
     {
@@ -57,7 +54,6 @@ class Highlight
     /**
      * Set the element to highlight when you click on this highlight button.
      *
-     * @param string $element
      * @return $this
      */
     public function element(string $element): self
@@ -70,7 +66,6 @@ class Highlight
     /**
      * Set the title of your highlight.
      *
-     * @param string|Closure $title
      * @return $this
      */
     public function title(string|Closure $title): self
@@ -83,7 +78,6 @@ class Highlight
     /**
      * Set the description of your highlight.
      *
-     * @param string|Closure|HtmlString|View $description
      * @return $this
      */
     public function description(string|Closure|HtmlString|View $description): self
@@ -98,7 +92,6 @@ class Highlight
      * <br>
      * - **heroicon-m-question-mark-circle** by default
      *
-     * @param string $icon
      * @return $this
      */
     public function icon(string $icon): self
@@ -113,7 +106,6 @@ class Highlight
      * <br>
      * - **gray** by default
      *
-     * @param string $color
      * @return $this
      */
     public function iconColor(string $color): self
@@ -130,8 +122,6 @@ class Highlight
      * <br>
      * - **rgb(var(--gray-600))** by default for **$dark**
      *
-     * @param string $light
-     * @param string $dark
      * @return $this
      */
     public function colors(string $light, string $dark): self
@@ -155,7 +145,6 @@ class Highlight
      * <br>
      * - **bottom-right**
      *
-     * @param string $position
      * @return $this
      */
     public function position(string $position): self

@@ -10,19 +10,17 @@ trait HasHighlight
 
     /**
      * Define your highlights here.
-     *
-     * @return array
      */
-    public abstract function highlights(): array;
+    abstract public function highlights(): array;
 
     public function constructHighlights($class, array $request): array
     {
         $highlights = [];
-        $instance   = new $class;
+        $instance = new $class;
 
         if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 
-            $highlights = collect($this->highlights())->mapWithKeys(function ($key, $item) use ($instance, $class, $request) {
+            $highlights = collect($this->highlights())->mapWithKeys(function ($key, $item) use ($instance, $class) {
 
                 $data[$item] = [
                     'route' => $this->getRoute($instance, $class)['path'] ?? '/',

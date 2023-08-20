@@ -10,20 +10,19 @@ trait HasTour
 
     /**
      * Define your tours here.
-     *
-     * @return array
      */
-    public abstract function tours(): array;
+    abstract public function tours(): array;
 
     public function constructTours($class, $request): array
     {
         $instance = new $class;
-        $tours    = [];
+        $tours = [];
 
         foreach ($this->tours() as $tour) {
 
-            if ($tour->route)
+            if ($tour->route) {
                 $this->setRoute($tour->route);
+            }
 
             $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
                 $data[$item] = [
