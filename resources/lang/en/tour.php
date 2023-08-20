@@ -9,5 +9,5 @@ return [
         'next' => 'Next',
         'done' => 'Done',
 
-    ]
+    ],
 ];
