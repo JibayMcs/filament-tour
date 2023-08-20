@@ -2,35 +2,38 @@
 
 namespace JibayMcs\FilamentTour\Tour;
 
+use JibayMcs\FilamentTour\Traits\CanConstructRoute;
+
 trait HasTour
 {
-    abstract public function tours(): array;
+    use CanConstructRoute;
 
-    public function constructTours($class, array $request): array
+    /**
+     * Define your tours here.
+     *
+     * @return array
+     */
+    public abstract function tours(): array;
+
+    public function constructTours($class, $request): array
     {
         $instance = new $class;
-        $tutorials = [];
-        $route = null;
-
-        if (method_exists($instance, 'getResource')) {
-            $resource = new ($instance->getResource());
-            foreach ($resource->getPages() as $key => $page) {
-                if ($page->getPage() === $class) {
-                    $route = $resource->getUrl($key);
-                }
-            }
-        } else {
-            $route = $instance->getUrl();
-        }
+        $tours    = [];
 
         foreach ($this->tours() as $tour) {
-            if ($tour->route) {
-                $route = $tour->route;
-            }
+
+            if ($tour->route)
+                $this->setRoute($tour->route);
 
             $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
                 $data[$item] = [
-                    'redirect' => $key->redirect ?? null,
+                    'onNextRedirect' => $key->onNextRedirect,
+
+                    'onNextClickSelector' => $key->onNextClickSelector ?? null,
+                    'onNextNotify' => $key->onNextNotify,
+                    'onNextDispatch' => $key->onNextDispatch,
+                    'uncloseable' => $key->uncloseable,
+
                     'popover' => [
                         'title' => view('filament-tour::tour.step.popover.title')
                             ->with('title', $key->title)
@@ -38,10 +41,6 @@ trait HasTour
                             ->with('iconColor', $key->iconColor)
                             ->render(),
                         'description' => $key->description,
-                        'onNextClickSelector' => $key->onNextClickSelector ?? null,
-                        'onNextNotify' => $key->notification ? $key->notification->toArray() : null,
-                        'onNextDispatch' => $key->dispatch ?? null,
-                        'unclosable' => $key->unclosable,
                     ],
                 ];
 
@@ -52,35 +51,25 @@ trait HasTour
                 return $data;
             })->toArray());
 
-            if ($route && $steps) {
+            if ($steps) {
 
-                $currentRoute = parse_url($route);
+                if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 
-                if (! array_key_exists('path', $currentRoute)) {
-                    $currentRoute['path'] = '/';
-                }
-
-                if ($currentRoute['host'] === $request['host'] && $currentRoute['path'] === $request['pathname']) {
-                    $openNow = true;
-                } else {
-                    $openNow = false;
-                }
-
-                if ($tour->visible) {
-                    $tutorials[] = [
+                    $tours[] = [
+                        'route' => $this->getRoute($instance, $class)['path'] ?? '/',
                         'id' => "tour.{$tour->id}",
                         'alwaysShow' => $tour->alwaysShow,
-                        'open' => $openNow,
                         'colors' => [
                             'light' => $tour->colors['light'],
                             'dark' => $tour->colors['dark'],
                         ],
                         'steps' => $steps,
                     ];
+
                 }
             }
         }
 
-        return $tutorials;
+        return $tours;
     }
 }

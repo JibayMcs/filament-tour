@@ -13,32 +13,35 @@ document.addEventListener('livewire:initialized', async function () {
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
-            if (tour.open) {
-                if(!data[0].only_visible_once) {
+            if (tour.route === window.location.pathname) {
+                if (!data[0].only_visible_once) {
                     openTour(tour);
-                } else if(!localStorage.getItem('tours').includes(tour.id)) {
+                } else if (!localStorage.getItem('tours').includes(tour.id)) {
                     openTour(tour);
-                } else if(tour.alwaysShow) {
+                } else if (tour.alwaysShow) {
                     openTour(tour);
                 }
             }
         });
 
         data[0].highlights.forEach((highlight) => {
-            highlights.push(highlight);
 
-            if (document.querySelector(highlight.parent)) {
-                parent = document.querySelector(highlight.parent);
+            if (highlight.route === window.location.pathname) {
+                highlights.push(highlight);
 
-                parent.parentNode.style.position = 'relative';
+                if (document.querySelector(highlight.parent)) {
+                    parent = document.querySelector(highlight.parent);
 
-                var tempDiv = document.createElement('div');
-                tempDiv.innerHTML = highlight.button;
+                    parent.parentNode.style.position = 'relative';
 
-                tempDiv.firstChild.classList.add(highlight.position);
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = highlight.button;
 
-                parent.parentNode.insertBefore(tempDiv.firstChild, parent)
-                // parent.innerHTML += highlight.button;
+                    tempDiv.firstChild.classList.add(highlight.position);
+
+                    parent.parentNode.insertBefore(tempDiv.firstChild, parent)
+                    // parent.innerHTML += highlight.button;
+                }
             }
         });
     });
@@ -81,7 +84,7 @@ document.addEventListener('livewire:initialized', async function () {
                 onDeselected: ((element, step, {config, state}) => {
                 }),
                 onCloseClick: ((element, step, {config, state}) => {
-                    if (state.activeStep && !state.activeStep.popover.unclosable)
+                    if (state.activeStep && !state.activeStep.uncloseable)
                         driverObj.destroy();
 
                     if (!localStorage.getItem('tours').includes(tour.id)) {
@@ -89,7 +92,7 @@ document.addEventListener('livewire:initialized', async function () {
                     }
                 }),
                 onDestroyStarted: ((element, step, {config, state}) => {
-                    if (state.activeStep && !state.activeStep.popover.unclosable) {
+                    if (state.activeStep && !state.activeStep.uncloseable) {
                         driverObj.destroy();
                     }
                 }),
@@ -107,33 +110,33 @@ document.addEventListener('livewire:initialized', async function () {
                         driverObj.destroy();
                     }
 
-                    if (step.popover.onNextNotify) {
+                    if (step.onNextNotify) {
                         new FilamentNotification()
-                            .title(step.popover.onNextNotify.title)
-                            .body(step.popover.onNextNotify.body)
-                            .icon(step.popover.onNextNotify.icon)
-                            .iconColor(step.popover.onNextNotify.iconColor)
-                            .color(step.popover.onNextNotify.color)
-                            .duration(step.popover.onNextNotify.duration)
+                            .title(step.onNextNotify.title)
+                            .body(step.onNextNotify.body)
+                            .icon(step.onNextNotify.icon)
+                            .iconColor(step.onNextNotify.iconColor)
+                            .color(step.onNextNotify.color)
+                            .duration(step.onNextNotify.duration)
                             .send();
                     }
 
-                    if (step.popover.onNextDispatch) {
-                        Livewire.dispatch(step.popover.onNextDispatch.name, JSON.parse(step.popover.onNextDispatch.args))
+                    if (step.onNextDispatch) {
+                        Livewire.dispatch(step.onNextDispatch.name, JSON.parse(step.onNextDispatch.args))
                     }
 
-                    if (step.popover.onNextClickSelector) {
-                        document.querySelector(step.popover.onNextClickSelector).click();
+                    if (step.onNextClickSelector) {
+                        document.querySelector(step.onNextClickSelector).click();
                     }
 
-                    if (step.redirect) {
-                        window.open(step.redirect.url, step.redirect.newTab ? '_blank' : '_self');
+                    if (step.onNextRedirect) {
+                        window.open(step.onNextRedirect.url, step.onNextRedirect.newTab ? '_blank' : '_self');
                     }
 
                     driverObj.moveNext();
                 }),
                 onPopoverRender: (popover, {config, state}) => {
-                    if (state.activeStep.popover.unclosable)
+                    if (state.activeStep.uncloseable)
                         document.querySelector(".driver-popover-close-btn").remove();
 
                     popover.title.innerHTML = "";
@@ -182,7 +185,7 @@ document.addEventListener('livewire:initialized', async function () {
                         driverObj.destroy();
                     });
 
-                    if (!driverObj.isLastStep() && !state.activeStep.popover.unclosable) {
+                    if (!driverObj.isLastStep() && !state.activeStep.uncloseable) {
                         popover.footer.appendChild(exitButton);
                     }
 

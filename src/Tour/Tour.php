@@ -2,6 +2,8 @@
 
 namespace JibayMcs\FilamentTour\Tour;
 
+use Closure;
+
 class Tour
 {
     public string $id;
@@ -18,13 +20,21 @@ class Tour
 
     public function __construct(string $id, array $colors)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
     }
 
+    /**
+     * Create the instance of your tour.
+     * <br>
+     * Define an **$id** to be able to call it later in a livewire event.
+     *
+     * @param string $id
+     * @return static
+     */
     public static function make(string $id): static
     {
-        $static = app(static::class,
+        return app(static::class,
             [
                 'id' => $id,
                 'colors' => [
@@ -32,10 +42,14 @@ class Tour
                     'light' => 'rgb(0,0,0)',
                 ],
             ]);
-
-        return $static;
     }
 
+    /**
+     * Set the route where the tour will be shown.
+     *
+     * @param string $route
+     * @return $this
+     */
     public function route(string $route): self
     {
         $this->route = $route;
@@ -43,6 +57,12 @@ class Tour
         return $this;
     }
 
+    /**
+     * Set the steps of your tour.
+     *
+     * @param Step ...$steps
+     * @return $this
+     */
     public function steps(Step ...$steps): self
     {
         $this->steps = $steps;
@@ -50,6 +70,17 @@ class Tour
         return $this;
     }
 
+    /**
+     * Set the colors of your background highlighted elements, based on your current filament theme.
+     * <br>
+     *  - **rgb(0,0,0)** by default for **$light**
+     * <br>
+     * - **rgb(var(--gray-600))** by default for **$dark**
+     *
+     * @param string $light
+     * @param string $dark
+     * @return $this
+     */
     public function colors(string $light, string $dark): self
     {
         $this->colors = [
@@ -60,24 +91,34 @@ class Tour
         return $this;
     }
 
-    public function alwaysShow(bool $alwaysShow = true): self
+    /**
+     * Set the tour as always visible, even is already viewed by the user.
+     *
+     * @param bool|Closure $alwaysShow
+     * @return $this
+     */
+    public function alwaysShow(bool|Closure $alwaysShow = true): self
     {
-        $this->alwaysShow = $alwaysShow;
+        if (is_bool($alwaysShow)) {
+            $this->alwaysShow = $alwaysShow;
+        } else {
+            $this->alwaysShow = $alwaysShow();
+        }
 
         return $this;
     }
 
-    public function visible(bool|\Closure $visible = true): self
+    /**
+     * Set the tour as visible or not.
+     *
+     * @param bool|Closure $visible
+     * @return $this
+     */
+    public function visible(bool|Closure $visible = true): self
     {
         if (is_bool($visible)) {
             $this->visible = $visible;
         } else {
-            if ($visible === null) {
-                $visible = function () {
-                    return true;
-                };
-            }
-
             $this->visible = $visible();
         }
 

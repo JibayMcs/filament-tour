@@ -2,6 +2,7 @@
 
 namespace JibayMcs\FilamentTour\Highlight;
 
+use Closure;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
 
@@ -13,11 +14,11 @@ class Highlight
 
     public array $colors;
 
-    public string|\Closure $title;
+    public string $title;
 
-    public null|string|\Closure|HtmlString|View $description = null;
+    public null|string|HtmlString|View $description = null;
 
-    public ?string $icon = null;
+    public string $icon = 'heroicon-m-question-mark-circle';
 
     public string $iconColor = 'gray';
 
@@ -27,14 +28,22 @@ class Highlight
 
     public function __construct(string $id, array $colors, string $parent)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
         $this->parent = $parent;
     }
 
+    /**
+     * Create the instance of your highlight.
+     * <br>
+     * Define a **$parent** to be able to view this highlight button next to it
+     *
+     * @param string $parent
+     * @return static
+     */
     public static function make(string $parent): static
     {
-        $static = app(static::class,
+        return app(static::class,
             [
                 'id' => uniqid(),
                 'colors' => [
@@ -43,10 +52,14 @@ class Highlight
                 ],
                 'parent' => $parent,
             ]);
-
-        return $static;
     }
 
+    /**
+     * Set the element to highlight when you click on this highlight button.
+     *
+     * @param string $element
+     * @return $this
+     */
     public function element(string $element): self
     {
         $this->element = $element;
@@ -54,34 +67,73 @@ class Highlight
         return $this;
     }
 
-    public function title(string|\Closure $title): self
+    /**
+     * Set the title of your highlight.
+     *
+     * @param string|Closure $title
+     * @return $this
+     */
+    public function title(string|Closure $title): self
     {
-        $this->title = is_callable($title) ? $title() : $title;
+        $this->title = is_string($title) ? $title : $title();
 
         return $this;
     }
 
-    public function description(string|\Closure|HtmlString|View $description = null): self
+    /**
+     * Set the description of your highlight.
+     *
+     * @param string|Closure|HtmlString|View $description
+     * @return $this
+     */
+    public function description(string|Closure|HtmlString|View $description): self
     {
         $this->description = is_callable($description) ? $description() : ($description instanceof View ? $description->render() : $description);
 
         return $this;
     }
 
-    public function icon($icon): self
+    /**
+     * Set the icon highlight button.
+     * <br>
+     * - **heroicon-m-question-mark-circle** by default
+     *
+     * @param string $icon
+     * @return $this
+     */
+    public function icon(string $icon): self
     {
         $this->icon = $icon;
 
         return $this;
     }
 
-    public function iconColor($color): self
+    /**
+     * Set the icon color of your highlight button.
+     * <br>
+     * - **gray** by default
+     *
+     * @param string $color
+     * @return $this
+     */
+    public function iconColor(string $color): self
     {
         $this->iconColor = $color;
 
         return $this;
     }
 
+    /**
+     * Set the colors of your background highlighted elements, based on your current filament theme.
+     * <br>
+     *  - **rgb(0,0,0)** by default for **$light**
+     * <br>
+     * - **rgb(var(--gray-600))** by default for **$dark**
+     *
+     * @param string $light
+     * @param string $dark
+     * @return $this
+     */
     public function colors(string $light, string $dark): self
     {
         $this->colors = [
@@ -92,10 +144,23 @@ class Highlight
         return $this;
     }
 
+    /**
+     * Set the position of your highlight button.
+     * <br>
+     * - **top-left** by default
+     * <br>
+     * - **top-right**
+     * <br>
+     * - **bottom-left**
+     * <br>
+     * - **bottom-right**
+     *
+     * @param string $position
+     * @return $this
+     */
     public function position(string $position): self
     {
         match ($position) {
-            'top-left' => $this->position = 'top-left',
             'top-right' => $this->position = 'top-right',
             'bottom-left' => $this->position = 'bottom-left',
             'bottom-right' => $this->position = 'bottom-right',

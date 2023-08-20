@@ -2,47 +2,61 @@
 
 namespace JibayMcs\FilamentTour\Highlight;
 
+use JibayMcs\FilamentTour\Traits\CanConstructRoute;
+
 trait HasHighlight
 {
-    public function highlights(): array
-    {
-        return [];
-    }
+    use CanConstructRoute;
+
+    /**
+     * Define your highlights here.
+     *
+     * @return array
+     */
+    public abstract function highlights(): array;
 
     public function constructHighlights($class, array $request): array
     {
+        $highlights = [];
+        $instance   = new $class;
 
-        $instance = new $class;
+        if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 
-        return collect($this->highlights())->mapWithKeys(function ($key, $item) {
-            $data[$item] = [
-                'id' => "highlight.{$key->id}",
-                'position' => $key->position,
-                'parent' => $key->parent,
-                'button' => view('filament-tour::highlight.button')
-                    ->with('id', "highlight.{$key->id}")
-                    ->with('icon', $key->icon ?? 'heroicon-m-question-mark-circle')
-                    ->with('iconColor', $key->iconColor)
-                    ->render(),
-                'icon' => $key->icon,
-                'iconColor' => $key->iconColor ?? null,
-                'colors' => [
-                    'light' => $key->colors['light'],
-                    'dark' => $key->colors['dark'],
-                ],
-                'popover' => [
-                    'title' => view('filament-tour::tour.step.popover.title')
-                        ->with('title', $key->title)
+            $highlights = collect($this->highlights())->mapWithKeys(function ($key, $item) use ($instance, $class, $request) {
+
+                $data[$item] = [
+                    'route' => $this->getRoute($instance, $class)['path'] ?? '/',
+                    'id' => "highlight.{$key->id}",
+                    'position' => $key->position,
+                    'parent' => $key->parent,
+                    'button' => view('filament-tour::highlight.button')
+                        ->with('id', "highlight.{$key->id}")
+                        ->with('icon', $key->icon)
+                        ->with('iconColor', $key->iconColor)
                         ->render(),
-                    'description' => $key->description,
-                ],
-            ];
+                    'icon' => $key->icon,
+                    'iconColor' => $key->iconColor ?? null,
+                    'colors' => [
+                        'light' => $key->colors['light'],
+                        'dark' => $key->colors['dark'],
+                    ],
+                    'popover' => [
+                        'title' => view('filament-tour::tour.step.popover.title')
+                            ->with('title', $key->title)
+                            ->render(),
+                        'description' => $key->description,
+                    ],
+                ];
 
-            if ($key->element) {
-                $data[$item]['element'] = $key->element;
-            }
+                if ($key->element) {
+                    $data[$item]['element'] = $key->element;
+                }
 
-            return $data;
-        })->toArray();
+                return $data;
+
+            })->toArray();
+        }
+
+        return $highlights;
     }
 }

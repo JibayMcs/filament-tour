@@ -51,11 +51,11 @@ class TutorialWidget extends Component
         }
 
         foreach ($classesUsingHasTour as $class) {
-            $this->tours = (new $class())->constructTours($class, $request);
+            $this->tours = array_merge($this->tours, (new $class())->constructTours($class, $request));
         }
 
         foreach ($classesUsingHasHighlight as $class) {
-            $this->highlights = (new $class())->constructHighlights($class, $request);
+            $this->highlights = array_merge($this->highlights, (new $class())->constructHighlights($class, $request));
         }
 
         $this->dispatch('driverjs::loaded-elements', [
