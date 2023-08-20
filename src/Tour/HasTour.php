@@ -63,6 +63,9 @@ trait HasTour
                             'dark' => $tour->colors['dark'],
                         ],
                         'steps' => $steps,
+                        'nextButtonLabel' => $tour->nextButtonLabel,
+                        'previousButtonLabel' => $tour->previousButtonLabel,
+                        'doneButtonLabel' => $tour->doneButtonLabel,
                     ];
 
                 }

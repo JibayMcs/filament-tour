@@ -115,6 +115,15 @@ Tour::make(string $id)
 
 	// Set the tour visible or not
 	->visible(bool|Closure $visible = true)
+
+    // Set the 'Next' button label
+    ->nextButtonLabel(string $label)
+
+    // Set the 'Previous' button label
+    ->previousButtonLabel(string $label)
+
+    // Set the 'Done' button label
+    ->doneButtonLabel(string $label)
 ```
 
 # Step.php

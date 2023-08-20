@@ -3,6 +3,7 @@
 namespace JibayMcs\FilamentTour\Tour;
 
 use Closure;
+use Illuminate\Support\Facades\Lang;
 
 class Tour
 {
@@ -18,10 +19,20 @@ class Tour
 
     public bool $visible = true;
 
+    public string $nextButtonLabel;
+
+    public string $previousButtonLabel;
+
+    public string $doneButtonLabel;
+
     public function __construct(string $id, array $colors)
     {
         $this->id = $id;
         $this->colors = $colors;
+
+        $this->nextButtonLabel = Lang::get('filament-tour::tour.button.next');
+        $this->previousButtonLabel = Lang::get('filament-tour::tour.button.previous');
+        $this->doneButtonLabel = Lang::get('filament-tour::tour.button.done');
     }
 
     /**
@@ -112,6 +123,42 @@ class Tour
         } else {
             $this->visible = $visible();
         }
+
+        return $this;
+    }
+
+    /**
+     * Set the label of the next button.
+     *
+     * @return $this
+     */
+    public function nextButtonLabel(string $label): self
+    {
+        $this->nextButtonLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the label of the previous button.
+     *
+     * @return $this
+     */
+    public function previousButtonLabel(string $label): self
+    {
+        $this->previousButtonLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the label of the done button.
+     *
+     * @return $this
+     */
+    public function doneButtonLabel(string $label): self
+    {
+        $this->doneButtonLabel = $label;
 
         return $this;
     }
