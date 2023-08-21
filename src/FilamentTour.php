@@ -2,15 +2,15 @@
 
 namespace JibayMcs\FilamentTour;
 
-use JibayMcs\FilamentTour\Livewire\FilamentTourWidget;
-use Livewire\LivewireManager;
-use Livewire\Mechanisms\ComponentRegistry;
-
 class FilamentTour
 {
-    public function openTour(string $id)
+    public function openTour(string $id): string
     {
-        if (app(LivewireManager::class)->current())
-            app(LivewireManager::class)->current()->dispatch('driverjs::open-tour', $id);
+        return "\$dispatch('driverjs::open-tour', 'tour.$id');";
+    }
+
+    public function openHighlight(string $id): string
+    {
+        return "\$dispatch('driverjs::open-highlight', 'highlight.$id');";
     }
 }

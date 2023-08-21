@@ -75,7 +75,6 @@ document.addEventListener('livewire:initialized', async function () {
     Livewire.on('driverjs::open-tour', function (tour) {
         let tourElement = tours.find(element => element.id === tour);
 
-
         if (tourElement) {
             openTour(tourElement);
         } else {
