@@ -8,7 +8,7 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Icons\Icon;
-use JibayMcs\FilamentTour\Livewire\TutorialWidget;
+use JibayMcs\FilamentTour\Livewire\FilamentTourWidget;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -24,7 +24,9 @@ class FilamentTourServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasCommands($this->getCommands());
 
-        $configFileName = $package->shortName();
+        $this->app->bind('FilamentTour', function () {
+            return new FilamentTour();
+        });
 
         if (file_exists($package->basePath("/../config/{$package->name}.php"))) {
             $package->hasConfigFile(self::$name);
@@ -59,7 +61,7 @@ class FilamentTourServiceProvider extends PackageServiceProvider
             $this->getAssetPackageName()
         );
 
-        Livewire::component('tutorial-widget', TutorialWidget::class);
+        Livewire::component('filament-tour-widget', FilamentTourWidget::class);
 
     }
 

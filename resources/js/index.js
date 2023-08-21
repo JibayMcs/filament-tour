@@ -2,6 +2,7 @@ import {driver} from "driver.js";
 
 document.addEventListener('livewire:initialized', async function () {
 
+    let tours = [];
     let highlights = [];
 
     Livewire.dispatch('driverjs::load-elements', {request: window.location});
@@ -10,6 +11,7 @@ document.addEventListener('livewire:initialized', async function () {
     Livewire.on('driverjs::loaded-elements', function (data) {
 
         data[0].tours.forEach((tour) => {
+            tours.push(tour);
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
@@ -25,9 +27,9 @@ document.addEventListener('livewire:initialized', async function () {
         });
 
         data[0].highlights.forEach((highlight) => {
+            highlights.push(highlight);
 
             if (highlight.route === window.location.pathname) {
-                highlights.push(highlight);
 
                 if (document.querySelector(highlight.parent)) {
                     parent = document.querySelector(highlight.parent);
@@ -71,10 +73,18 @@ document.addEventListener('livewire:initialized', async function () {
     });
 
     Livewire.on('driverjs::open-tour', function (tour) {
-        openTour(tour[0]);
+        let tourElement = tours.find(element => element.id === tour);
+
+
+        if (tourElement) {
+            openTour(tourElement);
+        } else {
+            console.error(`Tour with id '${tour}' not found`);
+        }
     });
 
     function openTour(tour) {
+
         if (tour.steps.length > 0) {
 
             const driverObj = driver({

@@ -11,6 +11,6 @@ class FilamentTour extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \JibayMcs\FilamentTour\FilamentTour::class;
+        return 'FilamentTour';
     }
 }

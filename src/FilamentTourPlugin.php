@@ -17,7 +17,7 @@ class FilamentTourPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel->renderHook('panels::body.start', fn () => Blade::render('<livewire:tutorial-widget/>'));
+        $panel->renderHook('panels::body.start', fn () => Blade::render('<livewire:filament-tour-widget/>'));
     }
 
     public function boot(Panel $panel): void

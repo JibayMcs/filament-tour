@@ -10,7 +10,7 @@ use JibayMcs\FilamentTour\Tour\HasTour;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class TutorialWidget extends Component
+class FilamentTourWidget extends Component
 {
     public array $tours = [];
 
@@ -68,6 +68,6 @@ class TutorialWidget extends Component
 
     public function render()
     {
-        return view('filament-tour::livewire.tutorial-widget');
+        return view('filament-tour::livewire.filament-tour-widget');
     }
 }
