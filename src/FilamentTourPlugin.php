@@ -2,6 +2,7 @@
 
 namespace JibayMcs\FilamentTour;
 
+use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Illuminate\Support\Facades\Blade;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Blade;
 class FilamentTourPlugin implements Plugin
 {
     private ?bool $onlyVisibleOnce = null;
+
+    private ?bool $enableCssSelector = null;
 
     public static function make(): static
     {
@@ -28,9 +31,19 @@ class FilamentTourPlugin implements Plugin
         return 'filament-tour';
     }
 
+    public function enableCssSelector(bool|Closure $enableCssSelector = true): self
+    {
+        if (is_callable($enableCssSelector))
+            $this->enableCssSelector = $enableCssSelector();
+        else if (is_bool($enableCssSelector))
+            $this->enableCssSelector = $enableCssSelector;
+
+        return $this;
+    }
+
     public function register(Panel $panel): void
     {
-        $panel->renderHook('panels::body.start', fn () => Blade::render('<livewire:filament-tour-widget/>'));
+        $panel->renderHook('panels::body.start', fn() => Blade::render('<livewire:filament-tour-widget/>'));
     }
 
     public function boot(Panel $panel): void
@@ -38,9 +51,12 @@ class FilamentTourPlugin implements Plugin
         //
     }
 
-    public function onlyVisibleOnce(bool $onlyVisibleOnce = true): self
+    public function onlyVisibleOnce(bool|Closure $onlyVisibleOnce = true): self
     {
-        $this->onlyVisibleOnce = $onlyVisibleOnce;
+        if (is_callable($onlyVisibleOnce))
+            $this->onlyVisibleOnce = $onlyVisibleOnce();
+        else if (is_bool($onlyVisibleOnce))
+            $this->onlyVisibleOnce = $onlyVisibleOnce;
 
         return $this;
     }
@@ -48,5 +64,10 @@ class FilamentTourPlugin implements Plugin
     public function isOnlyVisibleOnce(): ?bool
     {
         return $this->onlyVisibleOnce;
+    }
+
+    public function isCssSelectorEnabled(): ?bool
+    {
+        return $this->enableCssSelector;
     }
 }

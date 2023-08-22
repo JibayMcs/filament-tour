@@ -1,4 +1,4 @@
-<div class="driver-help-button" x-on:click="Livewire.dispatch('driverjs::open-highlight', {highlight: '{{$id}}' })">
+<div class="driver-help-button" x-on:click="Livewire.dispatch('driverjs::open-highlight', '{{$id}}')">
     <x-filament::icon
         icon="{{$icon}}"
         @class([

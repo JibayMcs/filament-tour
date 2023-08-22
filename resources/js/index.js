@@ -1,4 +1,5 @@
 import {driver} from "driver.js";
+import './css-selector.js';
 
 document.addEventListener('livewire:initialized', async function () {
 
@@ -7,9 +8,8 @@ document.addEventListener('livewire:initialized', async function () {
 
     Livewire.dispatch('driverjs::load-elements', {request: window.location});
 
-
     Livewire.on('driverjs::loaded-elements', function (data) {
-        
+
         data.tours.forEach((tour) => {
             tours.push(tour);
             if (!localStorage.getItem('tours')) {
@@ -36,25 +36,24 @@ document.addEventListener('livewire:initialized', async function () {
 
                     parent.parentNode.style.position = 'relative';
 
-                    var tempDiv = document.createElement('div');
+                    let tempDiv = document.createElement('div');
                     tempDiv.innerHTML = highlight.button;
 
                     tempDiv.firstChild.classList.add(highlight.position);
 
                     parent.parentNode.insertBefore(tempDiv.firstChild, parent)
-                    // parent.innerHTML += highlight.button;
                 }
             }
         });
     });
 
-    Livewire.on('driverjs::open-highlight', function (highlight) {
-        let highlightElement = highlights.find(element => element.id === highlight.highlight);
+    Livewire.on('driverjs::open-highlight', function (id) {
+        let highlight = highlights.find(element => element.id === id);
 
-        if (highlightElement) {
+        if (highlight) {
 
             driver({
-                overlayColor: localStorage.theme === 'light' ? highlightElement.colors.light : highlightElement.colors.dark,
+                overlayColor: localStorage.theme === 'light' ? highlight.colors.light : highlight.colors.dark,
 
                 onPopoverRender: (popover, {config, state}) => {
                     popover.title.innerHTML = "";
@@ -68,17 +67,20 @@ document.addEventListener('livewire:initialized', async function () {
 
                     popover.footer.parentElement.classList.add(...contentClasses.split(" "));
                 },
-            }).highlight(highlightElement);
+            }).highlight(highlight);
+
+        } else {
+            console.error(`Highlight with id '${id}' not found`);
         }
     });
 
-    Livewire.on('driverjs::open-tour', function (tour) {
-        let tourElement = tours.find(element => element.id === tour);
+    Livewire.on('driverjs::open-tour', function (id) {
+        let tour = tours.find(element => element.id === id);
 
-        if (tourElement) {
-            openTour(tourElement);
+        if (tour) {
+            openTour(tour);
         } else {
-            console.error(`Tour with id '${tour}' not found`);
+            console.error(`Tour with id '${id}' not found`);
         }
     });
 

@@ -1,1 +1,3 @@
-<div></div>
+<div>
+    <div id="circle-cursor" class="hidden"></div>
+</div>
