@@ -28,7 +28,7 @@ class Highlight
 
     public function __construct(string $id, array $colors, string $parent)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
         $this->parent = $parent;
     }
