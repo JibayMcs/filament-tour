@@ -1,29 +1,15 @@
 <div class="flex items-center">
     @if(isset($icon))
-        <x-{{$icon}}
-            @class([
-                'h-5 w-5',
-                match ($iconColor) {
-                    'gray' => 'text-gray-600 ring-gray-600/10 dark:text-gray-400 dark:ring-gray-400/20',
-                    default => 'text-custom-600 ring-custom-600/10 dark:text-custom-400 dark:ring-custom-400/30',
-                },
-            ])
-
-            @style([
-                \Filament\Support\get_color_css_variables(
-                    $iconColor,
-                    shades: [
-                        50,
-                        300,
-                        400,
-                        ...$icon ? [500] : [],
-                        600,
-                        700,
-                    ]
-                ) => $iconColor !== 'gray',
-                'margin-right:10px'
-            ])
-        ></x-{{$icon}}>
+        @php
+            $color = match($iconColor) {
+                'primary' => 'text-primary-600',
+                'danger' => 'text-danger-600',
+                'success' => 'text-success-600',
+                'warning' => 'text-warning-600',
+                default => 'text-gray-950',
+            }
+        @endphp
+        {{ svg($icon, "h-6 w-6 mr-2 $color") }}
     @endif
     {{$title}}
 </div>

@@ -1,7 +1,10 @@
-@import '../../vendor/filament/filament/resources/css/app.css';
-@import '../../node_modules/driver.js/dist/driver.css';
+@import "../../node_modules/driver.js/dist/driver.css";
+@import "../../vendor/filament/filament/resources/css/app.css";
 
+@tailwind base;
 @tailwind utilities;
+@tailwind components;
+@tailwind screens;
 
 .highlighted {
     outline: 2px solid red;
@@ -19,6 +22,10 @@
     position: fixed;
     top: 0;
     right: 0;
+}
+
+.driver-popover * {
+    font-family: inherit !important;
 }
 
 .driver-help-button {

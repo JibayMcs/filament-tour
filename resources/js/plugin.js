@@ -9,7 +9,6 @@ document.addEventListener('livewire:load', function () {
 
     Livewire.on('driverjs::loaded-elements', function (data) {
 
-        console.log(data);
         data.tours.forEach((tour) => {
             tours.push(tour);
             if (!localStorage.getItem('tours')) {
@@ -167,17 +166,13 @@ document.addEventListener('livewire:load', function () {
 
 
                     const nextButton = document.createElement("button");
-                    let nextClasses = "fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-primary gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 dark:bg-custom-500 dark:hover:bg-custom-400 focus:ring-custom-500/50 dark:focus:ring-custom-400/50 fi-ac-btn-action";
+                    let nextClasses = "filament-button filament-button-size-md inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action";
 
                     nextButton.classList.add(...nextClasses.split(" "), 'driver-popover-next-btn');
                     nextButton.innerText = driverObj.isLastStep() ? tour.doneButtonLabel : tour.nextButtonLabel;
 
-                    nextButton.style.setProperty('--c-400', 'var(--primary-400');
-                    nextButton.style.setProperty('--c-500', 'var(--primary-500');
-                    nextButton.style.setProperty('--c-600', 'var(--primary-600');
-
                     const prevButton = document.createElement("button");
-                    let prevClasses = "fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-gray gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-white text-gray-950 hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 ring-1 ring-gray-950/10 dark:ring-white/20 fi-ac-btn-action";
+                    let prevClasses = "filament-button filament-button-size-md inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-gray-800 bg-white border-gray-300 hover:bg-gray-50 focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800 filament-page-button-action";
                     prevButton.classList.add(...prevClasses.split(" "), 'driver-popover-prev-btn');
                     prevButton.innerText = tour.previousButtonLabel;
 

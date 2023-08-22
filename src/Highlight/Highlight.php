@@ -18,7 +18,7 @@ class Highlight
 
     public null|string|HtmlString|View $description = null;
 
-    public string $icon = 'heroicon-m-question-mark-circle';
+    public string $icon = 'heroicon-s-question-mark-circle';
 
     public string $iconColor = 'gray';
 
