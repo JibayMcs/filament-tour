@@ -2,124 +2,41 @@
 
 namespace JibayMcs\FilamentTour;
 
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Icons\Icon;
-use Illuminate\Support\Facades\App;
+use Filament\Facades\Filament;
+use Filament\PluginServiceProvider;
+use Illuminate\Support\Facades\Blade;
 use JibayMcs\FilamentTour\Livewire\FilamentTourWidget;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentTourServiceProvider extends PackageServiceProvider
+class FilamentTourServiceProvider extends PluginServiceProvider
 {
     public static string $name = 'filament-tour';
 
-    public static string $viewNamespace = 'filament-tour';
+
+    protected array $styles = [
+        'filament-tour-css' => __DIR__ . '/../resources/dist/filament-tour.css',
+    ];
+
+    protected array $beforeCoreScripts = [
+        'filament-tour-js' => __DIR__ . '/../resources/dist/filament-tour.js',
+    ];
 
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
-            ->hasCommands($this->getCommands());
-
-        $this->app->bind('FilamentTour', function () {
-            return new FilamentTour();
-        });
-
-        if (file_exists($package->basePath("/../config/{$package->name}.php"))) {
-            $package->hasConfigFile(self::$name);
-        }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
-
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
-    }
-
-    public function packageRegistered(): void
-    {
+            ->hasConfigFile('filament-tour')
+            ->hasViews('filament-tour')
+            ->hasTranslations();
     }
 
     public function packageBooted(): void
     {
-        FilamentAsset::register(
-            $this->getAssets(),
-            $this->getAssetPackageName()
-        );
-
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
+        parent::packageBooted();
 
         Livewire::component('filament-tour-widget', FilamentTourWidget::class);
 
+        Filament::registerRenderHook('body.start', fn() => Blade::render('<livewire:filament-tour-widget/>'));
     }
 
-    protected function getAssetPackageName(): ?string
-    {
-        return 'jibaymcs/filament-tour';
-    }
-
-    /**
-     * @return array<Asset>
-     */
-    protected function getAssets(): array
-    {
-        return [
-            // AlpineComponent::make('filament-tour', __DIR__ . '/../resources/dist/components/filament-tour.js'),
-            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
-        ];
-    }
-
-    /**
-     * @return array<class-string>
-     */
-    protected function getCommands(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string, Icon>
-     */
-    protected function getIcons(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getRoutes(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getScriptData(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getMigrations(): array
-    {
-        return [];
-    }
 }

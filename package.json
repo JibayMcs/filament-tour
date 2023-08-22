@@ -2,11 +2,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/filament-tour.css --postcss --watch",
-        "dev:scripts": "node bin/build.js --dev",
-        "build:styles": "npx tailwindcss -i resources/css/index.css -o resources/dist/filament-tour.css --postcss --minify && npm run purge",
+        "dev:styles": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/filament-tour.css --postcss --watch",
+        "dev:scripts": "esbuild resources/js/plugin.js --bundle --sourcemap=inline --outfile=resources/dist/filament-tour.js --watch",
+        "build:styles": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/filament-tour.css --postcss --minify && npm run purge",
         "build:scripts": "node bin/build.js",
-        "purge": "filament-purge -i resources/dist/filament-tour.css -o resources/dist/filament-tour.css -v 3.x",
+        "purge": "filament-purge -i resources/dist/filament-tour.css -o resources/dist/filament-tour.css",
         "dev": "npm-run-all --parallel dev:*",
         "build": "npm-run-all build:*"
     },

@@ -15,9 +15,9 @@ trait CanConstructRoute
 
         if (method_exists($instance, 'getResource')) {
             $resource = new ($instance->getResource());
-            foreach ($resource->getPages() as $key1 => $page) {
-                if ($page->getPage() === $class) {
-                    $this->route = parse_url($resource->getUrl($key1));
+            foreach ($resource->getPages() as $key => $page) {
+                if ($page['class'] === $class) {
+                    $this->route = parse_url($resource->getUrl($key));
                 }
             }
         } else {

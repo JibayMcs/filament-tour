@@ -75,7 +75,6 @@ class Dashboard extends FilamentDashboard {
 - Create a simple tour !
 
 ```php
-
 public function tours(): array {  
 	return [ 
 		Tour::make('dashboard')
@@ -92,7 +91,6 @@ public function tours(): array {
 			),
 	];
 }
-
 ```
 
 # Tour.php
@@ -171,8 +169,8 @@ Same as tour, use the correct trait !
 
 - Use the correct trait to registers your highlights !
 
-```php  
-<?php  
+```php
+<?php
 namespace App\Filament\Pages;  
   
 use JibayMcs\FilamentTour\Highlight\HasHighlight;  
@@ -185,12 +183,12 @@ class Dashboard extends FilamentDashboard {
 	public function highlights(): array    {    
 		return []; 
   }
-}  
+}
 ```  
 
 - Create a simple highlight element !
 
-```php  
+```php
 public function highlights(): array {  
 	return [
 	 
@@ -264,4 +262,3 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-

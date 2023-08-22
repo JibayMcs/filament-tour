@@ -1,22 +1,22 @@
 import {driver} from "driver.js";
 
-document.addEventListener('livewire:initialized', async function () {
+document.addEventListener('livewire:load', function () {
 
     let tours = [];
     let highlights = [];
 
-    Livewire.dispatch('driverjs::load-elements', {request: window.location});
-
+    Livewire.emit('driverjs::load-elements', window.location);
 
     Livewire.on('driverjs::loaded-elements', function (data) {
 
-        data[0].tours.forEach((tour) => {
+        console.log(data);
+        data.tours.forEach((tour) => {
             tours.push(tour);
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
             if (tour.route === window.location.pathname) {
-                if (!data[0].only_visible_once) {
+                if (!data.only_visible_once) {
                     openTour(tour);
                 } else if (!localStorage.getItem('tours').includes(tour.id)) {
                     openTour(tour);
@@ -26,7 +26,7 @@ document.addEventListener('livewire:initialized', async function () {
             }
         });
 
-        data[0].highlights.forEach((highlight) => {
+        data.highlights.forEach((highlight) => {
             highlights.push(highlight);
 
             if (highlight.route === window.location.pathname) {
@@ -120,7 +120,7 @@ document.addEventListener('livewire:initialized', async function () {
                     }
 
                     if (step.onNextNotify) {
-                        new FilamentNotification()
+                        new Notification()
                             .title(step.onNextNotify.title)
                             .body(step.onNextNotify.body)
                             .icon(step.onNextNotify.icon)
@@ -131,7 +131,7 @@ document.addEventListener('livewire:initialized', async function () {
                     }
 
                     if (step.onNextDispatch) {
-                        Livewire.dispatch(step.onNextDispatch.name, JSON.parse(step.onNextDispatch.args))
+                        Livewire.emit(step.onNextDispatch.name, JSON.parse(step.onNextDispatch.args))
                     }
 
                     if (step.onNextClickSelector) {

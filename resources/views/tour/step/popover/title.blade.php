@@ -1,7 +1,6 @@
 <div class="flex items-center">
     @if(isset($icon))
-        <x-filament::icon
-            icon="{{$icon}}"
+        <x-{{$icon}}
             @class([
                 'h-5 w-5',
                 match ($iconColor) {
@@ -24,7 +23,7 @@
                 ) => $iconColor !== 'gray',
                 'margin-right:10px'
             ])
-        />
+        ></x-{{$icon}}>
     @endif
     {{$title}}
 </div>

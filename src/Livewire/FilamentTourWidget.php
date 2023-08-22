@@ -16,7 +16,10 @@ class FilamentTourWidget extends Component
 
     public array $highlights = [];
 
-    #[On('driverjs::load-elements')]
+    protected $listeners = [
+        'driverjs::load-elements' => 'load',
+    ];
+
     public function load(array $request): void
     {
         $classesUsingHasTour = [];
@@ -27,7 +30,7 @@ class FilamentTourWidget extends Component
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn ($item) => $item->getPage())
+                collect($instance->getPages())->map(fn ($item) => $item['class'])
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -58,8 +61,14 @@ class FilamentTourWidget extends Component
             $this->highlights = array_merge($this->highlights, (new $class())->constructHighlights($class, $request));
         }
 
-        $this->dispatch('driverjs::loaded-elements', [
-            'only_visible_once' => is_bool(FilamentTourPlugin::get()->isOnlyVisibleOnce()) ? FilamentTourPlugin::get()->isOnlyVisibleOnce() : config('filament-tour.only_visible_once'),
+//        dd([
+//            'only_visible_once' => config('filament-tour.only_visible_once'),
+//            'tours' => $this->tours,
+//            'highlights' => $this->highlights,
+//        ]);
+
+        $this->emit('driverjs::loaded-elements', [
+            'only_visible_once' => config('filament-tour.only_visible_once'),
             'tours' => $this->tours,
             'highlights' => $this->highlights,
         ]);
