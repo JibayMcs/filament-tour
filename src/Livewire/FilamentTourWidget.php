@@ -19,15 +19,15 @@ class FilamentTourWidget extends Component
     #[On('driverjs::load-elements')]
     public function load(array $request): void
     {
-        $classesUsingHasTour      = [];
+        $classesUsingHasTour = [];
         $classesUsingHasHighlight = [];
-        $filamentClasses          = [];
+        $filamentClasses = [];
 
         foreach (array_merge(Filament::getResources(), Filament::getPages()) as $class) {
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn($item) => $item->getPage())
+                collect($instance->getPages())->map(fn ($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -63,7 +63,6 @@ class FilamentTourWidget extends Component
             tours: $this->tours,
             highlights: $this->highlights,
         );
-
 
         if (config('app.env') != 'production') {
             $hasCssSelector = is_bool(FilamentTourPlugin::get()->isCssSelectorEnabled()) ? FilamentTourPlugin::get()->isCssSelectorEnabled() : config('filament-tour.enable_css_selector');

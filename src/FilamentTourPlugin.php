@@ -33,17 +33,18 @@ class FilamentTourPlugin implements Plugin
 
     public function enableCssSelector(bool|Closure $enableCssSelector = true): self
     {
-        if (is_callable($enableCssSelector))
+        if (is_callable($enableCssSelector)) {
             $this->enableCssSelector = $enableCssSelector();
-        else if (is_bool($enableCssSelector))
+        } elseif (is_bool($enableCssSelector)) {
             $this->enableCssSelector = $enableCssSelector;
+        }
 
         return $this;
     }
 
     public function register(Panel $panel): void
     {
-        $panel->renderHook('panels::body.start', fn() => Blade::render('<livewire:filament-tour-widget/>'));
+        $panel->renderHook('panels::body.start', fn () => Blade::render('<livewire:filament-tour-widget/>'));
     }
 
     public function boot(Panel $panel): void
@@ -53,10 +54,11 @@ class FilamentTourPlugin implements Plugin
 
     public function onlyVisibleOnce(bool|Closure $onlyVisibleOnce = true): self
     {
-        if (is_callable($onlyVisibleOnce))
+        if (is_callable($onlyVisibleOnce)) {
             $this->onlyVisibleOnce = $onlyVisibleOnce();
-        else if (is_bool($onlyVisibleOnce))
+        } elseif (is_bool($onlyVisibleOnce)) {
             $this->onlyVisibleOnce = $onlyVisibleOnce;
+        }
 
         return $this;
     }
