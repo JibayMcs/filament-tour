@@ -28,7 +28,7 @@ class Highlight
 
     public function __construct(string $id, array $colors, string $parent)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
         $this->parent = $parent;
     }
@@ -38,11 +38,11 @@ class Highlight
      * <br>
      * Define a **$parent** to be able to view this highlight button next to it
      */
-    public static function make(string $parent): static
+    public static function make(string $id, string $parent): static
     {
         return app(static::class,
             [
-                'id' => uniqid(),
+                'id' => $id,
                 'colors' => [
                     'dark' => '#fff',
                     'light' => 'rgb(0,0,0)',
