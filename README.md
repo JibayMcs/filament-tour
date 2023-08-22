@@ -7,14 +7,14 @@ With the power of [DriverJS](https://driverjs.com) bring to your users an elegan
 You can install this filament plugin via composer:
 
 ```bash
-composer require jibaymcs/filament-tour
-```  
+composer require jibaymcs/filament-tour:"^3.x"
+```
 
 You can publish the config file with:
 
 ```
 bash php artisan vendor:publish --tag="filament-tour-config"
-```  
+```
 
 Optionally, you can publish the views using
 
@@ -28,24 +28,24 @@ This is the contents of the published config file:
  return [    
     "only_visible_once" => true,  
 ];
-```   
+```
 
 ## Usage
 
-```php 
+```php
 public function panel(Panel $panel) {
 	return $panel->default()
 		->[...]
 		->plugins([ FilamentTourPlugin::make() ]);
 }  
-```  
+```
 
 You can also enable or disable the check on the local storage if the current user have already seen the tour.
 
-```php  
+```php
 // default  : true  
 FilamentTourPlugin::make()->onlyVisibleOnce(false)  
-```  
+```
 
 # Start a tour !
 
@@ -55,7 +55,7 @@ If you don't already have a customized dashboard, please refer to the following 
 
 - Use the correct trait to registers your tours !
 
-```php  
+```php
 <?php  
 namespace App\Filament\Pages;  
   
@@ -70,12 +70,11 @@ class Dashboard extends FilamentDashboard {
 		return []; 
     	}
 }  
-```  
+```
 
 - Create a simple tour !
 
 ```php
-
 public function tours(): array {  
 	return [ 
 		Tour::make('dashboard')
@@ -92,7 +91,6 @@ public function tours(): array {
 			),
 	];
 }
-
 ```
 
 # Tour.php
@@ -162,7 +160,6 @@ Step::make(string $element = null)
 
 	// Dispatch an event like `$dispatch()` when you press the next button
 	->onNextDispatch(string $name, ...$args)
-	
 ```
 
 # Highlights
@@ -171,8 +168,8 @@ Same as tour, use the correct trait !
 
 - Use the correct trait to registers your highlights !
 
-```php  
-<?php  
+```php
+<?php
 namespace App\Filament\Pages;  
   
 use JibayMcs\FilamentTour\Highlight\HasHighlight;  
@@ -185,12 +182,12 @@ class Dashboard extends FilamentDashboard {
 	public function highlights(): array    {    
 		return []; 
   }
-}  
-```  
+}
+```
 
 - Create a simple highlight element !
 
-```php  
+```php
 public function highlights(): array {  
 	return [
 	 
@@ -206,14 +203,13 @@ public function highlights(): array {
 			->iconColor('primary'),
 				
 	];
-}  
-```
+}
+````
 
 # Highlight.php
 ### Highlight methods reference
 
 ```php
-
 // Instanciate a highlight with a CSS select of the element where the icon button is next to
 Highlight::make(string $parent)
 
