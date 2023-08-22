@@ -2,7 +2,7 @@ name: "Update Changelog"
 
 on:
   release:
-    types: [released]
+    types: [ released ]
 
 permissions:
   contents: write
@@ -26,6 +26,6 @@ jobs:
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: main
+          branch: 3.x
           commit_message: Update CHANGELOG
           file_pattern: CHANGELOG.md
