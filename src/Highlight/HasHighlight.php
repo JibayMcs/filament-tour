@@ -11,7 +11,7 @@ trait HasHighlight
     public function constructHighlights($class, array $request): array
     {
         $highlights = [];
-        $instance   = new $class;
+        $instance = new $class;
 
         if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 

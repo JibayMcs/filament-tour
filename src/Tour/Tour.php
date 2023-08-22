@@ -27,12 +27,12 @@ class Tour
 
     public function __construct(string $id, array $colors)
     {
-        $this->id     = $id;
+        $this->id = $id;
         $this->colors = $colors;
 
-        $this->nextButtonLabel     = Lang::get('filament-tour::filament-tour.button.next');
+        $this->nextButtonLabel = Lang::get('filament-tour::filament-tour.button.next');
         $this->previousButtonLabel = Lang::get('filament-tour::filament-tour.button.previous');
-        $this->doneButtonLabel     = Lang::get('filament-tour::filament-tour.button.done');
+        $this->doneButtonLabel = Lang::get('filament-tour::filament-tour.button.done');
     }
 
     /**

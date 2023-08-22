@@ -11,7 +11,7 @@ trait HasTour
     public function constructTours($class, $request): array
     {
         $instance = new $class;
-        $tours    = [];
+        $tours = [];
 
         foreach ($this->tours() as $tour) {
 
