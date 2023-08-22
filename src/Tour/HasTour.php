@@ -8,15 +8,10 @@ trait HasTour
 {
     use CanConstructRoute;
 
-    /**
-     * Define your tours here.
-     */
-    abstract public function tours(): array;
-
     public function constructTours($class, $request): array
     {
         $instance = new $class;
-        $tours = [];
+        $tours    = [];
 
         foreach ($this->tours() as $tour) {
 
@@ -74,4 +69,9 @@ trait HasTour
 
         return $tours;
     }
+
+    /**
+     * Define your tours here.
+     */
+    abstract public function tours(): array;
 }

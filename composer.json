@@ -41,13 +41,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JibayMcs\\FilamentTour\\": "src/",
-            "JibayMcs\\FilamentTour\\Database\\Factories\\": "database/factories/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "JibayMcs\\FilamentTour\\Tests\\": "tests/"
+            "JibayMcs\\FilamentTour\\": "src/"
         }
     },
     "scripts": {

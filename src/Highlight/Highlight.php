@@ -28,7 +28,7 @@ class Highlight
 
     public function __construct(string $id, array $colors, string $parent)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
         $this->parent = $parent;
     }
@@ -44,7 +44,7 @@ class Highlight
             [
                 'id' => uniqid(),
                 'colors' => [
-                    'dark' => 'rgb(var(--gray-600))',
+                    'dark' => '#fff',
                     'light' => 'rgb(0,0,0)',
                 ],
                 'parent' => $parent,

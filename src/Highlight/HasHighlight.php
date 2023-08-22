@@ -8,15 +8,10 @@ trait HasHighlight
 {
     use CanConstructRoute;
 
-    /**
-     * Define your highlights here.
-     */
-    abstract public function highlights(): array;
-
     public function constructHighlights($class, array $request): array
     {
         $highlights = [];
-        $instance = new $class;
+        $instance   = new $class;
 
         if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 
@@ -57,4 +52,9 @@ trait HasHighlight
 
         return $highlights;
     }
+
+    /**
+     * Define your highlights here.
+     */
+    abstract public function highlights(): array;
 }

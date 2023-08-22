@@ -2,12 +2,10 @@
 
 namespace JibayMcs\FilamentTour;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Icons\Icon;
 use JibayMcs\FilamentTour\Livewire\FilamentTourWidget;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -22,31 +20,14 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
-            ->hasCommands($this->getCommands());
+            ->hasConfigFile(self::$name)
+            ->hasTranslations()
+            ->hasViews(static::$viewNamespace);
 
         $this->app->bind('FilamentTour', function () {
             return new FilamentTour();
         });
 
-        if (file_exists($package->basePath("/../config/{$package->name}.php"))) {
-            $package->hasConfigFile(self::$name);
-        }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
-
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
-    }
-
-    public function packageRegistered(): void
-    {
     }
 
     public function packageBooted(): void
@@ -56,18 +37,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
             $this->getAssetPackageName()
         );
 
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
-
         Livewire::component('filament-tour-widget', FilamentTourWidget::class);
 
-    }
-
-    protected function getAssetPackageName(): ?string
-    {
-        return 'jibaymcs/filament-tour';
     }
 
     /**
@@ -77,48 +48,14 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-tour', __DIR__ . '/../resources/dist/components/filament-tour.js'),
-            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
         ];
     }
 
-    /**
-     * @return array<class-string>
-     */
-    protected function getCommands(): array
+    protected function getAssetPackageName(): ?string
     {
-        return [];
+        return 'jibaymcs/filament-tour';
     }
 
-    /**
-     * @return array<string, Icon>
-     */
-    protected function getIcons(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getRoutes(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getScriptData(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getMigrations(): array
-    {
-        return [];
-    }
 }

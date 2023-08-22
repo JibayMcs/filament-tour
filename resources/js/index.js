@@ -9,14 +9,14 @@ document.addEventListener('livewire:initialized', async function () {
 
 
     Livewire.on('driverjs::loaded-elements', function (data) {
-
-        data[0].tours.forEach((tour) => {
+        
+        data.tours.forEach((tour) => {
             tours.push(tour);
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
             if (tour.route === window.location.pathname) {
-                if (!data[0].only_visible_once) {
+                if (!data.only_visible_once) {
                     openTour(tour);
                 } else if (!localStorage.getItem('tours').includes(tour.id)) {
                     openTour(tour);
@@ -26,7 +26,7 @@ document.addEventListener('livewire:initialized', async function () {
             }
         });
 
-        data[0].highlights.forEach((highlight) => {
+        data.highlights.forEach((highlight) => {
             highlights.push(highlight);
 
             if (highlight.route === window.location.pathname) {

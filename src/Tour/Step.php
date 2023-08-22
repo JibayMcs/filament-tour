@@ -161,7 +161,7 @@ class Step
     /**
      * Set the liveire event to dispatch to, when the user clicks on the next button of your step.
      *
-     * @param  mixed  ...$args
+     * @param mixed ...$args
      * @return $this
      */
     public function onNextDispatch(string $name, ...$args): self

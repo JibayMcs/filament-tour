@@ -27,12 +27,12 @@ class Tour
 
     public function __construct(string $id, array $colors)
     {
-        $this->id = $id;
+        $this->id     = $id;
         $this->colors = $colors;
 
-        $this->nextButtonLabel = Lang::get('filament-tour::tour.button.next');
-        $this->previousButtonLabel = Lang::get('filament-tour::tour.button.previous');
-        $this->doneButtonLabel = Lang::get('filament-tour::tour.button.done');
+        $this->nextButtonLabel     = Lang::get('filament-tour::filament-tour.button.next');
+        $this->previousButtonLabel = Lang::get('filament-tour::filament-tour.button.previous');
+        $this->doneButtonLabel     = Lang::get('filament-tour::filament-tour.button.done');
     }
 
     /**
@@ -46,7 +46,7 @@ class Tour
             [
                 'id' => $id,
                 'colors' => [
-                    'dark' => 'rgb(var(--gray-600))',
+                    'dark' => '#fff',
                     'light' => 'rgb(0,0,0)',
                 ],
             ]);

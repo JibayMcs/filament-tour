@@ -8,22 +8,7 @@ use Illuminate\Support\Facades\Blade;
 
 class FilamentTourPlugin implements Plugin
 {
-    public ?bool $onlyVisibleOnce = null;
-
-    public function getId(): string
-    {
-        return 'filament-tour';
-    }
-
-    public function register(Panel $panel): void
-    {
-        $panel->renderHook('panels::body.start', fn () => Blade::render('<livewire:filament-tour-widget/>'));
-    }
-
-    public function boot(Panel $panel): void
-    {
-        //
-    }
+    private ?bool $onlyVisibleOnce = null;
 
     public static function make(): static
     {
@@ -37,6 +22,22 @@ class FilamentTourPlugin implements Plugin
 
         return $plugin;
     }
+
+    public function getId(): string
+    {
+        return 'filament-tour';
+    }
+
+    public function register(Panel $panel): void
+    {
+        $panel->renderHook('panels::body.start', fn() => Blade::render('<livewire:filament-tour-widget/>'));
+    }
+
+    public function boot(Panel $panel): void
+    {
+        //
+    }
+
 
     public function onlyVisibleOnce(bool $onlyVisibleOnce = true): self
     {
