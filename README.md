@@ -294,6 +294,14 @@ Filament Tour embed a simple tool to help you to develop your tours and highligh
 
 Let me show you !
 
+<kbd>**Ctrl**</kbd>|<kbd>**Cmd**</kbd> + <kbd>**Space**</kbd> To open the tool.
+<br>
+<br>
+<kbd>**Escape**</kbd> To exit the tool.
+<br>
+<br>
+<kbd>**Ctrl**</kbd>|<kbd>**Cmd**</kbd> + <kbd>**C**</kbd> To copy the CSS Selector of the highlighted element.
+
 # Extra Resources
 
 ### DriverJS
