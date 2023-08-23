@@ -1,20 +1,44 @@
 import {driver} from "driver.js";
-import './css-selector.js';
+import {initCssSelector} from './css-selector.js';
 
 document.addEventListener('livewire:initialized', async function () {
+
+    initCssSelector();
 
     let tours = [];
     let highlights = [];
 
-    Livewire.dispatch('driverjs::load-elements', {request: window.location});
+    function waitForElement(selector, callback) {
+        if (document.querySelector(selector)) {
+            callback(document.querySelector(selector));
+            return;
+        }
+
+        const observer = new MutationObserver(function (mutations) {
+            if (document.querySelector(selector)) {
+                callback(document.querySelector(selector));
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    Livewire.dispatch('driverjs::load-elements', {request: window.location})
 
     Livewire.on('driverjs::loaded-elements', function (data) {
 
         data.tours.forEach((tour) => {
+            
             tours.push(tour);
+
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
+
             if (tour.route === window.location.pathname) {
                 if (!data.only_visible_once) {
                     openTour(tour);
@@ -27,22 +51,21 @@ document.addEventListener('livewire:initialized', async function () {
         });
 
         data.highlights.forEach((highlight) => {
+
             highlights.push(highlight);
 
             if (highlight.route === window.location.pathname) {
 
-                if (document.querySelector(highlight.parent)) {
-                    parent = document.querySelector(highlight.parent);
-
-                    parent.parentNode.style.position = 'relative';
+                waitForElement(highlight.parent, function (selector) {
+                    selector.parentNode.style.position = 'relative';
 
                     let tempDiv = document.createElement('div');
                     tempDiv.innerHTML = highlight.button;
 
                     tempDiv.firstChild.classList.add(highlight.position);
 
-                    parent.parentNode.insertBefore(tempDiv.firstChild, parent)
-                }
+                    selector.parentNode.insertBefore(tempDiv.firstChild, selector)
+                });
             }
         });
     });
@@ -51,7 +74,6 @@ document.addEventListener('livewire:initialized', async function () {
         let highlight = highlights.find(element => element.id === id);
 
         if (highlight) {
-
             driver({
                 overlayColor: localStorage.theme === 'light' ? highlight.colors.light : highlight.colors.dark,
 
@@ -196,4 +218,3 @@ document.addEventListener('livewire:initialized', async function () {
         }
     }
 });
-

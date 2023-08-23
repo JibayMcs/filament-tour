@@ -1,5 +1,4 @@
-document.addEventListener('livewire:initialized', function () {
-
+export function initCssSelector() {
     Livewire.on('driverjs::change-css-selector-status', function ({enabled}) {
 
         if (enabled) {
@@ -88,7 +87,7 @@ document.addEventListener('livewire:initialized', function () {
             function handleMouseMove(event) {
                 lastMouseX = event.clientX;
                 lastMouseY = event.clientY;
-                
+
                 moveCursor(event.clientX, event.clientY);
             }
 
@@ -137,5 +136,4 @@ document.addEventListener('livewire:initialized', function () {
             }
         }
     });
-
-});
+}

@@ -1,4 +1,11 @@
-<div class="driver-help-button" x-on:click="Livewire.dispatch('driverjs::open-highlight', '{{$id}}')">
+<div class="driver-help-button"
+     x-data="{
+        openHighlight(event) {
+            event.stopPropagation();
+            Livewire.dispatch('driverjs::open-highlight', '{{$id}}');
+        }
+     }"
+     x-on:click.prevent="openHighlight($event)">
     <x-filament::icon
         icon="{{$icon}}"
         @class([

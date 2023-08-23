@@ -61,10 +61,7 @@
         "laravel": {
             "providers": [
                 "JibayMcs\\FilamentTour\\FilamentTourServiceProvider"
-            ],
-            "aliases": {
-                "FilamentTour": "JibayMcs\\FilamentTour\\Facades\\FilamentTour"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
