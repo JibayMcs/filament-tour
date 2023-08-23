@@ -1,5 +1,5 @@
 export function initCssSelector() {
-    Livewire.on('driverjs::change-css-selector-status', function ({enabled}) {
+    Livewire.on('filament-tour::change-css-selector-status', function ({enabled}) {
 
         if (enabled) {
             let lastMouseX = 0;
@@ -47,7 +47,7 @@ export function initCssSelector() {
                 }
 
                 if (event.ctrlKey && event.code === 'KeyC' && active) {
-                    navigator.clipboard.writeText(getCssSelector(selected) ?? 'Nothing selected !');
+                    navigator.clipboard.writeText(getOptimizedSelector(selected) ?? 'Nothing selected !');
 
                     active = false;
                     selected = null;
@@ -62,26 +62,67 @@ export function initCssSelector() {
 
             });
 
-            function getCssSelector(element) {
-                if (!(element instanceof Element)) return;
-                let path = [];
-                while (element.nodeType === Node.ELEMENT_NODE) {
-                    let selector = element.nodeName.toLowerCase();
-                    if (element.id) {
-                        selector += '#' + element.id;
-                        path.unshift(selector);
-                        break;
-                    } else {
-                        let sib = element, nth = 1;
-                        while (sib = sib.previousElementSibling) {
-                            if (sib.nodeName.toLowerCase() === selector) nth++;
-                        }
-                        if (nth !== 1) selector += ":nth-of-type(" + nth + ")";
+            function escapeCssSelector(str) {
+                return str.replace(/([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, '\\$1');
+            }
+
+            function getOptimizedSelector(el) {
+                let fullSelector = getCssSelector(el);
+
+                return optimizeSelector(fullSelector);
+            }
+
+            function optimizeSelector(selector) {
+                let parts = selector.split(' > ');
+
+                for (let i = parts.length - 2; i >= 0; i--) {
+                    let testSelector = parts.slice(i).join(' > ');
+                    if (document.querySelectorAll(testSelector).length === 1) {
+                        return testSelector;
                     }
-                    path.unshift(selector);
-                    element = element.parentNode;
                 }
-                return path.join(" > ");
+
+                return selector;
+            }
+
+            function getCssSelector(el) {
+                if (!el) {
+                    return '';
+                }
+
+                if (el.id) {
+                    return '#' + escapeCssSelector(el.id);
+                }
+
+                if (el === document.body) {
+                    return 'body';
+                }
+
+                let tag = el.tagName.toLowerCase();
+
+                let validClasses = el.className.split(/\s+/).filter(cls => cls && !cls.startsWith('--'));
+                let classes = validClasses.length ? '.' + validClasses.map(escapeCssSelector).join('.') : '';
+
+                let selectorWithoutNthOfType = tag + classes;
+
+                try {
+                    let siblingsWithSameSelector = Array.from(el.parentNode.querySelectorAll(selectorWithoutNthOfType));
+                    if (siblingsWithSameSelector.length === 1 && siblingsWithSameSelector[0] === el) {
+                        return getCssSelector(el.parentNode) + ' > ' + selectorWithoutNthOfType;
+                    }
+
+                    let siblings = Array.from(el.parentNode.children);
+                    let sameTagAndClassSiblings = siblings.filter(sib => sib.tagName === el.tagName && sib.className === el.className);
+                    if (sameTagAndClassSiblings.length > 1) {
+                        let index = sameTagAndClassSiblings.indexOf(el) + 1;
+                        return getCssSelector(el.parentNode) + ' > ' + tag + classes + ':nth-of-type(' + index + ')';
+                    } else {
+                        return getCssSelector(el.parentNode) + ' > ' + tag + classes;
+                    }
+                } catch (e) {
+
+                }
+
             }
 
             function handleMouseMove(event) {
@@ -112,7 +153,7 @@ export function initCssSelector() {
 
                 isInElement = true;
 
-                let elem = document.querySelector(getCssSelector(event.target));
+                let elem = event.target;
 
                 if (elem) {
                     let eX = elem.offsetParent ? elem.offsetLeft + elem.offsetParent.offsetLeft : elem.offsetLeft

@@ -27,12 +27,12 @@ document.addEventListener('livewire:initialized', async function () {
         });
     }
 
-    Livewire.dispatch('driverjs::load-elements', {request: window.location})
+    Livewire.dispatch('filament-tour::load-elements', {request: window.location})
 
-    Livewire.on('driverjs::loaded-elements', function (data) {
+    Livewire.on('filament-tour::loaded-elements', function (data) {
 
         data.tours.forEach((tour) => {
-            
+
             tours.push(tour);
 
             if (!localStorage.getItem('tours')) {
@@ -70,7 +70,7 @@ document.addEventListener('livewire:initialized', async function () {
         });
     });
 
-    Livewire.on('driverjs::open-highlight', function (id) {
+    Livewire.on('filament-tour::open-highlight', function (id) {
         let highlight = highlights.find(element => element.id === id);
 
         if (highlight) {
@@ -96,7 +96,7 @@ document.addEventListener('livewire:initialized', async function () {
         }
     });
 
-    Livewire.on('driverjs::open-tour', function (id) {
+    Livewire.on('filament-tour::open-tour', function (id) {
         let tour = tours.find(element => element.id === id);
 
         if (tour) {

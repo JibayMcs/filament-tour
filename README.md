@@ -75,10 +75,10 @@ class Dashboard extends FilamentDashboard {
 - Create a simple tour !
 
 ```php
-public function tours(): array {  
-	return [ 
+public function tours(): array {
+	return [
 		Tour::make('dashboard')
-			->steps(    
+			->steps(
 				Step::make()
 					->title("Welcome to your Dashboard !")
 					->description(view('tutorial.dashboard.introduction')),
@@ -94,7 +94,9 @@ public function tours(): array {
 ```
 
 # Tour.php
+
 ### Tour methods reference
+
 ```php
 // Instanciate a tour, an provide an id, to trigger it later
 Tour::make(string $id)
@@ -125,7 +127,9 @@ Tour::make(string $id)
 ```
 
 # Step.php
+
 ### Step methods reference
+
 ```php
 // If no element provided, the step act like a modal
 Step::make(string $element = null)
@@ -206,7 +210,10 @@ public function highlights(): array {
 }
 ````
 
+___
+
 # Highlight.php
+
 ### Highlight methods reference
 
 ```php
@@ -238,6 +245,65 @@ Highlight::make(string $parent)
 	// Available: top-left, top-right, bottom-left, bottom-right
 	->position(string $position)
 ```
+
+___
+
+# Events
+
+### Avalaible events:
+
+- `filament-tour::open-highlight` **string** id  
+  Open a specific highlight by its id.
+  <br>
+  <br>
+- `filament-tour::open-tour` **string** id  
+  Open a specific tour by its id.
+
+___
+
+Filament Tour, dispatch some event to show tours and highlights.
+So you can trigger them from your own code.
+
+Basically, if you want a custom button to trigger a tour or a highlight, you can do something like this:
+
+```html
+// ======== Highlights
+// AlpineJS
+<button x-on:click="Livewire.dispatch('filament-tour::open-highlight', 'title')">Show title highlight</button>
+
+// Livewire
+<button wire:click="$dispatch('filament-tour::open-highlight', 'title')">Show title highlight</button>
+
+// ======== Tours
+//AlpineJS
+<button x-on:click="Livewire.dispatch('filament-tour::open-tour', 'title')">Show Dashboard tour</button>
+
+// Livewire
+<button wire:click="$dispatch('filament-tour::open-tour', 'dashboard')">Show Dashboard tour</button>
+```
+
+> **ℹ️**  
+> Don't forget to prefix your event with `filament-tour::` to trigger the correct event.
+
+# Development Tool
+
+> [!IMPORTANT]  
+> This tool is always disabled in production mode. `APP_ENV=production`
+
+Filament Tour embed a simple tool to help you to develop your tours and highlights.
+
+Let me show you !
+
+# Extra Resources
+
+### DriverJS
+
+- [DriverJS Website](https://driverjs.com)
+- [DriverJS Github](https://github.com/kamranahmedse/driver.js) (Give some 🩵 to the author !)
+
+The core of this plugin !  
+Don't hesitate to check the documentation to learn more about the possibilities of this plugin.  
+_I don't implemented all the features of DriverJS, at this time, but I'm working on it !_
 
 ## Changelog
 

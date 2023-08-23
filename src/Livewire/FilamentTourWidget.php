@@ -16,18 +16,18 @@ class FilamentTourWidget extends Component
 
     public array $highlights = [];
 
-    #[On('driverjs::load-elements')]
+    #[On('filament-tour::load-elements')]
     public function load(array $request): void
     {
-        $classesUsingHasTour = [];
+        $classesUsingHasTour      = [];
         $classesUsingHasHighlight = [];
-        $filamentClasses = [];
+        $filamentClasses          = [];
 
         foreach (array_merge(Filament::getResources(), Filament::getPages()) as $class) {
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn ($item) => $item->getPage())
+                collect($instance->getPages())->map(fn($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -58,7 +58,7 @@ class FilamentTourWidget extends Component
             $this->highlights = array_merge($this->highlights, (new $class())->constructHighlights($class, $request));
         }
 
-        $this->dispatch('driverjs::loaded-elements',
+        $this->dispatch('filament-tour::loaded-elements',
             only_visible_once: is_bool(FilamentTourPlugin::get()->isOnlyVisibleOnce()) ? FilamentTourPlugin::get()->isOnlyVisibleOnce() : config('filament-tour.only_visible_once'),
             tours: $this->tours,
             highlights: $this->highlights,
@@ -66,7 +66,7 @@ class FilamentTourWidget extends Component
 
         if (config('app.env') != 'production') {
             $hasCssSelector = is_bool(FilamentTourPlugin::get()->isCssSelectorEnabled()) ? FilamentTourPlugin::get()->isCssSelectorEnabled() : config('filament-tour.enable_css_selector');
-            $this->dispatch('driverjs::change-css-selector-status', enabled: $hasCssSelector);
+            $this->dispatch('filament-tour::change-css-selector-status', enabled: $hasCssSelector);
         }
     }
 

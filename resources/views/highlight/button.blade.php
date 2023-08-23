@@ -2,7 +2,7 @@
      x-data="{
         openHighlight(event) {
             event.stopPropagation();
-            Livewire.dispatch('driverjs::open-highlight', '{{$id}}');
+            Livewire.dispatch('filament-tour::open-highlight', '{{$id}}');
         }
      }"
      x-on:click.prevent="openHighlight($event)">

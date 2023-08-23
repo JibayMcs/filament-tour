@@ -23,11 +23,6 @@ class FilamentTourServiceProvider extends PackageServiceProvider
             ->hasConfigFile(self::$name)
             ->hasTranslations()
             ->hasViews(static::$viewNamespace);
-
-        /*$this->app->bind('FilamentTour', function () {
-            return new FilamentTour();
-        });*/
-
     }
 
     public function packageBooted(): void
@@ -47,9 +42,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            // AlpineComponent::make('filament-tour', __DIR__ . '/../resources/dist/components/filament-tour.js'),
-            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
         ];
     }
 
