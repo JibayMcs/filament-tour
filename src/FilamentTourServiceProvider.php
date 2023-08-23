@@ -48,8 +48,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-tour', __DIR__ . '/../resources/dist/components/filament-tour.js'),
-            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
         ];
     }
 
