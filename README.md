@@ -302,7 +302,7 @@ Let me show you !
 <br>
 <kbd>**Ctrl**</kbd>|<kbd>**Cmd**</kbd> + <kbd>**C**</kbd> To copy the CSS Selector of the highlighted element.
 
-https://github.com/JibayMcs/filament-tour/assets/7621593/0ca90978-2c64-4ed5-9c2e-f2e79a0e255f
+[CSS Selector Tool Utilisation Preview](https://github.com/JibayMcs/filament-tour/assets/7621593/162db2a3-1f46-4493-ae0d-cffcb2f00462)
 
 # Extra Resources
 
