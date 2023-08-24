@@ -11,7 +11,7 @@ trait HasTour
     public function constructTours($class, $request): array
     {
         $instance = new $class;
-        $tours = [];
+        $tours    = [];
 
         foreach ($this->tours() as $tour) {
 
@@ -19,7 +19,8 @@ trait HasTour
                 $this->setRoute($tour->route);
             }
 
-            $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
+            $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) use ($tour) {
+                $unique_id   = uniqid();
                 $data[$item] = [
                     'onNextRedirect' => $key->onNextRedirect,
 
@@ -51,7 +52,7 @@ trait HasTour
 
                     $tours[] = [
                         'route' => $this->getRoute($instance, $class)['path'] ?? '/',
-                        'id' => "tour.{$tour->id}",
+                        'id' => "tour_{$tour->id}",
                         'alwaysShow' => $tour->alwaysShow,
                         'colors' => [
                             'light' => $tour->colors['light'],

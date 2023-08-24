@@ -6,6 +6,7 @@ use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use JibayMcs\FilamentTour\Livewire\FilamentTourVideoPlayer;
 use JibayMcs\FilamentTour\Livewire\FilamentTourWidget;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -33,7 +34,6 @@ class FilamentTourServiceProvider extends PackageServiceProvider
         );
 
         Livewire::component('filament-tour-widget', FilamentTourWidget::class);
-
     }
 
     /**
@@ -42,8 +42,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
         ];
     }
 

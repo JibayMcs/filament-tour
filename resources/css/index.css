@@ -6,6 +6,10 @@
 @tailwind utilities;
 @tailwind screens;
 
+.hidden {
+    display: none !important;
+}
+
 #circle-cursor {
     pointer-events: none;
     cursor: crosshair;
@@ -30,7 +34,7 @@
     padding: 15px;
     border-radius: 5px;
     min-width: 300px !important;
-    max-width: 600px !important;
+    max-width: 750px !important;
     box-shadow: 0 1px 10px #0006;
     z-index: 1000000000;
     position: fixed;

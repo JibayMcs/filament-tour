@@ -11,7 +11,7 @@ trait HasHighlight
     public function constructHighlights($class, array $request): array
     {
         $highlights = [];
-        $instance = new $class;
+        $instance   = new $class;
 
         if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
 
@@ -19,7 +19,7 @@ trait HasHighlight
 
                 $data[$item] = [
                     'route' => $this->getRoute($instance, $class)['path'] ?? '/',
-                    'id' => "highlight.{$key->id}",
+                    'id' => "highlight_{$key->id}",
                     'position' => $key->position,
                     'parent' => $key->parent,
                     'button' => view('filament-tour::highlight.button')
