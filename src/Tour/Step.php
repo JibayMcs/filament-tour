@@ -12,10 +12,15 @@ class Step
     use StepEvent;
 
     private string $title;
+
     private ?string $description = null;
+
     private ?string $icon = null;
+
     private ?string $iconColor = null;
+
     private bool $uncloseable = false;
+
     private ?string $element;
 
     public function __construct(string $element = null)
@@ -40,7 +45,6 @@ class Step
         return $this->element;
     }
 
-
     /**
      * Set the title of your step.
      *
@@ -57,7 +61,6 @@ class Step
     {
         return $this->title;
     }
-
 
     /**
      * Set the description of your step.
@@ -84,7 +87,6 @@ class Step
         return $this->description;
     }
 
-
     /**
      * Set the step as uncloseable.
      *
@@ -106,7 +108,6 @@ class Step
         return $this->uncloseable;
     }
 
-
     /**
      * Set the icon of your step, next to the title.
      *
@@ -124,7 +125,6 @@ class Step
         return $this->icon;
     }
 
-
     /**
      * Set the color of your icon.
      *
@@ -141,6 +141,4 @@ class Step
     {
         return $this->iconColor;
     }
-
-
 }

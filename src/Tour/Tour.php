@@ -142,7 +142,6 @@ class Tour
         return $this->alwaysShow;
     }
 
-
     /**
      * Set the tour as visible or not.
      *
@@ -164,7 +163,6 @@ class Tour
         return $this->visible;
     }
 
-
     /**
      * Set the label of the next button.
      *
@@ -181,7 +179,6 @@ class Tour
     {
         return $this->nextButtonLabel;
     }
-
 
     /**
      * Set the label of the previous button.
@@ -233,7 +230,6 @@ class Tour
         return $this;
     }
 
-
     public function isUncloseable(): bool
     {
         return $this->uncloseable;
@@ -277,6 +273,4 @@ class Tour
     {
         return $this->ignoreRoute;
     }
-
-
 }

@@ -39,7 +39,7 @@ trait HasTour
                         ],
                     ];
 
-                    if (!$tour->hasDisabledEvents()) {
+                    if (! $tour->hasDisabledEvents()) {
                         $data[$item]['events'] = [
                             'redirectOnNext' => $step->getRedirectOnNext(),
                             'clickOnNext' => $step->getClickOnNext(),

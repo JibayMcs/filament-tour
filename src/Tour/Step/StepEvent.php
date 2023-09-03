@@ -60,7 +60,7 @@ trait StepEvent
     /**
      * Set the liveire event to dispatch to, when the user clicks on the next button of your step.
      *
-     * @param mixed ...$args
+     * @param  mixed  ...$args
      * @return $this
      */
     public function dispatchOnNext(string $name, ...$args): self
@@ -89,6 +89,4 @@ trait StepEvent
     {
         return $this->redirectOnNext;
     }
-
-
 }

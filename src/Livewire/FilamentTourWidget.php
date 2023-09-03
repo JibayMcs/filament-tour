@@ -20,14 +20,14 @@ class FilamentTourWidget extends Component implements HasForms
 
     public array $highlights = [];
 
-
     #[On('filament-tour::load-elements')]
     public function load(array $request): void
     {
 
         // Use to prevent loading tours and highlights if user is not logged in
-        if (!auth()->check())
+        if (! auth()->check()) {
             return;
+        }
 
         $classesUsingHasTour = [];
         $classesUsingHasHighlight = [];
@@ -37,7 +37,7 @@ class FilamentTourWidget extends Component implements HasForms
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn($item) => $item->getPage())
+                collect($instance->getPages())->map(fn ($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -74,10 +74,10 @@ class FilamentTourWidget extends Component implements HasForms
             highlights: $this->highlights,
         );
 
-//        if (config('app.env') != 'production') {
+        //        if (config('app.env') != 'production') {
         $hasCssSelector = is_bool(FilamentTourPlugin::get()->isCssSelectorEnabled()) ? FilamentTourPlugin::get()->isCssSelectorEnabled() : config('filament-tour.enable_css_selector');
         $this->dispatch('filament-tour::change-css-selector-status', enabled: $hasCssSelector);
-//        }
+        //        }
     }
 
     public function render()
