@@ -3,32 +3,21 @@
 namespace JibayMcs\FilamentTour\Tour;
 
 use Closure;
-use Filament\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
+use JibayMcs\FilamentTour\Tour\Step\StepEvent;
 
 class Step
 {
-    public ?string $element = null;
+    use StepEvent;
 
-    public string $title;
+    private string $title;
+    private ?string $description = null;
+    private ?string $icon = null;
+    private ?string $iconColor = null;
+    private bool $uncloseable = false;
+    private ?string $element;
 
-    public ?string $description = null;
-
-    public ?string $icon = null;
-
-    public ?string $iconColor = null;
-
-    public ?string $onNextClickSelector = null;
-
-    public ?array $onNextNotify = null;
-
-    public ?array $onNextDispatch = null;
-
-    public ?array $onNextRedirect = null;
-
-    public bool $uncloseable = false;
-    
     public function __construct(string $element = null)
     {
         $this->element = $element;
@@ -41,8 +30,16 @@ class Step
      */
     public static function make(string $element = null): static
     {
-        return app(static::class, ['element' => $element]);
+        $static = app(static::class, ['element' => $element]);
+
+        return $static;
     }
+
+    public function getElement(): ?string
+    {
+        return $this->element;
+    }
+
 
     /**
      * Set the title of your step.
@@ -55,6 +52,12 @@ class Step
 
         return $this;
     }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
 
     /**
      * Set the description of your step.
@@ -76,6 +79,12 @@ class Step
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+
     /**
      * Set the step as uncloseable.
      *
@@ -92,6 +101,12 @@ class Step
         return $this;
     }
 
+    public function isUncloseable(): bool
+    {
+        return $this->uncloseable;
+    }
+
+
     /**
      * Set the icon of your step, next to the title.
      *
@@ -103,6 +118,12 @@ class Step
 
         return $this;
     }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
 
     /**
      * Set the color of your icon.
@@ -116,58 +137,10 @@ class Step
         return $this;
     }
 
-    /**
-     * Set the CSS selector to be clicked when the user clicks on the next button of your step.
-     *
-     * @return $this
-     */
-    public function onNextClick(string|Closure $selector): self
+    public function getIconColor(): ?string
     {
-        if (is_callable($selector)) {
-            $this->onNextClickSelector = $selector();
-        } else {
-            $this->onNextClickSelector = $selector;
-        }
-
-        return $this;
+        return $this->iconColor;
     }
 
-    /**
-     * Set the notification to be shown when the user clicks on the next button of your step.
-     *
-     * @return $this
-     */
-    public function onNextNotify(Notification $notification): self
-    {
-        $this->onNextNotify = $notification->toArray();
 
-        return $this;
-    }
-
-    /**
-     * Set the redirection to be done when the user clicks on the next button of your step.
-     * <br>
-     * You can choose to open the redirection in a new tab or not with **$newTab**, default false.
-     *
-     * @return $this
-     */
-    public function onNextRedirect(string $url, bool $newTab = false): self
-    {
-        $this->onNextRedirect = ['url' => $url, 'newTab' => $newTab];
-
-        return $this;
-    }
-
-    /**
-     * Set the liveire event to dispatch to, when the user clicks on the next button of your step.
-     *
-     * @param mixed ...$args
-     * @return $this
-     */
-    public function onNextDispatch(string $name, ...$args): self
-    {
-        $this->onNextDispatch = ['name' => $name, 'args' => json_encode($args)];
-
-        return $this;
-    }
 }

@@ -5,8 +5,9 @@ document.addEventListener('livewire:initialized', async function () {
 
     initCssSelector();
 
-    let tours = [];
-    let highlights = [];
+    /*
+        let tours = [];
+        let highlights = [];*/
 
     function waitForElement(selector, callback) {
         if (document.querySelector(selector)) {
@@ -27,7 +28,7 @@ document.addEventListener('livewire:initialized', async function () {
         });
     }
 
-    Livewire.dispatch('filament-tour::load-elements', {request: window.location})
+    /*Livewire.dispatch('filament-tour::load-elements', {request: window.location})
 
     Livewire.on('filament-tour::loaded-elements', function (data) {
 
@@ -44,7 +45,7 @@ document.addEventListener('livewire:initialized', async function () {
                     openTour(tour);
                 } else if (!localStorage.getItem('tours').includes(tour.id)) {
                     openTour(tour);
-                } else if (tour.alwaysShow) {
+                } else if (tour.alwaysShow || tour.ignoreRoute) {
                     openTour(tour);
                 }
             }
@@ -68,7 +69,7 @@ document.addEventListener('livewire:initialized', async function () {
                 });
             }
         });
-    });
+    });*/
 
     Livewire.on('filament-tour::open-highlight', function (id) {
         let highlight = highlights.find(element => element.id === id);
@@ -115,9 +116,10 @@ document.addEventListener('livewire:initialized', async function () {
                 disableActiveInteraction: true,
                 overlayColor: localStorage.theme === 'light' ? tour.colors.light : tour.colors.dark,
                 onDeselected: ((element, step, {config, state}) => {
+
                 }),
                 onCloseClick: ((element, step, {config, state}) => {
-                    if (state.activeStep && !state.activeStep.uncloseable)
+                    if (state.activeStep && (!state.activeStep.uncloseable || tour.uncloseable))
                         driverObj.destroy();
 
                     if (!localStorage.getItem('tours').includes(tour.id)) {
@@ -125,7 +127,7 @@ document.addEventListener('livewire:initialized', async function () {
                     }
                 }),
                 onDestroyStarted: ((element, step, {config, state}) => {
-                    if (state.activeStep && !state.activeStep.uncloseable) {
+                    if (state.activeStep && !state.activeStep.uncloseable && !tour.uncloseable) {
                         driverObj.destroy();
                     }
                 }),
@@ -143,33 +145,39 @@ document.addEventListener('livewire:initialized', async function () {
                         driverObj.destroy();
                     }
 
-                    if (step.onNextNotify) {
-                        new FilamentNotification()
-                            .title(step.onNextNotify.title)
-                            .body(step.onNextNotify.body)
-                            .icon(step.onNextNotify.icon)
-                            .iconColor(step.onNextNotify.iconColor)
-                            .color(step.onNextNotify.color)
-                            .duration(step.onNextNotify.duration)
-                            .send();
+
+                    if (step.events) {
+
+                        if (step.events.notifyOnNext) {
+                            new FilamentNotification()
+                                .title(step.events.notifyOnNext.title)
+                                .body(step.events.notifyOnNext.body)
+                                .icon(step.events.notifyOnNext.icon)
+                                .iconColor(step.events.notifyOnNext.iconColor)
+                                .color(step.events.notifyOnNext.color)
+                                .duration(step.events.notifyOnNext.duration)
+                                .send();
+                        }
+
+                        if (step.events.dispatchOnNext) {
+                            Livewire.dispatch(step.events.dispatchOnNext.name, JSON.parse(step.events.dispatchOnNext.args))
+                        }
+
+                        if (step.events.clickOnNext) {
+                            document.querySelector(step.events.clickOnNext).click();
+                        }
+
+                        if (step.events.redirectOnNext) {
+                            window.open(step.events.redirectOnNext.url, step.events.redirectOnNext.newTab ? '_blank' : '_self');
+                        }
                     }
 
-                    if (step.onNextDispatch) {
-                        Livewire.dispatch(step.onNextDispatch.name, JSON.parse(step.onNextDispatch.args))
-                    }
-
-                    if (step.onNextClickSelector) {
-                        document.querySelector(step.onNextClickSelector).click();
-                    }
-
-                    if (step.onNextRedirect) {
-                        window.open(step.onNextRedirect.url, step.onNextRedirect.newTab ? '_blank' : '_self');
-                    }
 
                     driverObj.moveNext();
                 }),
                 onPopoverRender: (popover, {config, state}) => {
-                    if (state.activeStep.uncloseable)
+
+                    if (state.activeStep.uncloseable || tour.uncloseable)
                         document.querySelector(".driver-popover-close-btn").remove();
 
                     popover.title.innerHTML = "";
@@ -180,6 +188,8 @@ document.addEventListener('livewire:initialized', async function () {
                     }
 
                     let contentClasses = "dark:text-white fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 mb-4";
+
+                    // popover.description.insertAdjacentHTML("beforeend", state.activeStep.popover.form);
 
                     popover.footer.parentElement.classList.add(...contentClasses.split(" "));
 

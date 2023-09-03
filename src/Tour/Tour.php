@@ -7,23 +7,29 @@ use Illuminate\Support\Facades\Lang;
 
 class Tour
 {
-    public string $id;
+    private string $id;
 
-    public array $steps = [];
+    private array $steps = [];
 
-    public ?string $route = null;
+    private ?string $route = null;
 
-    public array $colors = [];
+    private array $colors = [];
 
-    public bool $alwaysShow = false;
+    private bool $alwaysShow = false;
 
-    public bool $visible = true;
+    private bool $visible = true;
 
-    public string $nextButtonLabel;
+    private bool $uncloseable = false;
 
-    public string $previousButtonLabel;
+    private bool $disableEvents = false;
 
-    public string $doneButtonLabel;
+    private bool $ignoreRoute = false;
+
+    private string $nextButtonLabel;
+
+    private string $previousButtonLabel;
+
+    private string $doneButtonLabel;
 
     public function __construct(string $id, array $colors)
     {
@@ -52,6 +58,11 @@ class Tour
             ]);
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     /**
      * Set the route where the tour will be shown.
      *
@@ -64,6 +75,11 @@ class Tour
         return $this;
     }
 
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
     /**
      * Set the steps of your tour.
      *
@@ -74,6 +90,11 @@ class Tour
         $this->steps = $steps;
 
         return $this;
+    }
+
+    public function getSteps(): array
+    {
+        return $this->steps;
     }
 
     /**
@@ -95,6 +116,11 @@ class Tour
         return $this;
     }
 
+    public function getColors(): array
+    {
+        return $this->colors;
+    }
+
     /**
      * Set the tour as always visible, even is already viewed by the user.
      *
@@ -110,6 +136,12 @@ class Tour
 
         return $this;
     }
+
+    public function isAlwaysShow(): bool
+    {
+        return $this->alwaysShow;
+    }
+
 
     /**
      * Set the tour as visible or not.
@@ -127,6 +159,12 @@ class Tour
         return $this;
     }
 
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+
     /**
      * Set the label of the next button.
      *
@@ -138,6 +176,12 @@ class Tour
 
         return $this;
     }
+
+    public function getNextButtonLabel(): string
+    {
+        return $this->nextButtonLabel;
+    }
+
 
     /**
      * Set the label of the previous button.
@@ -151,6 +195,11 @@ class Tour
         return $this;
     }
 
+    public function getPreviousButtonLabel(): string
+    {
+        return $this->previousButtonLabel;
+    }
+
     /**
      * Set the label of the done button.
      *
@@ -162,4 +211,72 @@ class Tour
 
         return $this;
     }
+
+    public function getDoneButtonLabel(): string
+    {
+        return $this->doneButtonLabel;
+    }
+
+    /**
+     * Set the tour steps uncloseable.
+     *
+     * @return $this
+     */
+    public function uncloseable(bool|Closure $uncloseable = true): self
+    {
+        if (is_bool($uncloseable)) {
+            $this->uncloseable = $uncloseable;
+        } else {
+            $this->uncloseable = $uncloseable();
+        }
+
+        return $this;
+    }
+
+
+    public function isUncloseable(): bool
+    {
+        return $this->uncloseable;
+    }
+
+    /**
+     * Disable all events on the tour.
+     * default: false
+     *
+     * @return $this
+     */
+    public function disableEvents(bool|Closure $disableEvents = true): self
+    {
+        if (is_bool($disableEvents)) {
+            $this->disableEvents = $disableEvents;
+        } else {
+            $this->disableEvents = $disableEvents();
+        }
+
+        return $this;
+    }
+
+    public function hasDisabledEvents(): bool
+    {
+        return $this->disableEvents;
+    }
+
+    /**
+     * Bypass the route check to show your tour on any routes.
+     *
+     * @return $this
+     */
+    public function ignoreRoute(bool $ignoreRoute): self
+    {
+        $this->ignoreRoute = $ignoreRoute;
+
+        return $this;
+    }
+
+    public function isRoutesIgnored(): bool
+    {
+        return $this->ignoreRoute;
+    }
+
+
 }
