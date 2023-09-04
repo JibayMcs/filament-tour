@@ -11,33 +11,33 @@ use Livewire\Component;
 
 class FilamentTourWidget extends Component /*implements HasForms*/
 {
-//    use InteractsWithForms;
+    //    use InteractsWithForms;
 
     public array $steps = [];
 
-//    public array $highlights = [];
+    //    public array $highlights = [];
 
-//    public ?array $data = [];
+    //    public ?array $data = [];
 
     public int $currentStepIndex = 0;
-
 
     public function mount(): void
     {
         $request = request()->getPathInfo();
 
-        if (!auth()->check())
+        if (! auth()->check()) {
             return;
+        }
 
         $classesUsingHasTour = [];
-//        $classesUsingHasHighlight = [];
+        //        $classesUsingHasHighlight = [];
         $filamentClasses = [];
 
         foreach (array_merge(Filament::getResources(), Filament::getPages()) as $class) {
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn($item) => $item->getPage())
+                collect($instance->getPages())->map(fn ($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;
@@ -64,7 +64,7 @@ class FilamentTourWidget extends Component /*implements HasForms*/
             $this->steps = array_merge($this->steps, (new $class())->constructSteps($class, $request));
         }
 
-//        dd($this->steps);
+        //        dd($this->steps);
         /* foreach ($classesUsingHasHighlight as $class) {
              $this->highlights = array_merge($this->highlights, (new $class())->constructHighlights($class, $request));
          }*/
@@ -75,12 +75,12 @@ class FilamentTourWidget extends Component /*implements HasForms*/
             highlights: $this->highlights,
         );*/
 
-//        dd(json_decode($this->tours[0]['steps'], true)[0]);
+        //        dd(json_decode($this->tours[0]['steps'], true)[0]);
 
         //        if (config('app.env') != 'production') {
         $hasCssSelector = is_bool(FilamentTourPlugin::get()->isCssSelectorEnabled()) ? FilamentTourPlugin::get()->isCssSelectorEnabled() : config('filament-tour.enable_css_selector');
         $this->dispatch('filament-tour::change-css-selector-status', enabled: $hasCssSelector);
-//        }
+        //        }
     }
 
     #[On('filament-tour::load-elements')]
