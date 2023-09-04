@@ -8,7 +8,7 @@ trait HasTour
 {
     use CanConstructRoute;
 
-    public function constructTours($class, $request): array
+    public function constructSteps($class, $request)
     {
         $instance = new $class;
         $tours = [];
@@ -21,7 +21,9 @@ trait HasTour
                     $this->setRoute($tour->getRoute());
                 }
 
-                $steps = json_encode(collect($tour->getSteps())->mapWithKeys(function (Step $step, $item) use ($tour) {
+                return $tour->getSteps();
+                /*$steps = json_encode(collect($tour->getSteps())->mapWithKeys(function (Step $step, $item) use ($tour) {
+
 
                     $data[$item] = [
                         'uncloseable' => $step->isUncloseable(),
@@ -32,6 +34,8 @@ trait HasTour
                             ->with('iconColor', $step->getIconColor())
                             ->render(),
                         'description' => $step->getDescription(),
+
+                        'schema' => $step->getSchema(),
 
                         'progress' => [
                             'current' => $item,
@@ -57,27 +61,27 @@ trait HasTour
 
                 if ($steps) {
 
-                    if ($request['pathname'] == ($this->getRoute($instance, $class))) {
+//                    if ($request == ($this->getRoute($instance, $class))) {
 
-                        $tours[] = [
-                            'ignoreRoute' => $tour->isRoutesIgnored(),
-                            'uncloseable' => $tour->isUncloseable(),
+                    $tours[] = [
+                        'ignoreRoute' => $tour->isRoutesIgnored(),
+                        'uncloseable' => $tour->isUncloseable(),
 
-                            'route' => $this->getRoute($instance, $class),
-                            'id' => "tour_{$tour->getId()}",
-                            'alwaysShow' => $tour->isAlwaysShow(),
-                            'colors' => [
-                                'light' => $tour->getColors()['light'],
-                                'dark' => $tour->getColors()['dark'],
-                            ],
-                            'steps' => $steps,
-                            'nextButtonLabel' => $tour->getNextButtonLabel(),
-                            'previousButtonLabel' => $tour->getPreviousButtonLabel(),
-                            'doneButtonLabel' => $tour->getDoneButtonLabel(),
-                        ];
+                        'route' => $this->getRoute($instance, $class),
+                        'id' => "tour_{$tour->getId()}",
+                        'alwaysShow' => $tour->isAlwaysShow(),
+                        'colors' => [
+                            'light' => $tour->getColors()['light'],
+                            'dark' => $tour->getColors()['dark'],
+                        ],
+                        'steps' => $steps,
+                        'nextButtonLabel' => $tour->getNextButtonLabel(),
+                        'previousButtonLabel' => $tour->getPreviousButtonLabel(),
+                        'doneButtonLabel' => $tour->getDoneButtonLabel(),
+                    ];
 
-                    }
-                }
+//                    }
+                }*/
             }
         }
 

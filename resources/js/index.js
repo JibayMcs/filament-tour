@@ -1,230 +1,122 @@
-import {driver} from "driver.js";
-import {initCssSelector} from './css-selector.js';
+import {initCssSelector} from "./css-selector.js";
 
 document.addEventListener('livewire:initialized', async function () {
 
     initCssSelector();
 
-    /*
-        let tours = [];
-        let highlights = [];*/
+    let currentOverlay;
 
-    function waitForElement(selector, callback) {
-        if (document.querySelector(selector)) {
-            callback(document.querySelector(selector));
-            return;
-        }
+    function createOverlay(element, stepId) {
+        const windowX = window.innerWidth;
+        const windowY = window.innerHeight;
 
-        const observer = new MutationObserver(function (mutations) {
-            if (document.querySelector(selector)) {
-                callback(document.querySelector(selector));
-                observer.disconnect();
-            }
-        });
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+        svg.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
+        svg.setAttribute("xmlSpace", "preserve");
+        svg.setAttribute("xmlnsXlink", "http://www.w3.org/1999/xlink");
+        svg.setAttribute("version", "1.1");
+        svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+
+        svg.style.fillRule = "evenodd";
+        svg.style.clipRule = "evenodd";
+        svg.style.strokeLinejoin = "round";
+        svg.style.strokeMiterlimit = "2";
+        svg.style.zIndex = "10000";
+        svg.style.position = "fixed";
+        svg.style.top = "0";
+        svg.style.left = "0";
+        svg.style.width = "100%";
+        svg.style.height = "100%";
+
+        const stagePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+        stagePath.setAttribute("d", generateStageSvgPathString(element));
+
+        stagePath.style.fill = "#fff";
+        stagePath.style.opacity = "0.5";
+        stagePath.style.pointerEvents = "auto";
+        stagePath.style.cursor = "auto";
+
+        svg.appendChild(stagePath);
+
+        svg.id = `step-${stepId}-overlay`;
+
+        return svg;
     }
 
-    /*Livewire.dispatch('filament-tour::load-elements', {request: window.location})
+    function generateStageSvgPathString(element) {
 
-    Livewire.on('filament-tour::loaded-elements', function (data) {
+        element = document.querySelector(element);
 
-        data.tours.forEach((tour) => {
+        const windowX = window.innerWidth;
+        const windowY = window.innerHeight;
 
-            tours.push(tour);
+        const stagePadding = 10;
+        const stageRadius = 10;
 
-            if (!localStorage.getItem('tours')) {
-                localStorage.setItem('tours', "[]");
+        const stageWidth = element ? element.clientWidth + stagePadding * 2 : 0;
+        const stageHeight = element ? element.clientHeight + stagePadding * 2 : 0;
+
+        // prevent glitches when stage is too small for radius
+        const limitedRadius = Math.min(stageRadius, stageWidth / 2, stageHeight / 2);
+
+        // no value below 0 allowed + round down
+        const normalizedRadius = Math.floor(Math.max(limitedRadius, 0));
+
+        const highlightBoxX = element ? element.offsetLeft - stagePadding + normalizedRadius : 0;
+        const highlightBoxY = element ? element.offsetTop - stagePadding : 0;
+        const highlightBoxWidth = stageWidth - normalizedRadius * 2;
+        const highlightBoxHeight = stageHeight - normalizedRadius * 2;
+
+        return `M${windowX},0L0,0L0,${windowY}L${windowX},${windowY}L${windowX},0Z
+    M${highlightBoxX},${highlightBoxY} h${highlightBoxWidth} a${normalizedRadius},${normalizedRadius} 0 0 1 ${normalizedRadius},${normalizedRadius} v${highlightBoxHeight} a${normalizedRadius},${normalizedRadius} 0 0 1 -${normalizedRadius},${normalizedRadius} h-${highlightBoxWidth} a${normalizedRadius},${normalizedRadius} 0 0 1 -${normalizedRadius},-${normalizedRadius} v-${highlightBoxHeight} a${normalizedRadius},${normalizedRadius} 0 0 1 ${normalizedRadius},-${normalizedRadius} z`;
+    }
+
+    function positionModalBesideElement(elementSelector, modalSelector) {
+        const element = document.querySelector(elementSelector);
+        const modal = document.querySelector(modalSelector);
+
+        if (modal) {
+            modal.style.position = "fixed";
+
+            if (element) {
+                const elementRect = element.getBoundingClientRect();
+                modal.style.left = `${elementRect.right + element.width}px`; // À droite de l'élément
+                modal.style.top = `${elementRect.top}px`;    // Aligné avec le haut de l'élément
+            } else {
+                modal.style.left = "50%";
+                modal.style.top = "50%";
+                modal.style.transform = "translate(-50%, -50%)";
             }
 
-            if (tour.route === window.location.pathname) {
-                if (!data.only_visible_once) {
-                    openTour(tour);
-                } else if (!localStorage.getItem('tours').includes(tour.id)) {
-                    openTour(tour);
-                } else if (tour.alwaysShow || tour.ignoreRoute) {
-                    openTour(tour);
-                }
-            }
-        });
+            document.querySelector('#step-modal').style.display = 'block';
+        }
+    }
 
-        data.highlights.forEach((highlight) => {
 
-            highlights.push(highlight);
+    Livewire.dispatch('filament-tour::load-elements', {request: window.location})
 
-            if (highlight.route === window.location.pathname) {
-
-                waitForElement(highlight.parent, function (selector) {
-                    selector.parentNode.style.position = 'relative';
-
-                    let tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = highlight.button;
-
-                    tempDiv.firstChild.classList.add(highlight.position);
-
-                    selector.parentNode.insertBefore(tempDiv.firstChild, selector)
-                });
-            }
-        });
-    });*/
-
-    Livewire.on('filament-tour::open-highlight', function (id) {
-        let highlight = highlights.find(element => element.id === id);
-
-        if (highlight) {
-            driver({
-                overlayColor: localStorage.theme === 'light' ? highlight.colors.light : highlight.colors.dark,
-
-                onPopoverRender: (popover, {config, state}) => {
-                    popover.title.innerHTML = "";
-                    popover.title.innerHTML = state.activeStep.popover.title;
-
-                    if (!state.activeStep.popover.description) {
-                        popover.title.firstChild.style.justifyContent = 'center';
-                    }
-
-                    let contentClasses = "dark:text-white fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 mb-4";
-
-                    popover.footer.parentElement.classList.add(...contentClasses.split(" "));
-                },
-            }).highlight(highlight);
-
-        } else {
-            console.error(`Highlight with id '${id}' not found`);
+    Livewire.on('filament-tour::close', () => {
+        if (currentOverlay) {
+            document.body.removeChild(currentOverlay);
+            document.querySelector('#step-modal').style.display = 'none';
         }
     });
 
-    Livewire.on('filament-tour::open-tour', function (id) {
-        let tour = tours.find(element => element.id === id);
+    Livewire.on('filament-tour::updateStep', ({step}) => {
 
-        if (tour) {
-            openTour(tour);
-        } else {
-            console.error(`Tour with id '${id}' not found`);
+        if (currentOverlay) {
+            document.body.removeChild(currentOverlay);
         }
+
+        currentOverlay = createOverlay(step.element);
+        document.body.appendChild(currentOverlay);
+
+        positionModalBesideElement(step.element, '#step-window');
+
+        document.querySelector('#step-modal-heading').innerHTML = step.title;
+        document.querySelector('#step-modal-description').innerHTML = step.description;
     });
 
-    function openTour(tour) {
-
-        if (tour.steps.length > 0) {
-
-            const driverObj = driver({
-                allowClose: true,
-                disableActiveInteraction: true,
-                overlayColor: localStorage.theme === 'light' ? tour.colors.light : tour.colors.dark,
-                onDeselected: ((element, step, {config, state}) => {
-
-                }),
-                onCloseClick: ((element, step, {config, state}) => {
-                    if (state.activeStep && (!state.activeStep.uncloseable || tour.uncloseable))
-                        driverObj.destroy();
-
-                    if (!localStorage.getItem('tours').includes(tour.id)) {
-                        localStorage.setItem('tours', JSON.stringify([...JSON.parse(localStorage.getItem('tours')), tour.id]));
-                    }
-                }),
-                onDestroyStarted: ((element, step, {config, state}) => {
-                    if (state.activeStep && !state.activeStep.uncloseable && !tour.uncloseable) {
-                        driverObj.destroy();
-                    }
-                }),
-                onDestroyed: ((element, step, {config, state}) => {
-
-                }),
-                onNextClick: ((element, step, {config, state}) => {
-
-                    if (driverObj.isLastStep()) {
-
-                        if (!localStorage.getItem('tours').includes(tour.id)) {
-                            localStorage.setItem('tours', JSON.stringify([...JSON.parse(localStorage.getItem('tours')), tour.id]));
-                        }
-
-                        driverObj.destroy();
-                    }
-
-
-                    if (step.events) {
-
-                        if (step.events.notifyOnNext) {
-                            new FilamentNotification()
-                                .title(step.events.notifyOnNext.title)
-                                .body(step.events.notifyOnNext.body)
-                                .icon(step.events.notifyOnNext.icon)
-                                .iconColor(step.events.notifyOnNext.iconColor)
-                                .color(step.events.notifyOnNext.color)
-                                .duration(step.events.notifyOnNext.duration)
-                                .send();
-                        }
-
-                        if (step.events.dispatchOnNext) {
-                            Livewire.dispatch(step.events.dispatchOnNext.name, JSON.parse(step.events.dispatchOnNext.args))
-                        }
-
-                        if (step.events.clickOnNext) {
-                            document.querySelector(step.events.clickOnNext).click();
-                        }
-
-                        if (step.events.redirectOnNext) {
-                            window.open(step.events.redirectOnNext.url, step.events.redirectOnNext.newTab ? '_blank' : '_self');
-                        }
-                    }
-
-
-                    driverObj.moveNext();
-                }),
-                onPopoverRender: (popover, {config, state}) => {
-
-                    if (state.activeStep.uncloseable || tour.uncloseable)
-                        document.querySelector(".driver-popover-close-btn").remove();
-
-                    popover.title.innerHTML = "";
-                    popover.title.innerHTML = state.activeStep.popover.title;
-
-                    if (!state.activeStep.popover.description) {
-                        popover.title.firstChild.style.justifyContent = 'center';
-                    }
-
-                    let contentClasses = "dark:text-white fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 mb-4";
-
-                    // popover.description.insertAdjacentHTML("beforeend", state.activeStep.popover.form);
-
-                    popover.footer.parentElement.classList.add(...contentClasses.split(" "));
-
-                    popover.footer.innerHTML = "";
-                    popover.footer.classList.add('flex', 'mt-3');
-                    popover.footer.style.justifyContent = 'space-evenly';
-
-                    popover.footer.classList.remove("driver-popover-footer");
-
-
-                    const nextButton = document.createElement("button");
-                    let nextClasses = "fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-primary gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 dark:bg-custom-500 dark:hover:bg-custom-400 focus:ring-custom-500/50 dark:focus:ring-custom-400/50 fi-ac-btn-action";
-
-                    nextButton.classList.add(...nextClasses.split(" "), 'driver-popover-next-btn');
-                    nextButton.innerText = driverObj.isLastStep() ? tour.doneButtonLabel : tour.nextButtonLabel;
-
-                    nextButton.style.setProperty('--c-400', 'var(--primary-400');
-                    nextButton.style.setProperty('--c-500', 'var(--primary-500');
-                    nextButton.style.setProperty('--c-600', 'var(--primary-600');
-
-                    const prevButton = document.createElement("button");
-                    let prevClasses = "fi-btn fi-btn-size-md relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus:ring-2 disabled:pointer-events-none disabled:opacity-70 rounded-lg fi-btn-color-gray gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-white text-gray-950 hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 ring-1 ring-gray-950/10 dark:ring-white/20 fi-ac-btn-action";
-                    prevButton.classList.add(...prevClasses.split(" "), 'driver-popover-prev-btn');
-                    prevButton.innerText = tour.previousButtonLabel;
-
-                    if (!driverObj.isFirstStep()) {
-                        popover.footer.appendChild(prevButton);
-                    }
-                    popover.footer.appendChild(nextButton);
-                },
-                steps:
-                    JSON.parse(tour.steps),
-            });
-
-            driverObj.drive();
-        }
-    }
 });

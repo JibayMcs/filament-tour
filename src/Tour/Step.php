@@ -3,6 +3,7 @@
 namespace JibayMcs\FilamentTour\Tour;
 
 use Closure;
+use Filament\Forms\Form;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
 use JibayMcs\FilamentTour\Tour\Step\StepEvent;
@@ -11,17 +12,14 @@ class Step
 {
     use StepEvent;
 
-    private string $title;
+    public string $title;
+    public ?string $description = null;
+    public ?string $icon = null;
+    public ?string $iconColor = null;
+    public bool $uncloseable = false;
+    public ?string $element;
 
-    private ?string $description = null;
-
-    private ?string $icon = null;
-
-    private ?string $iconColor = null;
-
-    private bool $uncloseable = false;
-
-    private ?string $element;
+    public ?array $schema = null;
 
     public function __construct(string $element = null)
     {
@@ -45,6 +43,7 @@ class Step
         return $this->element;
     }
 
+
     /**
      * Set the title of your step.
      *
@@ -61,6 +60,7 @@ class Step
     {
         return $this->title;
     }
+
 
     /**
      * Set the description of your step.
@@ -87,6 +87,7 @@ class Step
         return $this->description;
     }
 
+
     /**
      * Set the step as uncloseable.
      *
@@ -108,6 +109,7 @@ class Step
         return $this->uncloseable;
     }
 
+
     /**
      * Set the icon of your step, next to the title.
      *
@@ -125,6 +127,7 @@ class Step
         return $this->icon;
     }
 
+
     /**
      * Set the color of your icon.
      *
@@ -140,5 +143,29 @@ class Step
     public function getIconColor(): ?string
     {
         return $this->iconColor;
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form->statePath('data')
+            ->schema($this->schema);
+    }
+
+    public function schema(array $schema): self
+    {
+        /*foreach ($schema as $key => $value) {
+            if ($value instanceof Field) {
+                dd($value);
+            }
+        }*/
+
+        $this->schema = $schema;
+
+        return $this;
+    }
+
+    public function getSchema(): ?array
+    {
+        return $this->schema;
     }
 }

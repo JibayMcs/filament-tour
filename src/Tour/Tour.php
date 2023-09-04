@@ -94,7 +94,7 @@ class Tour
 
     public function getSteps(): array
     {
-        return $this->steps;
+        return json_decode(json_encode($this->steps), true);
     }
 
     /**
