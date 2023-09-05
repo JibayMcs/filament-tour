@@ -2,68 +2,86 @@
 
 namespace JibayMcs\FilamentTour\Tour;
 
-use JibayMcs\FilamentTour\Traits\CanConstructRoute;
+use JibayMcs\FilamentTour\Tour\Traits\CanConstructRoute;
 
 trait HasTour
 {
     use CanConstructRoute;
 
-    public function constructTours($class, $request): array
+    public function constructTours($class): array
     {
-        $instance = new $class;
         $tours = [];
 
         foreach ($this->tours() as $tour) {
 
-            if ($tour->route) {
-                $this->setRoute($tour->route);
-            }
+            if ($tour instanceof Tour) {
 
-            $steps = json_encode(collect($tour->steps)->mapWithKeys(function ($key, $item) {
-                $unique_id = uniqid();
-                $data[$item] = [
-                    'onNextRedirect' => $key->onNextRedirect,
-
-                    'onNextClickSelector' => $key->onNextClickSelector ?? null,
-                    'onNextNotify' => $key->onNextNotify,
-                    'onNextDispatch' => $key->onNextDispatch,
-                    'uncloseable' => $key->uncloseable,
-
-                    'popover' => [
-                        'title' => view('filament-tour::tour.step.popover.title')
-                            ->with('title', $key->title)
-                            ->with('icon', $key->icon)
-                            ->with('iconColor', $key->iconColor)
-                            ->render(),
-                        'description' => $key->description,
-                    ],
-                ];
-
-                if ($key->element) {
-                    $data[$item]['element'] = $key->element;
+                if ($tour->getRoute()) {
+                    $this->setRoute($tour->getRoute());
                 }
 
-                return $data;
-            })->toArray());
+                $steps = json_encode(collect($tour->getSteps())->mapWithKeys(function (Step $step, $item) use ($tour) {
 
-            if ($steps) {
+                    $data[$item] = [
+                        'uncloseable' => $step->isUncloseable(),
 
-                if ($request['pathname'] == ($this->getRoute($instance, $class)['path'] ?? '/')) {
-
-                    $tours[] = [
-                        'route' => $this->getRoute($instance, $class)['path'] ?? '/',
-                        'id' => "tour_{$tour->id}",
-                        'alwaysShow' => $tour->alwaysShow,
-                        'colors' => [
-                            'light' => $tour->colors['light'],
-                            'dark' => $tour->colors['dark'],
+                        'popover' => [
+                            'title' => view('filament-tour::tour.step.popover.title')
+                                ->with('title', $step->getTitle())
+                                ->with('icon', $step->getIcon())
+                                ->with('iconColor', $step->getIconColor())
+                                ->render(),
+                            'description' => $step->getDescription(),
                         ],
-                        'steps' => $steps,
-                        'nextButtonLabel' => $tour->nextButtonLabel,
-                        'previousButtonLabel' => $tour->previousButtonLabel,
-                        'doneButtonLabel' => $tour->doneButtonLabel,
+
+                        'progress' => [
+                            'current' => $item,
+                            'total' => count($tour->getSteps()),
+                        ],
                     ];
 
+                    if (!$tour->hasDisabledEvents()) {
+                        $data[$item]['events'] = [
+                            'redirectOnNext' => $step->getRedirectOnNext(),
+                            'clickOnNext' => $step->getClickOnNext(),
+                            'notifyOnNext' => $step->getNotifyOnNext(),
+                            'dispatchOnNext' => $step->getDispatchOnNext(),
+                        ];
+                    }
+
+                    if ($step->getElement()) {
+                        $data[$item]['element'] = $step->getElement();
+                    }
+
+                    return $data;
+                })->toArray());
+
+                if ($steps) {
+
+                    $route = $this->getRoute($class);
+
+                    $tours[] = [
+                        'routesIgnored' => $tour->isRoutesIgnored(),
+                        
+                        'uncloseable' => $tour->isUncloseable(),
+
+                        'route' => $route,
+
+                        'id' => "tour_{$tour->getId()}",
+
+                        'alwaysShow' => $tour->isAlwaysShow(),
+
+                        'colors' => [
+                            'light' => $tour->getColors()['light'],
+                            'dark' => $tour->getColors()['dark'],
+                        ],
+
+                        'steps' => $steps,
+
+                        'nextButtonLabel' => $tour->getNextButtonLabel(),
+                        'previousButtonLabel' => $tour->getPreviousButtonLabel(),
+                        'doneButtonLabel' => $tour->getDoneButtonLabel(),
+                    ];
                 }
             }
         }

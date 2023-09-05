@@ -8,23 +8,23 @@ use Illuminate\View\View;
 
 class Highlight
 {
-    public string $parent;
+    private string $parent;
 
-    public string $id;
+    private string $id;
 
-    public array $colors;
+    private array $colors;
 
-    public string $title;
+    private string $title;
 
-    public null|string|HtmlString|View $description = null;
+    private null|string|HtmlString|View $description = null;
 
-    public string $icon = 'heroicon-m-question-mark-circle';
+    private string $icon = 'heroicon-m-question-mark-circle';
 
-    public string $iconColor = 'gray';
+    private string $iconColor = 'gray';
 
-    public ?string $element = null;
+    private ?string $element = null;
 
-    public string $position = 'top-left';
+    private string $position = 'top-left';
 
     public function __construct(string $id, array $colors, string $parent)
     {
@@ -52,6 +52,14 @@ class Highlight
     }
 
     /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
      * Set the element to highlight when you click on this highlight button.
      *
      * @return $this
@@ -61,6 +69,14 @@ class Highlight
         $this->element = $element;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getElement(): ?string
+    {
+        return $this->element;
     }
 
     /**
@@ -76,6 +92,14 @@ class Highlight
     }
 
     /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
      * Set the description of your highlight.
      *
      * @return $this
@@ -85,6 +109,14 @@ class Highlight
         $this->description = is_callable($description) ? $description() : ($description instanceof View ? $description->render() : $description);
 
         return $this;
+    }
+
+    /**
+     * @return HtmlString|View|string|null
+     */
+    public function getDescription(): HtmlString|string|View|null
+    {
+        return $this->description;
     }
 
     /**
@@ -102,6 +134,14 @@ class Highlight
     }
 
     /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
      * Set the icon color of your highlight button.
      * <br>
      * - **gray** by default
@@ -113,6 +153,14 @@ class Highlight
         $this->iconColor = $color;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIconColor(): string
+    {
+        return $this->iconColor;
     }
 
     /**
@@ -132,6 +180,14 @@ class Highlight
         ];
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColors(): array
+    {
+        return $this->colors;
     }
 
     /**
@@ -157,5 +213,21 @@ class Highlight
         };
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosition(): string
+    {
+        return $this->position;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParent(): string
+    {
+        return $this->parent;
     }
 }

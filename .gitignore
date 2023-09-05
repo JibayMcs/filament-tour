@@ -10,3 +10,4 @@ phpunit.xml
 phpstan.neon
 testbench.yaml
 vendor
+/package-lock.json

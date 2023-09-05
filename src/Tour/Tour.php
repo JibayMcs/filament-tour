@@ -3,27 +3,36 @@
 namespace JibayMcs\FilamentTour\Tour;
 
 use Closure;
+use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Lang;
 
 class Tour
 {
-    public string $id;
+    use EvaluatesClosures;
 
-    public array $steps = [];
+    private string $id;
 
-    public ?string $route = null;
+    private array $steps = [];
 
-    public array $colors = [];
+    private ?string $route = null;
 
-    public bool $alwaysShow = false;
+    private array $colors = [];
 
-    public bool $visible = true;
+    private bool $alwaysShow = false;
 
-    public string $nextButtonLabel;
+    private bool $visible = true;
 
-    public string $previousButtonLabel;
+    private bool $uncloseable = false;
 
-    public string $doneButtonLabel;
+    private bool $disableEvents = false;
+
+    private bool $ignoreRoutes = false;
+
+    private string $nextButtonLabel;
+
+    private string $previousButtonLabel;
+
+    private string $doneButtonLabel;
 
     public function __construct(string $id, array $colors)
     {
@@ -52,6 +61,11 @@ class Tour
             ]);
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     /**
      * Set the route where the tour will be shown.
      *
@@ -64,6 +78,11 @@ class Tour
         return $this;
     }
 
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
     /**
      * Set the steps of your tour.
      *
@@ -74,6 +93,11 @@ class Tour
         $this->steps = $steps;
 
         return $this;
+    }
+
+    public function getSteps(): array
+    {
+        return $this->steps;
     }
 
     /**
@@ -95,6 +119,11 @@ class Tour
         return $this;
     }
 
+    public function getColors(): array
+    {
+        return $this->colors;
+    }
+
     /**
      * Set the tour as always visible, even is already viewed by the user.
      *
@@ -105,10 +134,15 @@ class Tour
         if (is_bool($alwaysShow)) {
             $this->alwaysShow = $alwaysShow;
         } else {
-            $this->alwaysShow = $alwaysShow();
+            $this->alwaysShow = $this->evaluate($alwaysShow);
         }
 
         return $this;
+    }
+
+    public function isAlwaysShow(): bool
+    {
+        return $this->alwaysShow;
     }
 
     /**
@@ -121,10 +155,15 @@ class Tour
         if (is_bool($visible)) {
             $this->visible = $visible;
         } else {
-            $this->visible = $visible();
+            $this->visible = $this->evaluate($visible);
         }
 
         return $this;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 
     /**
@@ -139,6 +178,11 @@ class Tour
         return $this;
     }
 
+    public function getNextButtonLabel(): string
+    {
+        return $this->nextButtonLabel;
+    }
+
     /**
      * Set the label of the previous button.
      *
@@ -151,6 +195,11 @@ class Tour
         return $this;
     }
 
+    public function getPreviousButtonLabel(): string
+    {
+        return $this->previousButtonLabel;
+    }
+
     /**
      * Set the label of the done button.
      *
@@ -161,5 +210,74 @@ class Tour
         $this->doneButtonLabel = $label;
 
         return $this;
+    }
+
+    public function getDoneButtonLabel(): string
+    {
+        return $this->doneButtonLabel;
+    }
+
+    /**
+     * Set the tour steps uncloseable.
+     *
+     * @return $this
+     */
+    public function uncloseable(bool|Closure $uncloseable = true): self
+    {
+        if (is_bool($uncloseable)) {
+            $this->uncloseable = $uncloseable;
+        } else {
+            $this->uncloseable = $this->evaluate($uncloseable);
+        }
+
+        return $this;
+    }
+
+    public function isUncloseable(): bool
+    {
+        return $this->uncloseable;
+    }
+
+    /**
+     * Disable all events on the tour.
+     * default: false
+     *
+     * @return $this
+     */
+    public function disableEvents(bool|Closure $disableEvents = true): self
+    {
+        if (is_bool($disableEvents)) {
+            $this->disableEvents = $disableEvents;
+        } else {
+            $this->disableEvents = $this->evaluate($disableEvents);
+        }
+
+        return $this;
+    }
+
+    public function hasDisabledEvents(): bool
+    {
+        return $this->disableEvents;
+    }
+
+    /**
+     * Bypass the route check to show your tour on any routes.
+     *
+     * @return $this
+     */
+    public function ignoreRoutes(bool|Closure $ignoreRoutes = true): self
+    {
+
+        if (is_bool($ignoreRoutes)) {
+            $this->ignoreRoutes = $ignoreRoutes;
+        } else {
+            $this->ignoreRoutes = $this->evaluate($ignoreRoutes);
+        }
+        return $this;
+    }
+
+    public function isRoutesIgnored(): bool
+    {
+        return $this->ignoreRoutes;
     }
 }

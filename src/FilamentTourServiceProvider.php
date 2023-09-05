@@ -41,8 +41,8 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            Css::make('filament-tour-styles', __DIR__.'/../resources/dist/filament-tour.css'),
-            Js::make('filament-tour-scripts', __DIR__.'/../resources/dist/filament-tour.js'),
+            Css::make('filament-tour-styles', __DIR__ . '/../resources/dist/filament-tour.css'),
+            Js::make('filament-tour-scripts', __DIR__ . '/../resources/dist/filament-tour.js'),
         ];
     }
 
@@ -50,4 +50,5 @@ class FilamentTourServiceProvider extends PackageServiceProvider
     {
         return 'jibaymcs/filament-tour';
     }
+
 }

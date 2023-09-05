@@ -6,14 +6,22 @@ With the power of [DriverJS](https://driverjs.com) bring to your users an elegan
 
 You can install this filament plugin via composer:
 
+For Filament V3.x
+
 ```bash
 composer require jibaymcs/filament-tour:"^3.x"
 ```
 
+For Filament V2.x
+
+```bash
+composer require jibaymcs/filament-tour:"^2.x"
+```
+
 You can publish the config file with:
 
-```
-bash php artisan vendor:publish --tag="filament-tour-config"
+```bash 
+php artisan vendor:publish --tag="filament-tour-config"
 ```
 
 Optionally, you can publish the views using
@@ -76,20 +84,21 @@ class Dashboard extends FilamentDashboard {
 
 ```php
 public function tours(): array {
-	return [
-		Tour::make('dashboard')
-			->steps(
-				Step::make()
-					->title("Welcome to your Dashboard !")
-					->description(view('tutorial.dashboard.introduction')),
-
-				Step::make('.fi-avatar')
-					->title('Woaw ! Here is your avatar !')
-					->description('You look nice !')
-					->icon('heroicon-o-user-circle')
-					->iconColor('primary')
-			),
-	];
+    return [
+       Tour::make('dashboard')
+           ->steps(
+                           
+               Step::make()
+                   ->title("Welcome to your Dashboard !")
+                   ->description(view('tutorial.dashboard.introduction')),
+    
+               Step::make('.fi-avatar')
+                   ->title('Woaw ! Here is your avatar !')
+                   ->description('You look nice !')
+                   ->icon('heroicon-o-user-circle')
+                   ->iconColor('primary')
+           ),
+    ];
 }
 ```
 
@@ -98,32 +107,42 @@ public function tours(): array {
 ### Tour methods reference
 
 ```php
-// Instanciate a tour, an provide an id, to trigger it later
+// Instanciate a tour, and provide an id, to trigger it later
 Tour::make(string $id)
 
-	// Define a custom url to trigger your tour 
-	->route(string $route)
-
-	//Register the steps of your tour
-	->steps(Step ...$steps)
-
-	// Define a color of your hightlight overlay for the dark and light theme of your filament panel
-	->colors(string $light, string $dark)
-
-	//Set the tour as always visible, even is already viewed by the user.
-	->alwaysShow(bool|Closure $alwaysShow = true)
-
-	// Set the tour visible or not
-	->visible(bool|Closure $visible = true)
-
+    // Define a custom url to trigger your tour 
+    ->route(string $route)
+    
+    //Register the steps of your tour
+    ->steps(Step ...$steps)
+    
+    // Define a color of your hightlight overlay for the dark and light theme of your filament panel
+    ->colors(string $light, string $dark)
+    
+    //Set the tour as always visible, even is already viewed by the user.
+    ->alwaysShow(bool|Closure $alwaysShow = true)
+    
+    // Set the tour visible or not
+    ->visible(bool|Closure $visible = true)
+    
     // Set the 'Next' button label
     ->nextButtonLabel(string $label)
-
+    
     // Set the 'Previous' button label
     ->previousButtonLabel(string $label)
-
+    
     // Set the 'Done' button label
     ->doneButtonLabel(string $label)
+    
+    // Set the whole steps of the tour as uncloseable
+    ->uncloseable(bool|Closure $uncloseable = true)
+    
+    // Disable all tour steps events
+    ->disableEvents(bool|Closure $disableEvents = true)
+    
+    // Bypass route check to show the tour on all pages
+    // Maybe useless, but who knows ?
+    ->ignoreRoutes(bool|Closure $ignoreRoutes = true)
 ```
 
 # Step.php
@@ -134,36 +153,36 @@ Tour::make(string $id)
 // If no element provided, the step act like a modal
 Step::make(string $element = null)
 
-	// Define the title of your step
-	// Mandatory
-	->title(string|Closure $title)
-
-	// Define the description of your step
-	// Also accept HTML
-	// Mandatory
-	->description(string|Closure|HtmlString|View $description)
-
-	// Define an icon next to your step title
-	->icon(string $icon)
-
-	// Define the color of the title icon
-	->iconColor(string $color)
-
-	// Step your step closeable or not
-	// Default: true
-	->uncloseable(bool|Closure $uncloseable = true)
-
-	//Simulate a click on a CSS selected element when you press the next button
-	->onNextClick(string|Closure $selector)
-
-	// Send a notification when you press the next button
-	->onNextNotify(Notification $notification)
-
-	//Redirect you to a custom url when you press the next button
-	->onNextRedirect(string $url, bool $newTab = false)
-
-	// Dispatch an event like `$dispatch()` when you press the next button
-	->onNextDispatch(string $name, ...$args)
+    // Define the title of your step
+    // Mandatory
+    ->title(string|Closure $title)
+    
+    // Define the description of your step
+    // Also accept HTML
+    // Mandatory
+    ->description(string|Closure|HtmlString|View $description)
+    
+    // Define an icon next to your step title
+    ->icon(string $icon)
+    
+    // Define the color of the title icon
+    ->iconColor(string $color)
+    
+    // Step your step closeable or not
+    // Default: true
+    ->uncloseable(bool|Closure $uncloseable = true)
+    
+    //Simulate a click on a CSS selected element when you press the next button
+    ->clickOnNext(string|Closure $selector)
+    
+    // Send a notification when you press the next button
+    ->notifyOnNext(Notification $notification)
+    
+    //Redirect you to a custom url or a route() when you press the next button
+    ->redirectOnNext(string $url, bool $newTab = false)
+    
+    // Dispatch an event like `$dispatch()` when you press the next button
+    ->dispatchOnNext(string $name, ...$args)
 ```
 
 # Highlights
@@ -174,39 +193,41 @@ Same as tour, use the correct trait !
 
 ```php
 <?php
+
 namespace App\Filament\Pages;  
   
 use JibayMcs\FilamentTour\Highlight\HasHighlight;  
   
 class Dashboard extends FilamentDashboard {
 
-	use HasHighlight;
-	// ...  
+    use HasHighlight;
+    // ...  
   
-	public function highlights(): array    {    
-		return []; 
-  }
+    public function highlights(): array {    
+	    return []; 
+    }
 }
 ```
 
 - Create a simple highlight element !
 
 ```php
-public function highlights(): array {  
-	return [
+public function highlights(): array {
+
+    return [
 	 
-		Highlight::make('.fi-header-heading')
-			->element('.fi-header-heading')
-			->title('Whoaw ! You highlighted the title of the page !')
-			->description('"Dashboard"'),
+        Highlight::make('.fi-header-heading')
+            ->element('.fi-header-heading')
+            ->title('Whoaw ! You highlighted the title of the page !')
+            ->description('"Dashboard"'),
 	
-		Highlight::make('.fi-avatar')
-			->element('.fi-avatar')
-			->title("Pssst ! That's your avatar")
-			->icon('heroicon-o-user-circle')
-			->iconColor('primary'),
-				
-	];
+        Highlight::make('.fi-avatar')
+            ->element('.fi-avatar')
+            ->title("Pssst ! That's your avatar")
+            ->icon('heroicon-o-user-circle')
+            ->iconColor('primary'),
+            	
+    ];
 }
 ````
 
@@ -220,30 +241,30 @@ ___
 // Instanciate a highlight with a CSS select of the element where the icon button is next to
 Highlight::make(string $parent)
 
-	// Define the element to be highlighted
-	->element(string $element)
+    // Define the element to be highlighted
+    ->element(string $element)
 
-	// Set the title of your highlight
-	->title(string|Closure $title)
+    // Set the title of your highlight
+    ->title(string|Closure $title)
 
-	// Set the description of your highlight
-	->description(string|Closure|HtmlString|View $description)
+    // Set the description of your highlight
+    ->description(string|Closure|HtmlString|View $description)
 
-	// Define a custom icon for your highlight button
-	// Default: heroicon-m-question-mark-circle
-	->icon(string $icon)
+    // Define a custom icon for your highlight button
+    // Default: heroicon-m-question-mark-circle
+    ->icon(string $icon)
 
-	// Define the color of the highlight icon button
-	// Default: gray
-	->iconColor(string $color)
+    // Define the color of the highlight icon button
+    // Default: gray
+    ->iconColor(string $color)
 
-	// Define a color of your hightlight overlay for the dark and light theme of your filament panel
-	->colors(string $light, string $dark)
+    // Define a color of your hightlight overlay for the dark and light theme of your filament panel
+    ->colors(string $light, string $dark)
 
-	// Set the position of your icon button around the parent
-	// Default: top-left
-	// Available: top-left, top-right, bottom-left, bottom-right
-	->position(string $position)
+    // Set the position of your icon button around the parent
+    // Default: top-left
+    // Available: top-left, top-right, bottom-left, bottom-right
+    ->position(string $position)
 ```
 
 ___
@@ -292,7 +313,13 @@ Basically, if you want a custom button to trigger a tour or a highlight, you can
 
 Filament Tour embed a simple tool to help you to develop your tours and highlights.
 
-Let me show you !
+Let me show you how to use it !
+
+### Enable the tool
+
+To enable the tool, simply use `FilamentTourPlugin::make()->enableCssSelector()` in your plugin declaration.
+
+### Keyboard shortcuts
 
 <kbd>**Ctrl**</kbd>|<kbd>**Cmd**</kbd> + <kbd>**Space**</kbd> To open the tool.
 <br>
@@ -309,7 +336,7 @@ Let me show you !
 ### DriverJS
 
 - [DriverJS Website](https://driverjs.com)
-- [DriverJS Github](https://github.com/kamranahmedse/driver.js) (Give some 🩵 to the author !)
+- [DriverJS GitHub](https://github.com/kamranahmedse/driver.js) (Give some 🩵 to the author !)
 
 The core of this plugin !  
 Don't hesitate to check the documentation to learn more about the possibilities of this plugin.  
