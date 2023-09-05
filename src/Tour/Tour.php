@@ -273,6 +273,7 @@ class Tour
         } else {
             $this->ignoreRoutes = $this->evaluate($ignoreRoutes);
         }
+
         return $this;
     }
 

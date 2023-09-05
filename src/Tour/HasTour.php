@@ -40,7 +40,7 @@ trait HasTour
                         ],
                     ];
 
-                    if (!$tour->hasDisabledEvents()) {
+                    if (! $tour->hasDisabledEvents()) {
                         $data[$item]['events'] = [
                             'redirectOnNext' => $step->getRedirectOnNext(),
                             'clickOnNext' => $step->getClickOnNext(),
@@ -62,7 +62,7 @@ trait HasTour
 
                     $tours[] = [
                         'routesIgnored' => $tour->isRoutesIgnored(),
-                        
+
                         'uncloseable' => $tour->isUncloseable(),
 
                         'route' => $route,

@@ -42,9 +42,6 @@ class Step
         return app(static::class, ['element' => $element]);
     }
 
-    /**
-     * @return string|null
-     */
     public function getElement(): ?string
     {
         return $this->element;
@@ -62,9 +59,6 @@ class Step
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -94,9 +88,6 @@ class Step
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
@@ -114,9 +105,6 @@ class Step
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getIcon(): ?string
     {
         return $this->icon;
@@ -134,9 +122,6 @@ class Step
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getIconColor(): ?string
     {
         return $this->iconColor;
@@ -162,6 +147,4 @@ class Step
     {
         return $this->uncloseable;
     }
-
-
 }

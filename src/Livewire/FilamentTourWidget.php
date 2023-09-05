@@ -27,7 +27,7 @@ class FilamentTourWidget extends Component
             $instance = new $class;
 
             if ($instance instanceof Resource) {
-                collect($instance->getPages())->map(fn($item) => $item->getPage())
+                collect($instance->getPages())->map(fn ($item) => $item->getPage())
                     ->flatten()
                     ->each(function ($item) use (&$filamentClasses) {
                         $filamentClasses[] = $item;

@@ -16,7 +16,6 @@ trait CanConstructRoute
             return $this->route;
         }
 
-
         if (Filament::getCurrentPanel()->getTenantModel()) {
 
             $tenants = Filament::getCurrentPanel()->getTenantModel()::find(Filament::auth()->user()->getTenants(Filament::getCurrentPanel()));
@@ -31,7 +30,7 @@ trait CanConstructRoute
             if (method_exists($instance, 'getResource')) {
                 $resource = new ($instance->getResource());
                 foreach ($resource->getPages() as $key => $page) {
-                    if ($page->getPage() === $class) {
+                    if ($class === $page->getPage()) {
                         $this->route = parse_url($resource->getUrl($key))['path'];
                     }
                 }
@@ -39,7 +38,6 @@ trait CanConstructRoute
                 $this->route = parse_url($instance->getUrl())['path'];
             }
         }
-
 
         return $this->route;
     }

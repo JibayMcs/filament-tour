@@ -65,7 +65,7 @@ trait StepEvent
     /**
      * Set the livewire event to dispatch to, when the user clicks on the next button of your step.
      *
-     * @param Step ...$args
+     * @param  Step  ...$args
      * @return $this
      */
     public function dispatchOnNext(string $name, ...$params): self

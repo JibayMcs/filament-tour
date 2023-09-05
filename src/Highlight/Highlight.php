@@ -51,9 +51,6 @@ class Highlight
             ]);
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
@@ -71,9 +68,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getElement(): ?string
     {
         return $this->element;
@@ -91,9 +85,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -111,9 +102,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return HtmlString|View|string|null
-     */
     public function getDescription(): HtmlString|string|View|null
     {
         return $this->description;
@@ -133,9 +121,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getIcon(): string
     {
         return $this->icon;
@@ -155,9 +140,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getIconColor(): string
     {
         return $this->iconColor;
@@ -182,9 +164,6 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getColors(): array
     {
         return $this->colors;
@@ -215,17 +194,11 @@ class Highlight
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPosition(): string
     {
         return $this->position;
     }
 
-    /**
-     * @return string
-     */
     public function getParent(): string
     {
         return $this->parent;
