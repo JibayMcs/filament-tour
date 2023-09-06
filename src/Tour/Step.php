@@ -45,10 +45,11 @@ class Step
         $app->iconColor($step['iconColor'] ?? null);
         $app->uncloseable($step['uncloseable'] ?? false);
 
-        if ($step['events']['dispatchOnNext'])
+        if ($step['events']['dispatchOnNext']) {
             $app->dispatchOnNext($step['events']['dispatchOnNext'][0], ...$step['events']['dispatchOnNext'][1]);
+        }
 
-        if ($step['events']['notifyOnNext'])
+        if ($step['events']['notifyOnNext']) {
             $app->notifyOnNext(
                 Notification::make(uniqid())
                     ->title($step['events']['notifyOnNext']['title'])
@@ -60,9 +61,11 @@ class Step
                     ->actions($step['events']['notifyOnNext']['actions'] ?? [])
                     ->duration($step['events']['notifyOnNext']['duration'] ?? 6000)
             );
+        }
 
-        if ($step['events']['clickOnNext'])
+        if ($step['events']['clickOnNext']) {
             $app->clickOnNext($step['events']['clickOnNext']);
+        }
 
         if ($step['events']['redirectOnNext']) {
             if (is_array($step['events']['redirectOnNext'])) {

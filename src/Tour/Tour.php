@@ -9,8 +9,8 @@ use JibayMcs\FilamentTour\Tour\Traits\CanReadJson;
 
 class Tour
 {
-    use EvaluatesClosures;
     use CanReadJson;
+    use EvaluatesClosures;
 
     private string $id;
 
@@ -46,7 +46,6 @@ class Tour
         $this->doneButtonLabel = Lang::get('filament-tour::filament-tour.button.done');
     }
 
-
     /**
      * Create the instance of your tour.
      * <br>
@@ -56,9 +55,9 @@ class Tour
     {
         $params = collect($params);
 
-        switch ($params->keys()->map(fn($key) => $key)->toArray()[0]) {
-            case "url":
-            case "json":
+        switch ($params->keys()->map(fn ($key) => $key)->toArray()[0]) {
+            case 'url':
+            case 'json':
                 return self::fromJson($params->first());
             default:
                 return app(static::class,

@@ -11,7 +11,7 @@ trait CanReadJson
     public static function fromJson(string $json): static
     {
         $tour = self::readJson($json);
-        
+
         $steps = [];
 
         $app = app(static::class,
@@ -25,7 +25,9 @@ trait CanReadJson
 
         $app->route($tour['route'] ?? null);
 
-        if (isset($tour['colors'])) $app->colors($tour['colors'][0] ?? "rgb(0,0,0)", $tour['colors'][1] ?? "#fff");
+        if (isset($tour['colors'])) {
+            $app->colors($tour['colors'][0] ?? 'rgb(0,0,0)', $tour['colors'][1] ?? '#fff');
+        }
 
         $app->alwaysShow($tour['alwaysShow'] ?? false);
 
@@ -47,7 +49,9 @@ trait CanReadJson
             $steps[] = Step::fromArray($step);
         }
 
-        if (isset($tour['steps'])) $app->steps(...$steps);
+        if (isset($tour['steps'])) {
+            $app->steps(...$steps);
+        }
 
         return $app;
     }
@@ -62,13 +66,13 @@ trait CanReadJson
                     return $data;
                 } else {
                     Notification::make('error_parsing_json_from_url')
-                        ->title("Error parsing Tour from JSON as URL")
+                        ->title('Error parsing Tour from JSON as URL')
                         ->danger()
                         ->send();
                 }
             } else {
                 Notification::make('error_parsing_url')
-                    ->title("Unable to parse URL for JSON Tour")
+                    ->title('Unable to parse URL for JSON Tour')
                     ->body($json)
                     ->danger()
                     ->send();
@@ -79,8 +83,8 @@ trait CanReadJson
                 return $jsonData;
             } else {
                 Notification::make('error_parsing_json')
-                    ->title("Error parsing Tour from JSON")
-                    ->body("Verify if your JSON file is valid or exists")
+                    ->title('Error parsing Tour from JSON')
+                    ->body('Verify if your JSON file is valid or exists')
                     ->danger()
                     ->send();
             }
@@ -88,5 +92,4 @@ trait CanReadJson
 
         return [];
     }
-
 }
