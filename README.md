@@ -1,3 +1,4 @@
+
 # Bring the power of DriverJs to your Filament panels and start a tour !
 
 With the power of [DriverJS](https://driverjs.com) bring to your users an elegant way to discover your panels !
@@ -61,7 +62,7 @@ Let's follow this example to add a tour to your dashboard page.
 
 If you don't already have a customized dashboard, please refer to the following tutorial: [FIlamentPHP - Dashboard - Customizing the dashboard page](https://filamentphp.com/docs/3.x/panels/dashboard#customizing-the-dashboard-page)
 
-- Use the correct trait to registers your tours !
+## Use the correct trait to registers your tours !
 
 ```php
 <?php  
@@ -79,8 +80,9 @@ class Dashboard extends FilamentDashboard {
     	}
 }  
 ```
+___
 
-- Create a simple tour !
+### Create a simple tour !
 
 ```php
 public function tours(): array {
@@ -102,6 +104,104 @@ public function tours(): array {
 }
 ```
 
+### Create a JSON tour !
+
+#### - From a direct URL
+```php
+public function tours(): array {
+    return [
+       Tour::make(url: "https://gist.githubusercontent.com/JibayMcs/cc06efddadcfc0a0ff59e116533ee727/raw/8c5c86a3a4b92e4d0586d7a344d0e41f0c175659/TourDashboard.json")
+    ];
+}
+```
+
+#### - From your Storage
+
+```php
+public function tours(): array {
+    return [
+       Tour::make(json: Storage::disk('local')->get("TourDashboard.json"))
+    ];
+}
+```
+
+> [!IMPORTANT]  
+> Using `Tour::make(url: "")` or `Tour::make(json: "")` is the same thing, so don't worry about the name of your parameter if you've got the wrong type.<br>
+> BUT<br>
+> If you use `Tour::make('my-tour')` it's equal to `Tour::make(id: 'my-tour')`
+> And here you need to construct all your steps. No JSON reading here.
+
+<details>
+	<summary><b>JSON Example file</b> (click to expand) or <a href="https://gist.github.com/JibayMcs/cc06efddadcfc0a0ff59e116533ee727">Github Gist Link</a></summary>
+    
+```json
+{
+    "id": "dashboard",
+    "route": "/admin/test-team",
+    "colors": [
+        "",
+        ""
+    ],
+    "alwaysShow": true,
+    "visible": true,
+    "uncloseable": true,
+    "ignoreRoutes": false,
+    "disableEvents": true,
+    "nextButtonLabel": "Next",
+    "previousButtonLabel": "Previous",
+    "doneButtonLabel": "Done",
+    "steps": [
+        {
+            "title": "Woaw ! First Step !",
+            "description": "Yeah ! And I'm from a json file !",
+            "uncloseable": false,
+            "events": {
+                "clickOnNext": "body",
+                "notifyOnNext": {
+                    "title": "Hello World !",
+                    "body": "Woaw ! I'm from a Json file !",
+                    "color": "success"
+                },
+                "redirectOnNext": {
+                    "url": "https://filamentphp.com",
+                    "newTab": true
+                },
+                "dispatchOnNext": [
+                    "open-modal",
+                    {
+                        "id": "edit-user"
+                    }
+                ]
+            }
+        },
+        {
+            "title": "An other one !",
+            "description": "Yeah ! And I'm from the same json file !",
+            "uncloseable": false,
+            "events": {
+                "clickOnNext": "body",
+                "notifyOnNext": {
+                    "title": "Hello World !",
+                    "body": "Woaw ! I'm from a Json file !",
+                    "color": "success"
+                },
+                "redirectOnNext": {
+                    "url": "https://filamentphp.com",
+                    "newTab": true
+                },
+                "dispatchOnNext": [
+                    "open-modal",
+                    {
+                        "id": "edit-user"
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+</details>
+
 # Tour.php
 
 ### Tour methods reference
@@ -109,6 +209,9 @@ public function tours(): array {
 ```php
 // Instanciate a tour, and provide an id, to trigger it later
 Tour::make(string $id)
+
+// Since 3.1.0.1, JSON Support update
+Tour::make(... $params)
 
     // Define a custom url to trigger your tour 
     ->route(string $route)
@@ -229,7 +332,7 @@ public function highlights(): array {
             	
     ];
 }
-````
+```
 
 ___
 
