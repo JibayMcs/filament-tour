@@ -5,10 +5,12 @@ namespace JibayMcs\FilamentTour\Tour;
 use Closure;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Lang;
+use JibayMcs\FilamentTour\Tour\Traits\CanReadJson;
 
 class Tour
 {
     use EvaluatesClosures;
+    use CanReadJson;
 
     private string $id;
 
@@ -44,26 +46,31 @@ class Tour
         $this->doneButtonLabel = Lang::get('filament-tour::filament-tour.button.done');
     }
 
+
     /**
      * Create the instance of your tour.
      * <br>
      * Define an **$id** to be able to call it later in a livewire event.
      */
-    public static function make(string $id): static
+    public static function make(...$params): static
     {
-        return app(static::class,
-            [
-                'id' => $id,
-                'colors' => [
-                    'dark' => '#fff',
-                    'light' => 'rgb(0,0,0)',
-                ],
-            ]);
-    }
+        $params = collect($params);
 
-    public function getId(): string
-    {
-        return $this->id;
+        switch ($params->keys()->map(fn($key) => $key)->toArray()[0]) {
+            case "url":
+            case "json":
+                return self::fromJson($params->first());
+            default:
+                return app(static::class,
+                    [
+                        'id' => $params->first(),
+                        'colors' => [
+                            'dark' => '#fff',
+                            'light' => 'rgb(0,0,0)',
+                        ],
+                    ]);
+                break;
+        }
     }
 
     /**
@@ -76,28 +83,6 @@ class Tour
         $this->route = $route;
 
         return $this;
-    }
-
-    public function getRoute(): ?string
-    {
-        return $this->route;
-    }
-
-    /**
-     * Set the steps of your tour.
-     *
-     * @return $this
-     */
-    public function steps(Step ...$steps): self
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    public function getSteps(): array
-    {
-        return $this->steps;
     }
 
     /**
@@ -119,11 +104,6 @@ class Tour
         return $this;
     }
 
-    public function getColors(): array
-    {
-        return $this->colors;
-    }
-
     /**
      * Set the tour as always visible, even is already viewed by the user.
      *
@@ -138,11 +118,6 @@ class Tour
         }
 
         return $this;
-    }
-
-    public function isAlwaysShow(): bool
-    {
-        return $this->alwaysShow;
     }
 
     /**
@@ -161,62 +136,6 @@ class Tour
         return $this;
     }
 
-    public function isVisible(): bool
-    {
-        return $this->visible;
-    }
-
-    /**
-     * Set the label of the next button.
-     *
-     * @return $this
-     */
-    public function nextButtonLabel(string $label): self
-    {
-        $this->nextButtonLabel = $label;
-
-        return $this;
-    }
-
-    public function getNextButtonLabel(): string
-    {
-        return $this->nextButtonLabel;
-    }
-
-    /**
-     * Set the label of the previous button.
-     *
-     * @return $this
-     */
-    public function previousButtonLabel(string $label): self
-    {
-        $this->previousButtonLabel = $label;
-
-        return $this;
-    }
-
-    public function getPreviousButtonLabel(): string
-    {
-        return $this->previousButtonLabel;
-    }
-
-    /**
-     * Set the label of the done button.
-     *
-     * @return $this
-     */
-    public function doneButtonLabel(string $label): self
-    {
-        $this->doneButtonLabel = $label;
-
-        return $this;
-    }
-
-    public function getDoneButtonLabel(): string
-    {
-        return $this->doneButtonLabel;
-    }
-
     /**
      * Set the tour steps uncloseable.
      *
@@ -231,11 +150,6 @@ class Tour
         }
 
         return $this;
-    }
-
-    public function isUncloseable(): bool
-    {
-        return $this->uncloseable;
     }
 
     /**
@@ -255,11 +169,6 @@ class Tour
         return $this;
     }
 
-    public function hasDisabledEvents(): bool
-    {
-        return $this->disableEvents;
-    }
-
     /**
      * Bypass the route check to show your tour on any routes.
      *
@@ -275,6 +184,109 @@ class Tour
         }
 
         return $this;
+    }
+
+    /**
+     * Set the label of the next button.
+     *
+     * @return $this
+     */
+    public function nextButtonLabel(string $label): self
+    {
+        $this->nextButtonLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the label of the previous button.
+     *
+     * @return $this
+     */
+    public function previousButtonLabel(string $label): self
+    {
+        $this->previousButtonLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the label of the done button.
+     *
+     * @return $this
+     */
+    public function doneButtonLabel(string $label): self
+    {
+        $this->doneButtonLabel = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the steps of your tour.
+     *
+     * @return $this
+     */
+    public function steps(Step ...$steps): self
+    {
+        $this->steps = $steps;
+
+        return $this;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
+    public function getSteps(): array
+    {
+        return $this->steps;
+    }
+
+    public function getColors(): array
+    {
+        return $this->colors;
+    }
+
+    public function isAlwaysShow(): bool
+    {
+        return $this->alwaysShow;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function getNextButtonLabel(): string
+    {
+        return $this->nextButtonLabel;
+    }
+
+    public function getPreviousButtonLabel(): string
+    {
+        return $this->previousButtonLabel;
+    }
+
+    public function getDoneButtonLabel(): string
+    {
+        return $this->doneButtonLabel;
+    }
+
+    public function isUncloseable(): bool
+    {
+        return $this->uncloseable;
+    }
+
+    public function hasDisabledEvents(): bool
+    {
+        return $this->disableEvents;
     }
 
     public function isRoutesIgnored(): bool

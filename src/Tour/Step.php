@@ -4,6 +4,7 @@ namespace JibayMcs\FilamentTour\Tour;
 
 use Closure;
 use Exception;
+use Filament\Notifications\Notification;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\View;
@@ -32,19 +33,46 @@ class Step
         $this->element = $element;
     }
 
-    /**
-     * Create the instance of your step.
-     * <br>
-     * If no **$element** defined, the step will be shown as a modal.
-     */
-    public static function make(string $element = null): static
+    public static function fromArray(array $array): static
     {
-        return app(static::class, ['element' => $element]);
-    }
+        $step = $array;
 
-    public function getElement(): ?string
-    {
-        return $this->element;
+        $app = app(static::class, ['element' => $step->element ?? null]);
+
+        $app->title($step['title']);
+        $app->description($step['description']);
+        $app->icon($step['icon'] ?? null);
+        $app->iconColor($step['iconColor'] ?? null);
+        $app->uncloseable($step['uncloseable'] ?? false);
+
+        if ($step['events']['dispatchOnNext'])
+            $app->dispatchOnNext($step['events']['dispatchOnNext'][0], ...$step['events']['dispatchOnNext'][1]);
+
+        if ($step['events']['notifyOnNext'])
+            $app->notifyOnNext(
+                Notification::make(uniqid())
+                    ->title($step['events']['notifyOnNext']['title'])
+                    ->body($step['events']['notifyOnNext']['body'] ?? null)
+                    ->color($step['events']['notifyOnNext']['color'] ?? null)
+                    ->icon($step['events']['notifyOnNext']['icon'] ?? null)
+                    ->iconColor($step['events']['notifyOnNext']['iconColor'] ?? null)
+                    ->iconSize($step['events']['notifyOnNext']['iconSize'] ?? null)
+                    ->actions($step['events']['notifyOnNext']['actions'] ?? [])
+                    ->duration($step['events']['notifyOnNext']['duration'] ?? 6000)
+            );
+
+        if ($step['events']['clickOnNext'])
+            $app->clickOnNext($step['events']['clickOnNext']);
+
+        if ($step['events']['redirectOnNext']) {
+            if (is_array($step['events']['redirectOnNext'])) {
+                $app->redirectOnNext($step['events']['redirectOnNext']['url'], isset($step['events']['redirectOnNext']['newTab']) ? $step['events']['redirectOnNext']['newTab'] : true);
+            } else {
+                $app->redirectOnNext($step['events']['redirectOnNext']);
+            }
+        }
+
+        return $app;
     }
 
     /**
@@ -57,11 +85,6 @@ class Step
         $this->title = is_string($title) ? $title : $this->evaluate($title);
 
         return $this;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
     }
 
     /**
@@ -88,26 +111,16 @@ class Step
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
     /**
      * Set the icon of your step, next to the title.
      *
      * @return $this
      */
-    public function icon(string $icon): self
+    public function icon(?string $icon): self
     {
         $this->icon = $icon;
 
         return $this;
-    }
-
-    public function getIcon(): ?string
-    {
-        return $this->icon;
     }
 
     /**
@@ -115,16 +128,11 @@ class Step
      *
      * @return $this
      */
-    public function iconColor(string $color): self
+    public function iconColor(?string $color): self
     {
         $this->iconColor = $color;
 
         return $this;
-    }
-
-    public function getIconColor(): ?string
-    {
-        return $this->iconColor;
     }
 
     /**
@@ -141,6 +149,41 @@ class Step
         }
 
         return $this;
+    }
+
+    /**
+     * Create the instance of your step.
+     * <br>
+     * If no **$element** defined, the step will be shown as a modal.
+     */
+    public static function make(string $element = null): static
+    {
+        return app(static::class, ['element' => $element]);
+    }
+
+    public function getElement(): ?string
+    {
+        return $this->element;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function getIconColor(): ?string
+    {
+        return $this->iconColor;
     }
 
     public function isUncloseable(): bool

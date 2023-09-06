@@ -5,6 +5,8 @@ document.addEventListener('livewire:initialized', async function () {
 
     initCssSelector();
 
+    let pluginData;
+
     let tours = [];
     let highlights = [];
 
@@ -31,50 +33,23 @@ document.addEventListener('livewire:initialized', async function () {
 
     Livewire.on('filament-tour::loaded-elements', function (data) {
 
-        data.tours.forEach((tour) => {
+        pluginData = data;
 
+        pluginData.tours.forEach((tour) => {
             tours.push(tour);
 
             if (!localStorage.getItem('tours')) {
                 localStorage.setItem('tours', "[]");
             }
-
-            if (tour.alwaysShow && tour.routesIgnored) {
-                openTour(tour);
-            } else if (tour.alwaysShow && !tour.routesIgnored) {
-                if (tour.route === window.location.pathname) {
-                    if (!data.only_visible_once ||
-                        (data.only_visible_once && !localStorage.getItem('tours').includes(tour.id))) {
-                        openTour(tour);
-                    }
-                }
-            } else if (tour.routesIgnored) {
-                if (!data.only_visible_once ||
-                    (data.only_visible_once && !localStorage.getItem('tours').includes(tour.id))) {
-                    openTour(tour);
-                }
-            } else if (tour.route === window.location.pathname) {
-                if (!data.only_visible_once ||
-                    (data.only_visible_once && !localStorage.getItem('tours').includes(tour.id))) {
-                    openTour(tour);
-                }
-            }
-
-
         });
 
-        data.highlights.forEach((highlight) => {
+        selectTour(tours);
+
+        pluginData.highlights.forEach((highlight) => {
 
             if (highlight.route === window.location.pathname) {
 
-                waitForElement(highlight.element, function (selector) {
-                    console.log(highlight, highlight.element, selector.hasChildNodes());
-
-                    if (selector.hasChildNodes()) {
-                        console.log(selector.childNodes)
-                        // highlight.element = getCssSelector();
-                    }
-                });
+                //TODO Add a more precise/efficient selector
 
                 waitForElement(highlight.parent, function (selector) {
                     selector.parentNode.style.position = 'relative';
@@ -91,6 +66,28 @@ document.addEventListener('livewire:initialized', async function () {
             }
         });
     });
+
+    function selectTour(tours, startIndex = 0) {
+        for (let i = startIndex; i < tours.length; i++) {
+            let tour = tours[i];
+            let conditionAlwaysShow = tour.alwaysShow;
+            let conditionRoutesIgnored = tour.routesIgnored;
+            let conditionRouteMatches = tour.route === window.location.pathname;
+            let conditionVisibleOnce = !pluginData.only_visible_once ||
+                (pluginData.only_visible_once && !localStorage.getItem('tours').includes(tour.id));
+
+            if (
+                (conditionAlwaysShow && conditionRoutesIgnored) ||
+                (conditionAlwaysShow && !conditionRoutesIgnored && conditionRouteMatches) ||
+                (conditionRoutesIgnored && conditionVisibleOnce) ||
+                (conditionRouteMatches && conditionVisibleOnce)
+            ) {
+                openTour(tour);
+                break;
+            }
+        }
+    }
+
 
     Livewire.on('filament-tour::open-highlight', function (id) {
         let highlight = highlights.find(element => element.id === id);
@@ -130,7 +127,9 @@ document.addEventListener('livewire:initialized', async function () {
 
     function openTour(tour) {
 
-        if (tour.steps.length > 0) {
+        let steps = JSON.parse(tour.steps);
+
+        if (steps.length > 0) {
 
             const driverObj = driver({
                 allowClose: true,
@@ -157,6 +156,17 @@ document.addEventListener('livewire:initialized', async function () {
                 }),
                 onNextClick: ((element, step, {config, state}) => {
 
+
+                    if (tours.length > 1 && driverObj.isLastStep()) {
+                        let index = tours.findIndex(objet => objet.id === tour.id);
+
+                        if (index !== -1 && index < tours.length - 1) {
+                            let nextTourIndex = index + 1;
+                            selectTour(tours, nextTourIndex);
+                        }
+                    }
+
+
                     if (driverObj.isLastStep()) {
 
                         if (!localStorage.getItem('tours').includes(tour.id)) {
@@ -168,9 +178,7 @@ document.addEventListener('livewire:initialized', async function () {
 
 
                     if (step.events) {
-
-                        console.log(step.events);
-
+                        
                         if (step.events.notifyOnNext) {
                             new FilamentNotification()
                                 .title(step.events.notifyOnNext.title)
@@ -243,10 +251,11 @@ document.addEventListener('livewire:initialized', async function () {
                     }
                     popover.footer.appendChild(nextButton);
                 },
-                steps: JSON.parse(tour.steps),
+                steps: steps,
             });
 
             driverObj.drive();
         }
     }
-});
+})
+;
