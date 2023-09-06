@@ -2,6 +2,16 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## The JSON Update - 2023-09-06
+
+### The JSON Update <sup>ᴠ3.1.0.1</sup>
+
+If creating your guided tours in PHP bores you or takes up too much space, play with JSON!
+
+You can now load your tours directly using a JSON file from a URL or your Storage!
+
+- Finished setup for multiple tours registration, now "goto" a next tour on finished the first one
+
 ## v3.1.0.0 - 2023-09-05
 
 ### The First Release !
