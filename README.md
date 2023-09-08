@@ -10,13 +10,13 @@ You can install this filament plugin via composer:
 For Filament V3.x
 
 ```bash
-composer require jibaymcs/filament-tour:"^3.x"
+composer require jibaymcs/filament-tour:"^3.0"
 ```
 
 For Filament V2.x
 
 ```bash
-composer require jibaymcs/filament-tour:"^2.x"
+composer require jibaymcs/filament-tour:"^2.0"
 ```
 
 You can publish the config file with:
