@@ -2,6 +2,12 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## What's new ? - 2023-09-14
+
+- Fixed error on parsing URL parameters from the tour routing system
+
+**Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.0.1...v3.1.0.2
+
 ## The JSON Update - 2023-09-06
 
 ### The JSON Update <sup>ᴠ3.1.0.1</sup>
