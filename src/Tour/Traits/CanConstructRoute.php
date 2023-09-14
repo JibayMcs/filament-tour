@@ -35,8 +35,9 @@ trait CanConstructRoute
                     }
                 }
             } else {
-                $this->route = parse_url($instance->getUrl())['path'];
+                $this->route = parse_url($instance->getUrl())['path'] ?? '/';
             }
+
         }
 
         return $this->route;
