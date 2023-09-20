@@ -2,6 +2,18 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## v3.1.0.3 - 2023-09-20
+
+### What's Changed
+
+- add ar translations by @aymanalareqi in https://github.com/JibayMcs/filament-tour/pull/4
+
+### New Contributors
+
+- @aymanalareqi made their first contribution in #4
+
+**Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.0.2...v3.1.0.3
+
 ## What's new ? - 2023-09-14
 
 - Fixed error on parsing URL parameters from the tour routing system
