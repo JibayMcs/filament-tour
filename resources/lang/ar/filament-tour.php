@@ -5,9 +5,9 @@ return [
 
     'button' => [
 
-        'previous' => 'التالي',
-        'next' => 'السابق',
-        'done' => 'تم',
+        'previous' => 'السابق',
+        'next' => 'التالي',  
+        'done' => 'إنتهى',
 
     ],
 ];
