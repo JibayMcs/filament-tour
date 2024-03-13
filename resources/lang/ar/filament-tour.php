@@ -6,7 +6,7 @@ return [
     'button' => [
 
         'previous' => 'السابق',
-        'next' => 'التالي',  
+        'next' => 'التالي',
         'done' => 'إنتهى',
 
     ],

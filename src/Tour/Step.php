@@ -28,7 +28,7 @@ class Step
 
     private bool $uncloseable = false;
 
-    public function __construct(string $element = null)
+    public function __construct(?string $element = null)
     {
         $this->element = $element;
     }
@@ -159,7 +159,7 @@ class Step
      * <br>
      * If no **$element** defined, the step will be shown as a modal.
      */
-    public static function make(string $element = null): static
+    public static function make(?string $element = null): static
     {
         return app(static::class, ['element' => $element]);
     }
