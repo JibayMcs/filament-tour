@@ -25,8 +25,7 @@
     "require": {
         "php": "^8.1|^8.2",
         "filament/filament": "^3.0",
-        "spatie/laravel-package-tools": "^1.15.0",
-        "illuminate/contracts": "^10.0|^11.0"
+        "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^7.9",
