@@ -2,6 +2,24 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## v3.1.2 - 2025-06-19
+
+### What's Changed
+
+* Updates readme, adding route example and provides rendering tour on content example by @Mrkbingham in https://github.com/JibayMcs/filament-tour/pull/27
+* remove illuminate/contracts to support any laravel version by @atmonshi in https://github.com/JibayMcs/filament-tour/pull/32
+* Update composer.json to allow installation on PHP 8.3 and 8.4 by @acornforth in https://github.com/JibayMcs/filament-tour/pull/36
+* fix:added pt_PT by @FelicianoIvan in https://github.com/JibayMcs/filament-tour/pull/30
+
+### New Contributors
+
+* @Mrkbingham made their first contribution in https://github.com/JibayMcs/filament-tour/pull/27
+* @atmonshi made their first contribution in https://github.com/JibayMcs/filament-tour/pull/32
+* @acornforth made their first contribution in https://github.com/JibayMcs/filament-tour/pull/36
+* @FelicianoIvan made their first contribution in https://github.com/JibayMcs/filament-tour/pull/30
+
+**Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.1...v3.1.2
+
 ## v3.1.1 - 2024-11-05
 
 ### What's Changed
@@ -61,11 +79,13 @@ All notable changes to `filament-tour` will be documented in this file.
   
   
   
+  
     ```
 
 ```
 
 **Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.0.5...3.x
+
 
 
 
