@@ -68,7 +68,6 @@ class Tour
                             'light' => 'rgb(0,0,0)',
                         ],
                     ]);
-                break;
         }
     }
 
@@ -110,11 +109,7 @@ class Tour
      */
     public function alwaysShow(bool|Closure $alwaysShow = true): self
     {
-        if (is_bool($alwaysShow)) {
-            $this->alwaysShow = $alwaysShow;
-        } else {
-            $this->alwaysShow = $this->evaluate($alwaysShow);
-        }
+        $this->alwaysShow = $this->evaluate($alwaysShow);
 
         return $this;
     }
@@ -126,11 +121,7 @@ class Tour
      */
     public function visible(bool|Closure $visible = true): self
     {
-        if (is_bool($visible)) {
-            $this->visible = $visible;
-        } else {
-            $this->visible = $this->evaluate($visible);
-        }
+        $this->visible = $this->evaluate($visible);
 
         return $this;
     }
@@ -142,11 +133,7 @@ class Tour
      */
     public function uncloseable(bool|Closure $uncloseable = true): self
     {
-        if (is_bool($uncloseable)) {
-            $this->uncloseable = $uncloseable;
-        } else {
-            $this->uncloseable = $this->evaluate($uncloseable);
-        }
+        $this->uncloseable = $this->evaluate($uncloseable);
 
         return $this;
     }
@@ -159,11 +146,7 @@ class Tour
      */
     public function disableEvents(bool|Closure $disableEvents = true): self
     {
-        if (is_bool($disableEvents)) {
-            $this->disableEvents = $disableEvents;
-        } else {
-            $this->disableEvents = $this->evaluate($disableEvents);
-        }
+        $this->disableEvents = $this->evaluate($disableEvents);
 
         return $this;
     }
@@ -175,12 +158,7 @@ class Tour
      */
     public function ignoreRoutes(bool|Closure $ignoreRoutes = true): self
     {
-
-        if (is_bool($ignoreRoutes)) {
-            $this->ignoreRoutes = $ignoreRoutes;
-        } else {
-            $this->ignoreRoutes = $this->evaluate($ignoreRoutes);
-        }
+        $this->ignoreRoutes = $this->evaluate($ignoreRoutes);
 
         return $this;
     }
