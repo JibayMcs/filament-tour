@@ -1,0 +1,19 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait JibayMcs\\FilamentTour\\Highlight\\HasHighlight is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Highlight/HasHighlight.php
+
+		-
+			message: '#^Trait JibayMcs\\FilamentTour\\Tour\\HasTour is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Tour/HasTour.php
+
+		-
+			message: '#^Trait JibayMcs\\FilamentTour\\Tour\\Traits\\CanConstructRoute is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Tour/Traits/CanConstructRoute.php

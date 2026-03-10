@@ -1,10 +1,11 @@
-@import '../../vendor/filament/filament/resources/css/theme.css';
+/* Tailwind v4: theme + utilities only — no preflight so we don't reset the host site */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 @import "driver.js/dist/driver.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@tailwind screens;
+@source "../views/**/*.blade.php";
 
 .hidden {
     display: none !important;

@@ -9,7 +9,6 @@
 /.prettierrc            export-ignore
 /.package-lock.json     export-ignore
 /.editorconfig          export-ignore
-/.php_cs.dist.php       export-ignore
 /.vscode                export-ignore
 /art                    export-ignore
 /docs                   export-ignore
@@ -18,10 +17,9 @@
 /package.json           export-ignore
 /phpstan-baseline.neon  export-ignore
 /phpstan.neon.dist      export-ignore
-/postcss.config.cjs      export-ignore
+/postcss.config.mjs      export-ignore
 /phpunit.xml.dist       export-ignore
 /psalm.xml              export-ignore
 /psalm.xml.dist         export-ignore
-/tailwind.config.js     export-ignore
 /testbench.yaml         export-ignore
 /UPGRADING.md           export-ignore
