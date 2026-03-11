@@ -2,6 +2,14 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## Filament V5 support - 2026-03-11
+
+### What's Changed
+
+* use tailwind v4 and add support for filament v5 by @pixelsDev-Pim in https://github.com/JibayMcs/filament-tour/pull/42
+
+**Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v4.0.1...V5.0.0
+
 ## Filament V4 support - 2025-10-10
 
 ### What's Changed
@@ -93,11 +101,13 @@ All notable changes to `filament-tour` will be documented in this file.
   
   
   
+  
     ```
 
 ```
 
 **Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.0.5...3.x
+
 
 
 
