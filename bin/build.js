@@ -20,6 +20,7 @@ const defaultOptions = {
     bundle: true,
     mainFields: ['module', 'main'],
     platform: 'neutral',
+    format: 'iife',
     sourcemap: isDev ? 'inline' : false,
     sourcesContent: isDev,
     treeShaking: true,
