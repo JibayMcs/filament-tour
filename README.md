@@ -9,6 +9,12 @@ With the power of [DriverJS](https://driverjs.com) bring to your users an elegan
 
 You can install this filament plugin via composer:
 
+For Filament V5.x
+
+```bash
+composer require jibaymcs/filament-tour:"^5.0"
+```
+
 For Filament V4.x
 
 ```bash
