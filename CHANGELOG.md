@@ -2,6 +2,18 @@
 
 All notable changes to `filament-tour` will be documented in this file.
 
+## v5.0.1 - 2026-05-05
+
+### What's Changed
+
+* Update README with Filament V5.x installation by @eugenefvdm in https://github.com/JibayMcs/filament-tour/pull/44
+
+### New Contributors
+
+* @eugenefvdm made their first contribution in https://github.com/JibayMcs/filament-tour/pull/44
+
+**Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v5.0.0...v5.0.1
+
 ## Filament V5 support - 2026-03-11
 
 ### What's Changed
@@ -102,11 +114,13 @@ All notable changes to `filament-tour` will be documented in this file.
   
   
   
+  
     ```
 
 ```
 
 **Full Changelog**: https://github.com/JibayMcs/filament-tour/compare/v3.1.0.5...3.x
+
 
 
 
