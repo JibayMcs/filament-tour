@@ -43,9 +43,9 @@ class FilamentTourPlugin implements Plugin
 
     public function boot(Panel $panel): void {}
 
-    public function onlyVisibleOnce(bool $onlyVisibleOnce = true): self
+    public function onlyVisibleOnce(bool|Closure $onlyVisibleOnce = true): self
     {
-        $this->onlyVisibleOnce = $onlyVisibleOnce;
+        $this->onlyVisibleOnce = $this->evaluate($onlyVisibleOnce);
 
         return $this;
     }
