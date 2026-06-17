@@ -22,14 +22,27 @@ trait CanConstructRoute
 
         if (Filament::getCurrentPanel()->getTenantModel()) {
 
-            $tenants = Filament::getCurrentPanel()->getTenantModel()::find(Filament::auth()->user()->getTenants(Filament::getCurrentPanel()));
+            $tenants = Filament::auth()->user()->getTenants(Filament::getCurrentPanel());
+            
+            // Handle the case where getTenants returns a Collection of models
+            if ($tenants instanceof \Illuminate\Support\Collection) {
+                $tenant = $tenants->first();
+            } else {
+                // Handle the case where getTenants returns an array of IDs
+                $tenantIds = $tenants;
+                
+                // Flatten the array to ensure it's not nested
+                if (is_array($tenantIds)) {
+                    $tenantIds = collect($tenantIds)->flatten()->filter()->toArray();
+                }
 
-            $tenant = $tenants->first();
-
-            $slug = $tenant->slug;
-            if ($slug) {
-                $this->route = parse_url($instance->getUrl(['tenant' => $slug]))['path'];
+                $tenants = Filament::getCurrentPanel()->getTenantModel()::find($tenantIds);
+                $tenant = $tenants->first();
             }
+
+            if ($tenant) {
+                $this->route = parse_url($instance->getUrl(['tenant' => $tenant]))['path'];
+            }   
         } else {
             if (method_exists($instance, 'getResource')) {
                 $resource = new ($instance->getResource());
